@@ -1,6 +1,6 @@
 # happy_plants
 
-Never forgett watering aggain
+Never forget watering again
 
 ## Getting Started
 

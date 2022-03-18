@@ -27,6 +27,9 @@
 .packages
 .pub-cache/
 .pub/
+.dart_tool/package_config.json
+.dart_tool/package_config_subset
+.packages
 /build/
 # Web related
 lib/generated_plugin_registrant.dart
