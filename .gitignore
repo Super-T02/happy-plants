@@ -30,6 +30,10 @@
 .dart_tool/package_config.json
 .dart_tool/package_config_subset
 .packages
+.dart_tool/
+.packages
+build/
+pubspec.lock
 /build/
 # Web related
 lib/generated_plugin_registrant.dart
