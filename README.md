@@ -1,6 +1,7 @@
 # happy_plants
 
-Never forget watering again
+Never forget watering again.
+Test
 
 ## Getting Started
 
