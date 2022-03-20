@@ -21,6 +21,7 @@ class _OverviewState extends State<Overview> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(widget.title),
       ),
       body: Center(
