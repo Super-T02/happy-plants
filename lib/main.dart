@@ -6,7 +6,8 @@ import 'package:firebase_core/firebase_core.dart';
 
 // Flutter
 import 'package:flutter/material.dart';
-import 'screens/overview.dart';
+import 'core/structure.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
 void main() async {
@@ -29,6 +30,10 @@ class MyApp extends StatelessWidget {
       title: 'Happy Plants',
       theme: ThemeData(
         primarySwatch: Colors.green,
+        textTheme: GoogleFonts.robotoTextTheme(),
+        iconTheme: const IconThemeData(
+          color: Color.fromARGB(255, 7, 232, 89),
+        )
       ),
       // home: const Overview(title: 'Happy Plants'),
       home: const SignIn(title: 'Happy Plants'),
