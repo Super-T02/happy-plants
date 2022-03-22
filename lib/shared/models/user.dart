@@ -1,5 +1,5 @@
-class User {
-  final String? uuid;
-  
-  User({ this.uuid });
+class CustomUser {
+  final String? uid;
+
+  CustomUser({ this.uid });
 }

@@ -1,10 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:happy_plants/shared/models/user.dart';
 
 class AuthService{
 
   // Initialize firebase_auth
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  // Build our custom user
+  CustomUser? _userFromFirebaseUser(User? user) {
+    return user != null ? CustomUser(uid: user.uid) : null;
+  }
+
+  // Auth change user stream
+  Stream<CustomUser?> get user {
+    return _auth.authStateChanges()
+        .map(_userFromFirebaseUser);
+  }
 
   // Sign in with Email
   Future signInEmail(email, password) async {
@@ -15,11 +26,11 @@ class AuthService{
           password: password
       );
 
-      return result.user!;
+      return _userFromFirebaseUser(result.user);
 
     } on FirebaseAuthException catch(e){
       if(e.code == 'user-not-found') {
-        // TODO: Alert for user not found
+        // TODO: Alert for false email
         print('No user found for that email.');
       } else if (e.code == 'wrong-password') {
         // TODO: Alert for false password

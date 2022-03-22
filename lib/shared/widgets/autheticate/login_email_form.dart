@@ -1,7 +1,7 @@
 import 'package:email_validator/email_validator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:happy_plants/core/services/authentication.dart';
+import 'package:happy_plants/services/authentication.dart';
+import 'package:happy_plants/shared/models/user.dart';
 
 class EmailLoginForm extends StatefulWidget {
   const EmailLoginForm({Key? key}) : super(key: key);
@@ -38,10 +38,10 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
     // Check for valid form
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      User user = await _authService.signInEmail(_email, _password);
+      CustomUser user = await _authService.signInEmail(_email, _password);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(user.uid)),
+        SnackBar(content: Text(user.uid!)),
       );
     }
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:happy_plants/shared/widgets/login_email_form.dart';
+import 'package:happy_plants/shared/widgets/autheticate/login_email_form.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key, required this.title}) : super(key: key);

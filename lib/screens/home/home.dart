@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import '../screens/garden.dart';
-import '../screens/timeline.dart';
-import '../screens/options.dart';
+import 'garden.dart';
+import 'timeline.dart';
+import 'options.dart';
 
-class Structure extends StatefulWidget{
-  const Structure({Key? key, required this.title}) : super(key: key);
+class Home extends StatefulWidget{
+  const Home({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
-  State<Structure> createState() => _StructureState();
+  State<Home> createState() => _HomeState();
 }
 
-class _StructureState extends State<Structure> {
+class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
     Garden(),
