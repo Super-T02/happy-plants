@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'garden.dart';
-import 'timeline.dart';
-import 'options.dart';
+import 'package:happy_plants/services/authentication.dart';
+import 'tabs/garden.dart';
+import 'tabs/timeline.dart';
+import 'tabs/options.dart';
 
 class Home extends StatefulWidget{
   const Home({Key? key, required this.title}) : super(key: key);
@@ -27,10 +28,20 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final AuthService _auth = AuthService();
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text(widget.title),
+        actions: <Widget>[
+          ElevatedButton.icon(
+              onPressed: () async {
+                await _auth.signOut();
+              },
+              icon: const Icon(Icons.logout_outlined),
+              label: const Text('Logout'))
+        ],
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
