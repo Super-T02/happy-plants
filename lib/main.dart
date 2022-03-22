@@ -1,4 +1,6 @@
 // Firebase
+import 'package:happy_plants/core/sign_in.dart';
+
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -28,7 +30,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: const Overview(title: 'Happy Plants'),
+      // home: const Overview(title: 'Happy Plants'),
+      home: const SignIn(title: 'Happy Plants'),
     );
   }
 }
