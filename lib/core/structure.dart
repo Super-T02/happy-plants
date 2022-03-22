@@ -13,7 +13,6 @@ class Structure extends StatefulWidget{
 
 class _StructureState extends State<Structure> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     Garden(),
     Timeline(),
