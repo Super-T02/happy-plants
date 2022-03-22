@@ -1,7 +1,20 @@
+// Firebase
+import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+// Flutter
 import 'package:flutter/material.dart';
 import 'screens/overview.dart';
 
-void main() {
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Load firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
@@ -19,3 +32,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
