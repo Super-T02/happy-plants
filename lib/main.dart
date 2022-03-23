@@ -1,5 +1,4 @@
 // Firebase
-import 'package:happy_plants/screens/authenticate/sign_in.dart';
 import 'package:happy_plants/screens/wrapper.dart';
 import 'package:happy_plants/services/authentication.dart';
 import 'package:happy_plants/shared/models/user.dart';
@@ -10,7 +9,6 @@ import 'package:firebase_core/firebase_core.dart';
 
 // Flutter
 import 'package:flutter/material.dart';
-import 'screens/home/home.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
@@ -42,7 +40,6 @@ class MyApp extends StatelessWidget {
               color: Color.fromARGB(255, 7, 232, 89),
             )
         ),
-        // home: const Home(),
         home: const Wrapper(),
       ),
     );

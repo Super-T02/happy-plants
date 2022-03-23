@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_plants/services/authentication.dart';
 import 'tabs/garden.dart';
@@ -14,6 +15,7 @@ class Home extends StatefulWidget{
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
+
   static const List<Widget> _widgetOptions = <Widget>[
     Garden(),
     Timeline(),
