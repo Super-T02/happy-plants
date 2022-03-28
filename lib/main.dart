@@ -3,7 +3,6 @@ import 'package:happy_plants/screens/wrapper.dart';
 import 'package:happy_plants/services/authentication.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:provider/provider.dart';
-
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 
