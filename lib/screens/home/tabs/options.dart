@@ -10,6 +10,6 @@ class Options extends StatefulWidget {
 class _OptionsState extends State<Options> {
   @override
   Widget build(BuildContext context) {
-    return const Text('options');
+    return Text('options', style: Theme.of(context).textTheme.bodyText1);
   }
 }

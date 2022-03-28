@@ -36,6 +36,7 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(widget.title),
+        backgroundColor: Theme.of(context).primaryColor,
         actions: <Widget>[
           ElevatedButton.icon(
               onPressed: () async {
@@ -66,6 +67,8 @@ class _HomeState extends State<Home> {
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).primaryColor,
         onTap: _onItemTapped,
+        backgroundColor: Theme.of(context).bottomAppBarColor,
+        unselectedItemColor: Theme.of(context).unselectedWidgetColor,
       ),
     );
   }
