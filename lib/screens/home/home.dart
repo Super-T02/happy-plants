@@ -1,18 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../screens/garden.dart';
-import '../screens/timeline.dart';
-import '../screens/options.dart';
+import 'package:happy_plants/services/authentication.dart';
+import 'tabs/garden.dart';
+import 'tabs/timeline.dart';
+import 'tabs/options.dart';
 
-class Structure extends StatefulWidget{
-  const Structure({Key? key, required this.title}) : super(key: key);
+class Home extends StatefulWidget{
+  const Home({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
-  State<Structure> createState() => _StructureState();
+  State<Home> createState() => _HomeState();
 }
 
-class _StructureState extends State<Structure> {
+class _HomeState extends State<Home> {
   int _selectedIndex = 0;
+
   static const List<Widget> _widgetOptions = <Widget>[
     Garden(),
     Timeline(),
@@ -27,11 +30,21 @@ class _StructureState extends State<Structure> {
 
   @override
   Widget build(BuildContext context) {
+    final AuthService _auth = AuthService();
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text(widget.title),
         backgroundColor: Theme.of(context).primaryColor,
+        actions: <Widget>[
+          ElevatedButton.icon(
+              onPressed: () async {
+                await _auth.signOut();
+              },
+              icon: const Icon(Icons.logout_outlined),
+              label: const Text('Logout'))
+        ],
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
