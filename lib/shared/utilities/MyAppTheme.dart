@@ -11,6 +11,7 @@ class MyAppTheme {
   static const Color darkGrey = Color.fromARGB(255, 55, 55, 55);
   static const Color darkGreyHighlight = Color.fromARGB(255, 45, 45, 45);
 
+  //light theme defined here
   static final lightTheme = ThemeData(
     scaffoldBackgroundColor: Colors.white,
     primaryColor: accent1,
@@ -26,6 +27,7 @@ class MyAppTheme {
     unselectedWidgetColor: darkGreyHighlight,
   );
 
+  //dark theme defined here
   static final darkTheme = ThemeData(
     scaffoldBackgroundColor: darkGrey,
     primaryColor: accent1,
