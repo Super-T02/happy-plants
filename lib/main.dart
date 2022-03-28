@@ -11,7 +11,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
+/// Start the app
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -23,6 +23,7 @@ void main() async {
   runApp(const MyApp());
 }
 
+/// Main (root) widget
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:happy_plants/services/authentication.dart';
 import 'package:happy_plants/shared/models/user.dart';
 
+/// Widget for the email login
 class EmailLoginForm extends StatefulWidget {
   const EmailLoginForm({Key? key}) : super(key: key);
 
@@ -45,6 +46,8 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
       );
     }
   }
+
+  // TODO: Please add a style to this component
 
   @override
   Widget build(BuildContext context) {

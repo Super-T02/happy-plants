@@ -4,6 +4,8 @@ import 'package:happy_plants/screens/home/home.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:provider/provider.dart';
 
+/// Wrapper holding the SignIn and home widget.
+/// It decides which will be chosen on the auth state of the user.
 class Wrapper extends StatelessWidget {
   const Wrapper({Key? key}) : super(key: key);
 
