@@ -10,6 +10,6 @@ class Timeline extends StatefulWidget {
 class _TimelineState extends State<Timeline> {
   @override
   Widget build(BuildContext context) {
-    return const Text('timeline');
+    return Text('timeline', style: Theme.of(context).textTheme.bodyText1);
   }
 }

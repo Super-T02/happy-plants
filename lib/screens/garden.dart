@@ -10,6 +10,6 @@ class Garden extends StatefulWidget {
 class _GardenState extends State<Garden> {
   @override
   Widget build(BuildContext context) {
-    return const Text('garden');
+    return Text('garden', style: Theme.of(context).textTheme.bodyText1);
   }
 }

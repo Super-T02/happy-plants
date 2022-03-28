@@ -54,6 +54,8 @@ class _StructureState extends State<Structure> {
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).primaryColor,
         onTap: _onItemTapped,
+        backgroundColor: Theme.of(context).bottomAppBarColor,
+        unselectedItemColor: Theme.of(context).unselectedWidgetColor,
       ),
     );
   }
