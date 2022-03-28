@@ -20,7 +20,6 @@ class _GardenState extends State<Garden> {
 
     return Column(
       children: <Widget>[
-        Text("garden", style: Theme.of(context).textTheme.bodyText1),
         GetAllGarden(userID: user.uid!,),
       ],
     );
