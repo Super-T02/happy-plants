@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:happy_plants/shared/models/MyAppTheme.dart';
 import 'core/structure.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -13,13 +14,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Happy Plants',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
+      themeMode: ThemeMode.system,
+      theme: MyAppTheme.LightTheme,
+      darkTheme: MyAppTheme.DarkTheme,
+      /*ThemeData(
+        //primarySwatch: Colors.green,
+        primaryColor: const Color.fromARGB(255, 7, 232, 89),
+        backgroundColor: Colors.black,
         textTheme: GoogleFonts.robotoTextTheme(),
         iconTheme: const IconThemeData(
           color: Color.fromARGB(255, 7, 232, 89),
         )
-      ),
+      ),*/
       home: const Structure(title: 'Happy Plants'),
     );
   }

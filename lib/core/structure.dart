@@ -31,6 +31,7 @@ class _StructureState extends State<Structure> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(widget.title),
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
