@@ -1,7 +1,9 @@
 /// Custom user for this application
 class CustomUser {
-  final String? uid;
+  final String uid;
+  String email;
+  String? name;
 
   // Constructor
-  CustomUser({ this.uid });
+  CustomUser({ required this.uid, required this.email, this.name});
 }
