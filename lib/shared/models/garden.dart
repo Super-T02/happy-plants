@@ -1,8 +1,8 @@
 ///Model for a garden
 class Garden{
-  String icon;
+  final String userID;
   String name;
-  String uid;
+  String? icon;
 
-  Garden({required this.name, required this.icon, required this.uid});
+  Garden({required this.name, required this.userID, this.icon});
 }
