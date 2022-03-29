@@ -20,7 +20,7 @@ class _GardenState extends State<Garden> {
 
     return Column(
       children: <Widget>[
-        GetAllGarden(userID: user.uid!,),
+        GetAllGarden(userID: user.uid,),
       ],
     );
   }

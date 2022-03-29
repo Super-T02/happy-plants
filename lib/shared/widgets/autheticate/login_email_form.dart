@@ -42,7 +42,7 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
       CustomUser user = await _authService.signInEmail(_email, _password);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(user.uid!)),
+        SnackBar(content: Text(user.uid)),
       );
     }
   }

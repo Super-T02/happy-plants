@@ -23,7 +23,7 @@ class _GardenSingleState extends State<GardenSingle> {
           children: [
             //icon
             Text(
-                widget.garden.icon,
+                widget.garden.icon!,
                 style: TextStyle(
                     fontFamily: 'MaterialIcons',
                     fontSize: 100,
