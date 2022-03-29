@@ -10,7 +10,11 @@ class AuthService{
 
   /// Build our custom user
   CustomUser? _userFromFirebaseUser(User? user) {
-    return user != null ? CustomUser(uid: user.uid) : null;
+    return user != null ? CustomUser(
+        uid: user.uid,
+        email: user.email!,
+        name: user.displayName
+    ) : null;
   }
 
   /// Auth change user stream
