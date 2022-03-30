@@ -43,38 +43,45 @@ class _GardenSingleState extends State<GardenSingle> {
       );
     }
 
-    return Card(
-      color: Colors.white,
-      child: Column(
-        children: <Widget>[
-          SizedBox(
-            height: 180.0,
-            child: Stack(
-              children: <Widget>[
-                Positioned.fill(
-                  child: imageAsWidget
-                ),
-                Positioned(
-                  bottom: 16.0,
-                  left: 16.0,
-                  right: 16.0,
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      widget.garden.name,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline5!
-                          .copyWith(color: Colors.white),
+    return GestureDetector(
+      onTap: () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(widget.garden.name + ' was clicked!')),
+        );
+      },
+      child: Card(
+          color: Colors.white,
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 180.0,
+                child: Stack(
+                  children: <Widget>[
+                    Positioned.fill(
+                        child: imageAsWidget
                     ),
-                  ),
-                )
-              ],
-            ),
+                    Positioned(
+                      bottom: 16.0,
+                      left: 16.0,
+                      right: 16.0,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          widget.garden.name,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline5!
+                              .copyWith(color: Colors.white),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        )
     );
   }
 }

@@ -18,10 +18,20 @@ class _GardenState extends State<Garden> {
   Widget build(BuildContext context) {
     final user = Provider.of<CustomUser?>(context)!;
 
-    return Column(
-      children: <Widget>[
-        GetAllGarden(userID: user.uid,),
-      ],
+    return Scaffold(
+      body: Column(
+        children: <Widget>[
+          GetAllGarden(userID: user.uid,),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('floating action button was clicked!')));
+        },
+        backgroundColor: Theme.of(context).primaryColor,
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

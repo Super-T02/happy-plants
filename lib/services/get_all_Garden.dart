@@ -36,14 +36,17 @@ class _GetAllGardenState extends State<GetAllGarden> {
         }
 
         // Widget to be returned if the request was successful
-        return ListView(
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          padding: const EdgeInsets.all(8.0),
-          children: snapshot.data!.docs.map((DocumentSnapshot document) {
-            Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-            return GardenSingle(garden: Garden(name: data['name'], icon: data['icon']));
-          }).toList(),
+        return Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              padding: const EdgeInsets.all(8.0),
+              addAutomaticKeepAlives: true,
+              children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                return GardenSingle(garden: Garden(name: data['name'], icon: data['icon']));
+              }).toList(),
+            )
         );
       },
     );
