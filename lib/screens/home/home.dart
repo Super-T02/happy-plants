@@ -36,14 +36,15 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(widget.title),
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).bottomAppBarColor,
+        foregroundColor: Theme.of(context).unselectedWidgetColor,
         actions: <Widget>[
           ElevatedButton.icon(
               onPressed: () async {
                 await _auth.signOut();
               },
               icon: const Icon(Icons.logout_outlined),
-              label: const Text('Logout'))
+              label: const Text('Logout')),
         ],
       ),
       body: Center(

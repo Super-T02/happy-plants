@@ -30,7 +30,12 @@ class _GardenState extends State<Garden> {
               const SnackBar(content: Text('floating action button was clicked!')));
         },
         backgroundColor: Theme.of(context).primaryColor,
-        child: const Icon(Icons.add),
+
+        child: Icon(
+          Icons.add,
+          size: 35,
+          color: Theme.of(context).unselectedWidgetColor, //scaffoldBackgroundColor for turned around color
+        ),
       ),
     );
   }

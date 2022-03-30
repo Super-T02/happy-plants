@@ -50,38 +50,49 @@ class _GardenSingleState extends State<GardenSingle> {
         );
       },
       child: Card(
-          color: Colors.white,
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 180.0,
-                child: Stack(
-                  children: <Widget>[
-                    Positioned.fill(
-                        child: imageAsWidget
-                    ),
-                    Positioned(
-                      bottom: 16.0,
-                      left: 16.0,
-                      right: 16.0,
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        alignment: Alignment.centerLeft,
+        margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        //Todo: not working yet :D (wird überschrieben von irgendwas)
+        shape: BeveledRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        color: Colors.white,
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: 200.0,
+              child: Stack(
+                children: <Widget>[
+                  Positioned.fill(
+                    child: imageAsWidget
+                  ),
+                  Positioned(
+                    bottom: 16.0,
+                    left: 16.0,
+                    right: 16.0,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerLeft,
+                      child: Card(
+                        color: Colors.black45,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
                         child: Text(
                           widget.garden.name,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline5!
-                              .copyWith(color: Colors.white),
+                          softWrap: true,
+                          style: Theme.of(context).textTheme.headline5!.copyWith(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                    )
-                  ],
-                ),
+                    ),
+                  )
+                ],
               ),
-            ],
-          ),
-        )
+            ),
+          ],
+        ),
+      )
     );
   }
 }

@@ -40,7 +40,7 @@ class _GetAllGardenState extends State<GetAllGarden> {
             child: ListView(
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(15), //padding from screen to widget
               addAutomaticKeepAlives: true,
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
                 Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
