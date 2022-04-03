@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:happy_plants/shared/models/garden.dart';
-import 'dart:io' as io;
 
 class GardenSingle extends StatefulWidget {
   const GardenSingle({Key? key, required this.garden}) : super(key: key);

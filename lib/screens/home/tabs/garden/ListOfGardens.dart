@@ -1,25 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:happy_plants/services/garden.dart';
 import 'package:happy_plants/shared/models/garden.dart';
-import '../shared/widgets/garden/garden_widget.dart';
+import '../../../../shared/models/user.dart';
+import '../../../../shared/widgets/garden/garden_widget.dart';
+import 'package:provider/provider.dart';
 
 /// Widget for getting all available garden for a specific user and display them
-class GetAllGarden extends StatefulWidget {
-  const GetAllGarden({Key? key, required this.userID}) : super(key: key);
-  final String userID;
+class ListOfGardens extends StatefulWidget {
+  const ListOfGardens({Key? key}) : super(key: key);
 
   @override
-  State<GetAllGarden> createState() => _GetAllGardenState();
+  State<ListOfGardens> createState() => _ListOfGardensState();
 }
 
-class _GetAllGardenState extends State<GetAllGarden> {
+class _ListOfGardensState extends State<ListOfGardens> {
   @override
   Widget build(BuildContext context) {
+    // Get user of context
+    final user = Provider.of<CustomUser?>(context)!;
+
     // Get the current data stream for the authenticated user
-    final Stream<QuerySnapshot> _gardenStream = FirebaseFirestore.instance
-        .collection('users').doc(widget.userID)
-        .collection('gardens')
-        .snapshots();
+    final Stream<QuerySnapshot> _gardenStream = GardenService.gardenStream(user);
+
 
     // Build the stream
     return StreamBuilder<QuerySnapshot>(
