@@ -4,7 +4,6 @@ import '../utilities/sizes.dart';
 class Plant{
   // Constructor
   Plant({
-    required this.userID,
     required this.gardenID,
     required this.name,
     this.watering,
@@ -21,7 +20,6 @@ class Plant{
   });
 
   // Required
-  final String userID;
   String gardenID;
   String name;
 
