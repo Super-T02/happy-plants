@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:happy_plants/services/garden.dart';
 import 'package:happy_plants/shared/models/garden.dart';
 import '../../../../shared/models/user.dart';
-import '../../../../shared/widgets/garden/garden_widget.dart';
+import '../../../../shared/widgets/garden/garden_card.dart';
 import 'package:provider/provider.dart';
 
 /// Widget for getting all available garden for a specific user and display them
@@ -47,7 +47,7 @@ class _ListOfGardensState extends State<ListOfGardens> {
               addAutomaticKeepAlives: true,
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
                 Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                return GardenSingle(garden: Garden(name: data['name'], icon: data['icon']));
+                return GardenSingle(garden: Garden(name: data['name'], icon: data['icon'], id: document.id));
               }).toList(),
             )
         );
