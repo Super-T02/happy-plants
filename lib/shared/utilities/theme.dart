@@ -15,13 +15,29 @@ class MyAppTheme {
   static final lightTheme = ThemeData(
     scaffoldBackgroundColor: Colors.white,
     primaryColor: accent1,
+    errorColor: Colors.redAccent,
     textTheme: GoogleFonts.robotoTextTheme().copyWith(
       bodyText1: const TextStyle(
+        color: darkGrey,
+      ),
+      caption: const TextStyle(
         color: darkGrey,
       )
     ),
     iconTheme: const IconThemeData(
       color: accent1,
+    ),
+    inputDecorationTheme: const InputDecorationTheme(
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: darkGrey),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide:  BorderSide(color: darkGrey),
+      ),
+
+      labelStyle: TextStyle(
+          color: darkGrey
+      ),
     ),
     bottomAppBarColor: lightWhiteHighlight,
     unselectedWidgetColor: darkGreyHighlight,
@@ -32,12 +48,27 @@ class MyAppTheme {
     scaffoldBackgroundColor: darkGrey,
     primaryColor: accent1,
       textTheme: GoogleFonts.robotoTextTheme().copyWith(
-          bodyText1: const TextStyle(
+        bodyText1: const TextStyle(
               color: Colors.white
-          )
+        ),
+        caption: const TextStyle(
+            color: Colors.white
+        ),
       ),
     iconTheme: const IconThemeData(
       color: accent1,
+    ),
+    inputDecorationTheme: const InputDecorationTheme(
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.white),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide:  BorderSide(color: Colors.white),
+      ),
+
+      labelStyle: TextStyle(
+          color: Colors.white
+      ),
     ),
     bottomAppBarColor: darkGreyHighlight,
     //unselected icons in app bar

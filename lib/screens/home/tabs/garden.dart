@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:happy_plants/screens/home/tabs/garden/ListOfGardens.dart';
-import 'package:provider/provider.dart';
-import '../../../shared/models/user.dart';
+import 'package:happy_plants/screens/home/tabs/garden/list_of_gardens.dart';
 
 class Garden extends StatefulWidget {
   const Garden({Key? key}) : super(key: key);
@@ -15,8 +13,6 @@ class _GardenState extends State<Garden> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<CustomUser?>(context)!;
-
     return Scaffold(
       body: Column(
         children: const <Widget>[
@@ -25,8 +21,11 @@ class _GardenState extends State<Garden> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('floating action button was clicked!')));
+          // Navigate to new garden form
+          Navigator.pushNamed(
+            context,
+            '/newGarden'
+          );
         },
         backgroundColor: Theme.of(context).primaryColor,
 

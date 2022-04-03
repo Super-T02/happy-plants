@@ -1,4 +1,5 @@
 // Firebase
+import 'package:happy_plants/screens/home/tabs/garden/new_garden.dart';
 import 'package:happy_plants/screens/wrapper.dart';
 import 'package:happy_plants/services/authentication.dart';
 import 'package:happy_plants/shared/models/user.dart';
@@ -37,7 +38,11 @@ class MyApp extends StatelessWidget {
         themeMode: ThemeMode.system,
         theme: MyAppTheme.lightTheme,
         darkTheme: MyAppTheme.darkTheme,
-        home: const Wrapper(),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const Wrapper(),
+          '/newGarden': (context) => const NewGarden(),
+        },
       ),
     );
   }
