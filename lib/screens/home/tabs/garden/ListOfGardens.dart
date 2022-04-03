@@ -39,16 +39,17 @@ class _ListOfGardensState extends State<ListOfGardens> {
         }
 
         // Widget to be returned if the request was successful
-        return GridView.count(
-          crossAxisCount: 2,
-          shrinkWrap: true,
-          crossAxisSpacing: 20.0,
-          mainAxisSpacing: 20.0,
-          padding: const EdgeInsets.all(25),
-          children: snapshot.data!.docs.map((DocumentSnapshot document) {
-            Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-            return GardenSingle(garden: Garden(name: data['name'], icon: data['icon']));
-          }).toList(),
+        return Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              padding: const EdgeInsets.all(15), //padding from screen to widget
+              addAutomaticKeepAlives: true,
+              children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                return GardenSingle(garden: Garden(name: data['name'], icon: data['icon']));
+              }).toList(),
+            )
         );
       },
     );
