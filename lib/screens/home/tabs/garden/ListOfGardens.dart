@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:happy_plants/services/garden.dart';
 import 'package:happy_plants/shared/models/garden.dart';
 import '../../../../shared/models/user.dart';
 import '../../../../shared/widgets/garden/garden_widget.dart';
@@ -20,10 +21,7 @@ class _ListOfGardensState extends State<ListOfGardens> {
     final user = Provider.of<CustomUser?>(context)!;
 
     // Get the current data stream for the authenticated user
-    final Stream<QuerySnapshot> _gardenStream = FirebaseFirestore.instance
-        .collection('users').doc(user.uid)
-        .collection('gardens')
-        .snapshots();
+    final Stream<QuerySnapshot> _gardenStream = GardenService.gardenStream(user);
 
 
     // Build the stream
