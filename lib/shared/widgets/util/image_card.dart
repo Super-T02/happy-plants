@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ImageCard extends StatefulWidget {
-  const ImageCard({Key? key, required this.url}) : super(key: key);
+  const ImageCard({Key? key, required this.url, required this.name}) : super(key: key);
   final String url;
+  final String name;
 
   @override
   State<ImageCard> createState() => _ImageCardState();
@@ -17,8 +18,8 @@ class _ImageCardState extends State<ImageCard> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
         image: DecorationImage(
-          image: NetworkImage(widget.url),
-          fit: BoxFit.cover,
+          image: AssetImage(widget.url),
+          fit: BoxFit.fill,
         ),
       ),
     );
