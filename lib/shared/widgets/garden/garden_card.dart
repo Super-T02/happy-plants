@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:happy_plants/services/garden.dart';
 import 'package:happy_plants/shared/models/garden.dart';
+import 'package:provider/provider.dart';
+
+import '../../models/user.dart';
 
 class GardenSingle extends StatefulWidget {
   const GardenSingle({Key? key, required this.garden}) : super(key: key);
@@ -13,8 +17,25 @@ class GardenSingle extends StatefulWidget {
 
 class _GardenSingleState extends State<GardenSingle> {
 
+  void openGarden(String gardenId, CustomUser user){
+    //Todo
+  }
+
+  void editGarden(String gardenId, CustomUser user){
+    //Todo
+  }
+
+  void deleteGarden(String gardenId, CustomUser user) async {
+    await GardenService.deleteGarden(gardenId, user);
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Deleted')), // TODO: refresh
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<CustomUser?>(context);
     var stringOfImageName = 'assets/images/garden_backgrounds/one.jpg';
     AssetImage imageAsWidget = AssetImage(
       stringOfImageName,
@@ -83,11 +104,22 @@ class _GardenSingleState extends State<GardenSingle> {
     ),
     actions: <Widget>[
       CupertinoContextMenuAction(
-        child: const Text("Delete Garden"),
+        child: const Text("Open"),
         onPressed: (){
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(widget.garden.id + ' was popup deleted!')));
         },
+      ),
+      CupertinoContextMenuAction(
+        child: const Text("Edit"),
+        onPressed: (){
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(widget.garden.id + ' was popup deleted!')));
+        },
+      ),
+      CupertinoContextMenuAction(
+        child: const Text("Delete"),
+        onPressed: () => deleteGarden(widget.garden.id, user!),
       ),
     ],
   );
