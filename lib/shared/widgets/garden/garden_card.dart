@@ -17,14 +17,17 @@ class GardenSingle extends StatefulWidget {
 
 class _GardenSingleState extends State<GardenSingle> {
 
+  /// Opens the garden
   void openGarden(String gardenId, CustomUser user){
     //Todo
   }
 
+  /// Opens a form to edit the garden
   void editGarden(String gardenId, CustomUser user){
     //Todo
   }
 
+  /// Delete the garden
   void deleteGarden(String gardenId, CustomUser user) async {
     await GardenService.deleteGarden(gardenId, user);
     Navigator.of(context).pop();
@@ -36,23 +39,21 @@ class _GardenSingleState extends State<GardenSingle> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<CustomUser?>(context);
-    var stringOfImageName = 'assets/images/garden_backgrounds/one.jpg';
-    AssetImage imageAsWidget = AssetImage(
-      stringOfImageName,
-    );
+    String stringOfImageName = 'assets/images/garden_backgrounds/one.jpg';
+    AssetImage imageAsWidget = AssetImage(stringOfImageName);
+
     //check if string of filename is known, if yes paste it in path
     if(Garden.checkItemName(widget.garden.icon)) {
-      stringOfImageName =
-      'assets/images/garden_backgrounds/${widget.garden.icon}.jpg';
-      //try to access picture in path created
-      try {
+      stringOfImageName = 'assets/images/garden_backgrounds/${widget.garden.icon}.jpg'; // Selected picture
+
+      try {//try to access picture in path created
         imageAsWidget = AssetImage(stringOfImageName);
       } catch (e) {
-        imageAsWidget = const AssetImage('assets/images/garden_backgrounds/one.jpg');
+        imageAsWidget = const AssetImage('assets/images/garden_backgrounds/one.jpg'); // One
       }
     }
     else{
-      imageAsWidget = const AssetImage('assets/images/garden_backgrounds/one.jpg');
+      imageAsWidget = const AssetImage('assets/images/garden_backgrounds/one.jpg'); // One
     }
 
     return CupertinoContextMenu(
@@ -68,7 +69,6 @@ class _GardenSingleState extends State<GardenSingle> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0)
           ),
-          //Todo: not working yet :D (wird überschrieben von irgendwas)
           child: Container(
             height: 200,
             width: 200,
