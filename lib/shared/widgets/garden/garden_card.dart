@@ -12,6 +12,7 @@ class GardenSingle extends StatefulWidget {
 }
 
 class _GardenSingleState extends State<GardenSingle> {
+
   @override
   Widget build(BuildContext context) {
     var stringOfImageName = 'assets/images/garden_backgrounds/one.jpg';
@@ -34,61 +35,62 @@ class _GardenSingleState extends State<GardenSingle> {
     }
 
     return CupertinoContextMenu(
-        child: GestureDetector(
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(widget.garden.name + ' was clicked!')),
-              );
-            },
-            child:  Card(
-                semanticContainer: true,
-                margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0)
-                ),
-                //Todo: not working yet :D (wird überschrieben von irgendwas)
-                child: Container(
-                  height: 200,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      image: DecorationImage(
-                          image: imageAsWidget,
-                          fit: BoxFit.cover
-                      )
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 0, 0, 16),
-                    child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    alignment: Alignment.bottomLeft,
-                    child: Card(
-                      color: Colors.black45,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      child: Text(
-                        widget.garden.name,
-                        softWrap: true,
-                        style: Theme.of(context).textTheme.headline5!.copyWith(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  )
-                ),
-              )
-            ),
-        ),
-        actions: <Widget>[
-          CupertinoContextMenuAction(
-            child: const Text("Delete Garden"),
-            onPressed: (){
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(widget.garden.id + ' was popup deleted!')));
-            },
+      child: GestureDetector(
+        onTap: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(widget.garden.name + ' was clicked!')),
+          );
+        },
+        child: Card(
+          semanticContainer: true,
+          margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0)
           ),
-        ],
-    );
+          //Todo: not working yet :D (wird überschrieben von irgendwas)
+          child: Container(
+            height: 200,
+            width: 200,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                image: DecorationImage(
+                    image: imageAsWidget,
+                    fit: BoxFit.cover
+                )
+            ),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 0, 16),
+              child: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.bottomLeft,
+              child: Card(
+                color: Colors.black45,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                child: Text(
+                  widget.garden.name,
+                  softWrap: true,
+                  style: Theme.of(context).textTheme.headline5!.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            )
+          ),
+        )
+      ),
+    ),
+    actions: <Widget>[
+      CupertinoContextMenuAction(
+        child: const Text("Delete Garden"),
+        onPressed: (){
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(widget.garden.id + ' was popup deleted!')));
+        },
+      ),
+    ],
+  );
 
 
 
