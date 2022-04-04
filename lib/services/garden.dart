@@ -5,15 +5,14 @@ import 'package:happy_plants/shared/models/user.dart';
 class GardenService {
 
   /// Adds a new garden
-  static Future<void> addGarden(Garden newGarden, CustomUser user) {
+  static Future<void> addGarden(AddGarden newGarden, CustomUser user) {
     CollectionReference gardens = getGardenCollectionRef(user);
 
     return gardens.add({
       'icon': newGarden.icon,
       'name': newGarden.name
-    }).catchError((error) => {
-      // TODO: Error handling
     });
+    // TODO: Error handling
   }
 
   /// Updates a garden based on its gardenID
@@ -22,18 +21,15 @@ class GardenService {
 
     return garden.update({
       fieldName: updatedValue
-    }).catchError((error) => {
-      // TODO: Error handling
     });
+    // TODO: Error handling
   }
 
   /// Deletes a garden based on its gardenID
   static Future<void> deleteGarden(String gardenID, CustomUser user) {
     DocumentReference garden = getGardenDocRef(gardenID, user);
 
-    return garden.delete().catchError((error) => {
-      // TODO: Error handling
-    });
+    return garden.delete(); // TODO: Error handling
   }
 
   /// Get the ref on a garden instance based on the user and garden id

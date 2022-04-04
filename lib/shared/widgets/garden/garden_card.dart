@@ -19,7 +19,7 @@ class _GardenSingleState extends State<GardenSingle> {
       fit: BoxFit.cover,
     );
     //check if string of filename is known, if yes paste it in path
-    if(widget.garden.checkItemName()) {
+    if(Garden.checkItemName(widget.garden.icon)) {
       stringOfImageName =
       'assets/images/garden_backgrounds/${widget.garden.icon}.jpg';
       //try to access picture in path created
