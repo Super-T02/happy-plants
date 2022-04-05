@@ -2,7 +2,10 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_plants/services/authentication.dart';
 import 'package:happy_plants/shared/models/user.dart';
+import 'package:happy_plants/shared/widgets/util/custom_button.dart';
+import 'package:happy_plants/shared/widgets/util/custom_form_field.dart';
 
+import '../../shared/utilities/app_colors.dart';
 import '../../shared/utilities/theme.dart';
 
 /// Widget for the email login
@@ -70,54 +73,38 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
 
 
             // Email
-            TextFormField(
+            CustomFormField(
               controller: emailController,
+              obscureText: false,
               validator: emailValidator,
-              style: textTheme.bodyText1,
-              cursorColor: MyAppTheme.accent1,
-              decoration: InputDecoration(
-                labelText: 'Email',
-                icon: Icon(
-                  Icons.mail_outline,
-                  color: textTheme.bodyText1!.color,
-                )
-              ),
-            ),
-
-            const SizedBox(height: 20.0),
-
-                // Password
-            TextFormField(
+              headingText: "Email",
+              hintText: "Enter your email",
+              maxLines: 1,
+              suffixIcon: Icons.mail_outline,
+              textInputAction: TextInputAction.done,
+              textInputType: TextInputType.text,
+            ),                // Password
+            CustomFormField(
               controller: passwordController,
               obscureText: true,
-              style: textTheme.bodyText1,
-              cursorColor: MyAppTheme.accent1,
-              decoration: InputDecoration(
-                labelText: 'Password',
-                icon: Icon(
-                  Icons.lock_outline,
-                  color: textTheme.bodyText1!.color,
-                )
-             ),
-            validator: passwordValidator,
+              validator: passwordValidator,
+              headingText: "Password",
+              hintText: "Enter a password",
+              maxLines: 1,
+              suffixIcon: Icons.lock_outline,
+              textInputAction: TextInputAction.done,
+              textInputType: TextInputType.text,
             ),
 
             const SizedBox(height: 20),
 
             // Buttons
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 // Submit Button
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      primary: theme.primaryColor
-                  ),
-                  onPressed: () => _submit(),
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(color: Colors.white),
-                  ),
+                LoginButton(
+                  onTap: () => _submit(),
+                  text: "Login",
                 ),
               ],
             )

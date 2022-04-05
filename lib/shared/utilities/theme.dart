@@ -1,63 +1,87 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:happy_plants/shared/utilities/app_colors.dart';
+import 'package:happy_plants/shared/utilities/custom_text_styles.dart';
 
 class MyAppTheme {
-  //comon colors
-  static const Color accent1 = Color.fromARGB(255, 7, 232, 89);
-  //light mode colors
-  static const Color lightWhiteHighlight = Color.fromARGB(255, 250, 250, 250);
-  //dark mode colors
-  static const Color darkGrey = Color.fromARGB(255, 55, 55, 55);
-  static const Color darkGreyHighlight = Color.fromARGB(255, 45, 45, 45);
 
-  //light theme defined here
+  // Light Theme
   static final lightTheme = ThemeData(
     scaffoldBackgroundColor: Colors.white,
-    primaryColor: accent1,
+    primaryColor: AppColors.accent1,
     errorColor: Colors.redAccent,
+    bottomAppBarColor: AppColors.lightWhiteHighlight,
+    unselectedWidgetColor: AppColors.darkGreyHighlight,
+
+    // Text Styles
     textTheme: GoogleFonts.robotoTextTheme().copyWith(
-      bodyText1: const TextStyle(
-        color: darkGrey,
-      ),
-      caption: const TextStyle(
-        color: darkGrey,
-      )
+      bodyText1: CTextStyles.normalTextLight,
     ),
-    iconTheme: const IconThemeData(
-      color: accent1,
-    ),
-    inputDecorationTheme: const InputDecorationTheme(
+
+
+
+
+    // Icon Styles
+    iconTheme: const IconThemeData(color: AppColors.accent1),
+
+
+
+    // Input styles
+    inputDecorationTheme: InputDecorationTheme(
+      labelStyle: CTextStyles.textFieldHeading,
+      hintStyle: CTextStyles.textFieldHintStyleLight,
       border: OutlineInputBorder(
-        borderSide: BorderSide(color: darkGrey),
+        borderSide: const BorderSide(),
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      enabledBorder:  OutlineInputBorder(
+        borderSide: const BorderSide(
+            color: AppColors.grayShade,
+            width: 0.0
+        ),
+        borderRadius: BorderRadius.circular(16.0),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide:  BorderSide(color: darkGrey),
+        borderSide: const BorderSide(
+            color: AppColors.accent1,
+            width: 2.0
+        ),
+        borderRadius: BorderRadius.circular(16.0),
       ),
-
-      labelStyle: TextStyle(
-          color: darkGrey
-      ),
+      fillColor: AppColors.grayShade,
+      filled: true,
     ),
-    bottomAppBarColor: lightWhiteHighlight,
-    unselectedWidgetColor: darkGreyHighlight,
   );
 
-  //dark theme defined here
+
+
+  // Dark Theme
   static final darkTheme = ThemeData(
-    scaffoldBackgroundColor: darkGrey,
-    primaryColor: accent1,
-      textTheme: GoogleFonts.robotoTextTheme().copyWith(
-        bodyText1: const TextStyle(
-              color: Colors.white
-        ),
-        caption: const TextStyle(
+    scaffoldBackgroundColor: AppColors.darkGrey,
+    primaryColor: AppColors.accent1,
+    bottomAppBarColor: AppColors.darkGreyHighlight,
+    unselectedWidgetColor: Colors.white,
+
+
+    // Text theme
+    textTheme: GoogleFonts.robotoTextTheme().copyWith(
+      bodyText1: const TextStyle(
             color: Colors.white
-        ),
       ),
-    iconTheme: const IconThemeData(
-      color: accent1,
+      caption: const TextStyle(
+          color: Colors.white
+      ),
     ),
+
+
+    //Icon theme
+    iconTheme: const IconThemeData(
+      color: AppColors.accent1,
+    ),
+
+
+    //Input theme
     inputDecorationTheme: const InputDecorationTheme(
       border: OutlineInputBorder(
         borderSide: BorderSide(color: Colors.white),
@@ -70,8 +94,6 @@ class MyAppTheme {
           color: Colors.white
       ),
     ),
-    bottomAppBarColor: darkGreyHighlight,
-    //unselected icons in app bar
-    unselectedWidgetColor: Colors.white,
+
   );
 }

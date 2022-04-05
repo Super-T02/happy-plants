@@ -4,6 +4,7 @@ import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/utilities/theme.dart';
 import 'package:provider/provider.dart';
 import '../../../../shared/models/garden.dart';
+import '../../../../shared/utilities/app_colors.dart';
 
 class NewGarden extends StatefulWidget {
   const NewGarden({Key? key}) : super(key: key);
@@ -91,7 +92,7 @@ class _NewGardenState extends State<NewGarden> {
                     // TODO: As selection of images
                     style: textTheme.bodyText1,
                     controller: pictureController,
-                    cursorColor: MyAppTheme.accent1,
+                    cursorColor: AppColors.accent1,
                     decoration: const InputDecoration(
                       labelText: 'Picture name *'
                     ),
@@ -101,7 +102,7 @@ class _NewGardenState extends State<NewGarden> {
                   TextFormField(
                     style: textTheme.bodyText1,
                     controller: gardenNameController,
-                    cursorColor: MyAppTheme.accent1,
+                    cursorColor: AppColors.accent1,
                     decoration: const InputDecoration(
                       labelText: 'Garden name *',
                     ),
