@@ -63,8 +63,11 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
       key: _formKey,
       child: Padding(
         padding: const EdgeInsets.all(4.0),
+
         child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+
+
         children: [
           Container(
             height: 200,
@@ -73,6 +76,8 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
                 left: MediaQuery.of(context).size.width * 0.09),
             child: SvgPicture.asset("assets/images/welcome.svg"),
           ),
+
+
           // Email
           CustomFormField(
             controller: emailController,
@@ -98,6 +103,8 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
             textInputAction: TextInputAction.done,
             textInputType: TextInputType.text,
           ),
+
+          // Row for forget password
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -116,6 +123,8 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
               ),
             ],
           ),
+
+          // Login Button
           LoginButton(
             onTap: () => _submit(),
             text: 'Sign In',
