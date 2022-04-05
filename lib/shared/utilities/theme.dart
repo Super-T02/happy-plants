@@ -10,6 +10,10 @@ class MyAppTheme {
   static final lightTheme = ThemeData(
     scaffoldBackgroundColor: Colors.white,
     primaryColor: AppColors.accent1,
+    appBarTheme: const AppBarTheme(
+      backgroundColor: AppColors.grayShade,
+      titleTextStyle: CTextStyles.headerTextStyleLight,
+    ),
     errorColor: Colors.redAccent,
     bottomAppBarColor: AppColors.lightWhiteHighlight,
     unselectedWidgetColor: AppColors.darkGreyHighlight,
@@ -19,13 +23,12 @@ class MyAppTheme {
       bodyText1: CTextStyles.normalTextLight,
     ),
 
-
-
-
     // Icon Styles
     iconTheme: const IconThemeData(color: AppColors.accent1),
 
-
+    buttonTheme: const ButtonThemeData(
+      colorScheme: AppColors.buttonColorSchemeLight,
+    ),
 
     // Input styles
     inputDecorationTheme: InputDecorationTheme(

@@ -1,12 +1,9 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:happy_plants/services/authentication.dart';
-import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/widgets/util/custom_button.dart';
 import 'package:happy_plants/shared/widgets/util/custom_form_field.dart';
-
-import '../../shared/utilities/app_colors.dart';
-import '../../shared/utilities/theme.dart';
 
 /// Widget for the email login
 class EmailLoginForm extends StatefulWidget {
@@ -65,51 +62,77 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
     return Form(
       key: _formKey,
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(4.0),
         child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 200,
+            width: MediaQuery.of(context).size.width * 0.8,
+            margin: EdgeInsets.only(
+                left: MediaQuery.of(context).size.width * 0.09),
+            child: SvgPicture.asset("assets/images/welcome.svg"),
+          ),
+          // Email
+          CustomFormField(
+            controller: emailController,
+            obscureText: false,
+            validator: emailValidator,
+            headingText: "Email",
+            hintText: "Enter your email",
+            maxLines: 1,
+            suffixIcon: Icons.mail_outline,
+            textInputAction: TextInputAction.done,
+            textInputType: TextInputType.text,
+          ),
 
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-
-
-            // Email
-            CustomFormField(
-              controller: emailController,
-              obscureText: false,
-              validator: emailValidator,
-              headingText: "Email",
-              hintText: "Enter your email",
-              maxLines: 1,
-              suffixIcon: Icons.mail_outline,
-              textInputAction: TextInputAction.done,
-              textInputType: TextInputType.text,
-            ),                // Password
-            CustomFormField(
-              controller: passwordController,
-              obscureText: true,
-              validator: passwordValidator,
-              headingText: "Password",
-              hintText: "Enter a password",
-              maxLines: 1,
-              suffixIcon: Icons.lock_outline,
-              textInputAction: TextInputAction.done,
-              textInputType: TextInputType.text,
-            ),
-
-            const SizedBox(height: 20),
-
-            // Buttons
-            Row(
-              children: <Widget>[
-                // Submit Button
-                LoginButton(
-                  onTap: () => _submit(),
-                  text: "Login",
+          // Password
+          CustomFormField(
+            controller: passwordController,
+            obscureText: true,
+            validator: passwordValidator,
+            headingText: "Password",
+            hintText: "Enter a password",
+            maxLines: 1,
+            suffixIcon: Icons.lock_outline,
+            textInputAction: TextInputAction.done,
+            textInputType: TextInputType.text,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(
+                    vertical: 16, horizontal: 24),
+                child: InkWell(
+                  onTap: () {}, // TODO: Forgot page
+                  child: const Text(
+                    "Forgot Password?",
+                    style: TextStyle(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.w500),
+                  ),
                 ),
-              ],
-            )
-          ]
-        ),
+              ),
+            ],
+          ),
+          LoginButton(
+            onTap: () => _submit(),
+            text: 'Sign In',
+            isPrimary: true,
+          ),
+          // CustomRichText(
+          //   discription: "Don't already Have an account? ",
+          //   text: "Sign Up",
+          //   onTap: () {
+          //     Navigator.pushReplacement(
+          //         context,
+          //         MaterialPageRoute(
+          //             builder: (context) => const SignUp()));
+          //   },
+          // ),
+        ],
+      ),
       ),
     );
   }
