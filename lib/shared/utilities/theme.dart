@@ -1,77 +1,122 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:happy_plants/shared/utilities/app_colors.dart';
+import 'package:happy_plants/shared/utilities/custom_text_styles.dart';
 
 class MyAppTheme {
-  //comon colors
-  static const Color accent1 = Color.fromARGB(255, 7, 232, 89);
-  //light mode colors
-  static const Color lightWhiteHighlight = Color.fromARGB(255, 250, 250, 250);
-  //dark mode colors
-  static const Color darkGrey = Color.fromARGB(255, 55, 55, 55);
-  static const Color darkGreyHighlight = Color.fromARGB(255, 45, 45, 45);
 
-  //light theme defined here
+  // Light Theme
   static final lightTheme = ThemeData(
+    brightness: Brightness.light,
     scaffoldBackgroundColor: Colors.white,
-    primaryColor: accent1,
+    primaryColor: AppColors.accent1,
     errorColor: Colors.redAccent,
+    bottomAppBarColor: AppColors.lightWhiteHighlight,
+    unselectedWidgetColor: AppColors.darkGreyHighlight,
+
+    // AppBar Style
+    appBarTheme: const AppBarTheme(
+      backgroundColor: AppColors.grayShade,
+      titleTextStyle: CTextStyles.headerTextStyleLight,
+    ),
+
+    // Text Styles
     textTheme: GoogleFonts.robotoTextTheme().copyWith(
-      bodyText1: const TextStyle(
-        color: darkGrey,
-      ),
-      caption: const TextStyle(
-        color: darkGrey,
-      )
+      bodyText1: CTextStyles.normalTextLight,
     ),
-    iconTheme: const IconThemeData(
-      color: accent1,
+
+    // Icon Styles
+    iconTheme: const IconThemeData(color: AppColors.accent1),
+
+    // Button Theme
+    buttonTheme: const ButtonThemeData(
+      colorScheme: AppColors.buttonColorSchemeLight,
     ),
-    inputDecorationTheme: const InputDecorationTheme(
+
+    // Input styles
+    inputDecorationTheme: InputDecorationTheme(
+      labelStyle: CTextStyles.textFieldHeadingLight,
+      hintStyle: CTextStyles.textFieldHintStyleLight,
       border: OutlineInputBorder(
-        borderSide: BorderSide(color: darkGrey),
+        borderSide: const BorderSide(),
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      enabledBorder:  OutlineInputBorder(
+        borderSide: const BorderSide(
+            color: AppColors.grayShade,
+            width: 0.0
+        ),
+        borderRadius: BorderRadius.circular(16.0),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide:  BorderSide(color: darkGrey),
+        borderSide: const BorderSide(
+            color: AppColors.accent1,
+            width: 2.0
+        ),
+        borderRadius: BorderRadius.circular(16.0),
       ),
-
-      labelStyle: TextStyle(
-          color: darkGrey
-      ),
+      fillColor: AppColors.grayShade,
+      filled: true,
     ),
-    bottomAppBarColor: lightWhiteHighlight,
-    unselectedWidgetColor: darkGreyHighlight,
   );
 
-  //dark theme defined here
+
+
+  // Dark Theme
   static final darkTheme = ThemeData(
-    scaffoldBackgroundColor: darkGrey,
-    primaryColor: accent1,
-      textTheme: GoogleFonts.robotoTextTheme().copyWith(
-        bodyText1: const TextStyle(
-              color: Colors.white
-        ),
-        caption: const TextStyle(
-            color: Colors.white
-        ),
-      ),
-    iconTheme: const IconThemeData(
-      color: accent1,
+    brightness: Brightness.dark,
+    scaffoldBackgroundColor: AppColors.darkGrey,
+    primaryColor: AppColors.accent1,
+    errorColor: Colors.redAccent,
+    bottomAppBarColor: AppColors.darkGreyHighlight,
+    unselectedWidgetColor: Colors.white,
+
+    // AppBar Style
+    appBarTheme: const AppBarTheme(
+      backgroundColor: AppColors.blackShade,
+      titleTextStyle: CTextStyles.headerTextStyleDark,
     ),
-    inputDecorationTheme: const InputDecorationTheme(
+
+    // Text Styles
+    textTheme: GoogleFonts.robotoTextTheme().copyWith(
+      bodyText1: CTextStyles.normalTextDark,
+    ),
+
+    //Icon theme
+    iconTheme: const IconThemeData(color: AppColors.accent1),
+
+    // Button Theme
+    buttonTheme: const ButtonThemeData(
+      colorScheme: AppColors.buttonColorSchemeDark,
+    ),
+
+
+    //Input theme
+    inputDecorationTheme: InputDecorationTheme(
+      labelStyle: CTextStyles.textFieldHeadingDark,
+      hintStyle: CTextStyles.textFieldHintStyleDark,
+      iconColor: AppColors.whiteShade,
       border: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.white),
+        borderSide: const BorderSide(),
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      enabledBorder:  OutlineInputBorder(
+        borderSide: const BorderSide(
+            color: AppColors.blackShade,
+            width: 0.0
+        ),
+        borderRadius: BorderRadius.circular(16.0),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide:  BorderSide(color: Colors.white),
+        borderSide: const BorderSide(
+            color: AppColors.accent1,
+            width: 2.0
+        ),
+        borderRadius: BorderRadius.circular(16.0),
       ),
-
-      labelStyle: TextStyle(
-          color: Colors.white
-      ),
+      fillColor: AppColors.blackShade,
+      filled: true,
     ),
-    bottomAppBarColor: darkGreyHighlight,
-    //unselected icons in app bar
-    unselectedWidgetColor: Colors.white,
+
   );
 }
