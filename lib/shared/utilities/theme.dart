@@ -7,6 +7,7 @@ class MyAppTheme {
 
   // Light Theme
   static final lightTheme = ThemeData(
+    brightness: Brightness.light,
     scaffoldBackgroundColor: Colors.white,
     primaryColor: AppColors.accent1,
     errorColor: Colors.redAccent,
@@ -63,6 +64,7 @@ class MyAppTheme {
 
   // Dark Theme
   static final darkTheme = ThemeData(
+    brightness: Brightness.dark,
     scaffoldBackgroundColor: AppColors.darkGrey,
     primaryColor: AppColors.accent1,
     errorColor: Colors.redAccent,

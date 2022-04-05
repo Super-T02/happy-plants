@@ -18,6 +18,10 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
   final _formKey = GlobalKey<FormState>();
   final _authService = AuthService();
 
+  // Images
+  final lightImage = "assets/images/LightWelcome.svg";
+  final darkImage = "assets/images/DarkWelcome.svg";
+
   // Form controllers
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -53,9 +57,9 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    TextTheme textTheme = Theme.of(context).textTheme;
-    InputDecorationTheme inputDecorationTheme = Theme.of(context).inputDecorationTheme;
-    ThemeData theme = Theme.of(context);
+    final darkMode = Theme.of(context).brightness;
+
+    debugPrint((darkMode).toString() + " is " + (darkMode == Brightness.light).toString());
 
     return Form(
       key: _formKey,
@@ -72,7 +76,7 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
             width: MediaQuery.of(context).size.width * 0.8,
             margin: EdgeInsets.only(
                 left: MediaQuery.of(context).size.width * 0.09),
-            child: SvgPicture.asset("assets/images/welcome.svg"),
+            child: SvgPicture.asset(darkMode == Brightness.dark? darkImage : lightImage),
           ),
 
 
