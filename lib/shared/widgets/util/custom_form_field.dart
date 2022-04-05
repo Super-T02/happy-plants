@@ -9,19 +9,19 @@ class CustomFormField extends StatefulWidget {
         required this.headingText,
         required this.hintText,
         required this.obscureText,
-        required this.suffixIcon,
         required this.textInputType,
         required this.textInputAction,
         required this.controller,
         required this.maxLines,
-        required this.validator
+        required this.validator,
+        this.suffixIcon,
       })
       : super(key: key);
 
   final String headingText;
   final String hintText;
   final bool obscureText;
-  final IconData suffixIcon;
+  final IconData? suffixIcon;
   final TextInputType textInputType;
   final TextInputAction textInputAction;
   final TextEditingController controller;
@@ -64,6 +64,11 @@ class _CustomFormFieldState extends State<CustomFormField> {
 
   @override
   Widget build(BuildContext context) {
+    Widget? icon;
+
+    if(widget.suffixIcon != null) {
+      icon = Icon(widget.suffixIcon, color: _getIconColor());
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,7 +90,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
                 focusColor: AppColors.accent1,
                 hintText: widget.hintText,
                 labelText: widget.headingText,
-                suffixIcon: Icon(widget.suffixIcon, color: _getIconColor())
+                suffixIcon: icon
             ),
           ),
         ),

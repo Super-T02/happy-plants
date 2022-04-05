@@ -1,9 +1,13 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_plants/services/garden.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/utilities/theme.dart';
+import 'package:happy_plants/shared/widgets/util/custom_button.dart';
+import 'package:happy_plants/shared/widgets/util/custom_form_field.dart';
 import 'package:provider/provider.dart';
 import '../../../../shared/models/garden.dart';
+import '../../../../shared/widgets/util/image_card.dart';
 import '../../../../shared/utilities/app_colors.dart';
 
 class NewGarden extends StatefulWidget {
@@ -15,10 +19,18 @@ class NewGarden extends StatefulWidget {
 
 class _NewGardenState extends State<NewGarden> {
   final _formKey = GlobalKey<FormState>();
+  final List<ImageCard> images = Garden.allFiles.map(
+          (image) => ImageCard(
+            url: "assets/images/garden_backgrounds/$image.jpg",
+            name: image,
+          )
+  ).toList();
 
   // Form controllers
-  TextEditingController pictureController = TextEditingController();
   TextEditingController gardenNameController = TextEditingController();
+
+  // Picture name
+  String pictureName = "one";
 
   /// Validator for the garden name
   String? nameValidator(String? value) {
@@ -31,14 +43,8 @@ class _NewGardenState extends State<NewGarden> {
 
 
   /// Validator for the garden icon
-  String? pictureValidator(String? value) {
-    if(value == null || value.isEmpty){
-      return 'Please enter a picture name';
-    } else if(!Garden.checkItemName(value.toLowerCase())){
-      return 'Please enter a valid picture name';
-    } else {
-      return null;
-    }
+  void pictureChanged(pageNumber, reason) {
+    pictureName = Garden.allFiles[pageNumber];
   }
 
   /// Handles the submit of the form
@@ -51,7 +57,7 @@ class _NewGardenState extends State<NewGarden> {
       await GardenService.addGarden(
           AddGarden(
             name: gardenNameController.text,
-            icon: pictureController.text.toLowerCase(),
+            icon: pictureName.toLowerCase(),
           ), user);
 
       Navigator.pop(context);
@@ -65,6 +71,7 @@ class _NewGardenState extends State<NewGarden> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<CustomUser?>(context);
+    CarouselController imageCarouselController = CarouselController();
     TextTheme textTheme = Theme.of(context).textTheme;
     InputDecorationTheme inputDecorationTheme = Theme.of(context).inputDecorationTheme;
     ThemeData theme = Theme.of(context);
@@ -87,28 +94,42 @@ class _NewGardenState extends State<NewGarden> {
             child: Padding(
               padding: const EdgeInsets.all(15), //padding from screen to widget
               child: Column(
+
+                // Form
                 children: <Widget>[
-                  TextFormField(
-                    // TODO: As selection of images
-                    style: textTheme.bodyText1,
-                    controller: pictureController,
-                    cursorColor: AppColors.accent1,
-                    decoration: const InputDecoration(
-                      labelText: 'Picture name *'
-                    ),
-                    validator: pictureValidator,
+
+                  // Image Carousel
+                  CarouselSlider(
+                    carouselController: imageCarouselController,
+                    items: images,
+                    options: CarouselOptions(
+                      height: 180.0,
+                      enlargeCenterPage: true,
+                      aspectRatio: 16 / 9,
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      enableInfiniteScroll: true,
+                      viewportFraction: 0.8,
+                      onPageChanged: pictureChanged,
+                    )
                   ),
                   const SizedBox(height: 20),
-                  TextFormField(
-                    style: textTheme.bodyText1,
-                    controller: gardenNameController,
-                    cursorColor: AppColors.accent1,
-                    decoration: const InputDecoration(
-                      labelText: 'Garden name *',
-                    ),
-                    validator: nameValidator,
+
+                  // Name
+                  CustomFormField(
+                      headingText: "Garden Name *",
+                      hintText: "Please enter a garden name",
+                      obscureText: false,
+                      suffixIcon: null,
+                      textInputType: TextInputType.name,
+                      textInputAction: TextInputAction.done,
+                      controller: gardenNameController,
+                      maxLines: 1,
+                      validator: nameValidator
                   ),
                   const SizedBox(height: 20),
+
+
+                  // Buttons
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
