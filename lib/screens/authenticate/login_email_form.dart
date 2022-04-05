@@ -51,8 +51,6 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
     }
   }
 
-  // TODO: Please add a style to this component
-
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
@@ -109,8 +107,7 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Container(
-                margin: const EdgeInsets.symmetric(
-                    vertical: 16, horizontal: 24),
+                margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
                 child: InkWell(
                   onTap: () {}, // TODO: Forgot page
                   child: const Text(
@@ -130,16 +127,6 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
             text: 'Sign In',
             isPrimary: true,
           ),
-          // CustomRichText(
-          //   discription: "Don't already Have an account? ",
-          //   text: "Sign Up",
-          //   onTap: () {
-          //     Navigator.pushReplacement(
-          //         context,
-          //         MaterialPageRoute(
-          //             builder: (context) => const SignUp()));
-          //   },
-          // ),
         ],
       ),
       ),

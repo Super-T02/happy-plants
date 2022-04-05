@@ -22,7 +22,9 @@ class _SignInState extends State<SignIn> {
         centerTitle: true,
         title: Text(widget.title),
       ),
-      body: const EmailLoginForm(),
+      body: const SingleChildScrollView(
+        child: EmailLoginForm(),
+      ),
     );
   }
 }

@@ -79,6 +79,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
             textInputAction: widget.textInputAction,
             keyboardType: widget.textInputType,
             obscureText: widget.obscureText,
+            style: Theme.of(context).textTheme.bodyText1,
             // Decoration
             decoration: InputDecoration(
                 focusColor: AppColors.accent1,
