@@ -131,6 +131,12 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
             text: 'Sign In',
             isPrimary: true,
           ),
+          // Login Button
+          const SizedBox(height: 18.0,),
+          LoginButton(
+            onTap: () => Navigator.pushNamed(context, '/signUp'),
+            text: 'Register with Email',
+          ),
         ],
       ),
       ),

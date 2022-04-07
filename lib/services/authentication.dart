@@ -46,13 +46,17 @@ class AuthService{
   // TODO: Sign in with Google
 
   /// Register with Email
-  Future registerEmail(email, password) async{
+  Future signUpEmail(String name,String email,String password) async{
     try{
       // Try to login the user
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password
       );
+
+      CustomUser? user = _userFromFirebaseUser(result.user);
+
+      // TODO: Generate new user in db
 
     } on FirebaseAuthException catch(e){
       if(e.code == 'weak-password') {
