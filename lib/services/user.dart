@@ -19,13 +19,19 @@ class UserService{
   }
 
   /// Generate add a new User to the Firestore
-  static Future<void> generateUser(CustomUser user) async {
+  static Future<void> generateUser(CustomUser? user) async {
+    if(user != null){
+    bool exists = await UserService.userExists(user);
 
-    return users.doc(user.uid).set({
-      'email': user.email,
-      'name': user.name,
-    });
+      if(!exists){
+        return users.doc(user.uid).set({
+          'email': user.email.trim(),
+          'name': user.name?.trim(),
+        });
+      }
+    }
 
+    return;
     // TODO: Error handling
   }
 
