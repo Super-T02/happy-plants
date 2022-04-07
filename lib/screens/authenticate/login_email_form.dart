@@ -55,6 +55,11 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
     }
   }
 
+  void _withGoogle() async {
+    // Check for valid form
+    await _authService.signInWithGoogle();
+  }
+
   @override
   Widget build(BuildContext context) {
     final darkMode = Theme.of(context).brightness;
@@ -130,6 +135,11 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
             onTap: () => _submit(),
             text: 'Sign In',
             isPrimary: true,
+          ),
+          const SizedBox(height: 18.0,),
+          LoginButton(
+            onTap: () => _withGoogle(),
+            text: 'With Google',
           ),
         ],
       ),
