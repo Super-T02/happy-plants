@@ -57,13 +57,7 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
 
   void _withGoogle() async {
     // Check for valid form
-     /* await _authService.signInEmail(
-          emailController.text.trim(),
-          passwordController.text);
-
-      */
-
-    debugPrint("Pressed");
+    await _authService.signInWithGoogle();
   }
 
   @override
