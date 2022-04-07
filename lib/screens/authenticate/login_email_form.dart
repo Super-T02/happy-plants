@@ -1,6 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:happy_plants/screens/authenticate/forget_password.dart';
 import 'package:happy_plants/services/authentication.dart';
 import 'package:happy_plants/shared/widgets/util/custom_button.dart';
 import 'package:happy_plants/shared/widgets/util/custom_form_field.dart';
@@ -118,7 +119,7 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
                 child: InkWell(
-                  onTap: () {}, // TODO: Forgot page
+                  onTap: () => Navigator.pushNamed(context, '/forgetPassword'),
                   child: const Text(
                     "Forgot Password?",
                     style: TextStyle(

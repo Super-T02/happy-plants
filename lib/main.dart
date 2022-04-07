@@ -1,4 +1,5 @@
 // Firebase
+import 'package:happy_plants/screens/authenticate/forget_password.dart';
 import 'package:happy_plants/screens/authenticate/sign_up_form.dart';
 import 'package:happy_plants/screens/home/tabs/garden/new_garden.dart';
 import 'package:happy_plants/screens/wrapper.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => const Wrapper(),
           '/newGarden': (context) => const NewGarden(),
+          '/forgetPassword': (context) => const ForgetPassword(),
           '/signUp': (context) => const SignUpForm(),
         },
       ),

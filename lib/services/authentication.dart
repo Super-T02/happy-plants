@@ -106,4 +106,10 @@ class AuthService{
     }
   }
 
+  ///Reset Password
+  Future resetPassword(String email) async {
+    return await _auth.sendPasswordResetEmail(email: email);
+
+    // TODO: error handling
+  }
 }
