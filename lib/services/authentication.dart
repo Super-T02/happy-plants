@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:happy_plants/services/user.dart';
 import 'package:happy_plants/shared/models/user.dart';
 
 /// Authentication service, handing all necessary functions for managing the
@@ -43,7 +45,31 @@ class AuthService{
     }
   }
 
-  // TODO: Sign in with Google
+  /// Sign in with google
+  Future<CustomUser?> signInWithGoogle() async {
+    // Trigger the auth flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+    final credentials = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken
+    );
+
+    UserCredential result = await _auth.signInWithCredential(credentials);
+
+    CustomUser? user = _userFromFirebaseUser(result.user);
+
+    // generate user in the Firestore
+    if(user != null){
+      bool exists = await UserService.userExists(user);
+
+      exists? null : await UserService.generateUser(user);
+    }
+
+    return user;
+  }
 
   /// Register with Email
   Future signUpEmail(String name,String email,String password) async{
@@ -69,15 +95,15 @@ class AuthService{
     }
   }
 
-  // TODO: Register with Google
-
   ///Sign out
   Future signOut() async {
     try{
+      await GoogleSignIn().signOut();
       return await _auth.signOut();
     } catch(e){
       // TODO: Handle error
       return null;
     }
   }
+
 }

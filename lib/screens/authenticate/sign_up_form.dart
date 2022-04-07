@@ -7,8 +7,7 @@ import '../../shared/widgets/util/custom_button.dart';
 import '../../shared/widgets/util/custom_form_field.dart';
 
 class SignUpForm extends StatefulWidget {
-  const SignUpForm({Key? key, required this.title}) : super(key: key);
-  final String title;
+  const SignUpForm({Key? key}) : super(key: key);
 
 
   @override
@@ -100,7 +99,7 @@ class _SignUpFormState extends State<SignUpForm> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(widget.title),
+        title: const Text('Sign Up'),
       ),
       body: SingleChildScrollView(
           child: Form(

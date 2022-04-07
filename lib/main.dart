@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => const Wrapper(),
           '/newGarden': (context) => const NewGarden(),
-          '/signUp': (context) => const SignUpForm(title: 'Happy Plants'),
+          '/signUp': (context) => const SignUpForm(),
         },
       ),
     );
