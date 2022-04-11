@@ -2,13 +2,10 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_plants/services/garden.dart';
 import 'package:happy_plants/shared/models/user.dart';
-import 'package:happy_plants/shared/utilities/theme.dart';
-import 'package:happy_plants/shared/widgets/util/custom_button.dart';
 import 'package:happy_plants/shared/widgets/util/custom_form_field.dart';
 import 'package:provider/provider.dart';
 import '../../../../shared/models/garden.dart';
 import '../../../../shared/widgets/util/image_card.dart';
-import '../../../../shared/utilities/app_colors.dart';
 
 class NewGarden extends StatefulWidget {
   const NewGarden({Key? key}) : super(key: key);
@@ -25,6 +22,7 @@ class _NewGardenState extends State<NewGarden> {
             name: image,
           )
   ).toList();
+
 
   // Form controllers
   TextEditingController gardenNameController = TextEditingController();
@@ -68,6 +66,7 @@ class _NewGardenState extends State<NewGarden> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<CustomUser?>(context);
@@ -75,6 +74,9 @@ class _NewGardenState extends State<NewGarden> {
     TextTheme textTheme = Theme.of(context).textTheme;
     InputDecorationTheme inputDecorationTheme = Theme.of(context).inputDecorationTheme;
     ThemeData theme = Theme.of(context);
+
+
+
 
     return Scaffold(
       appBar: AppBar(
