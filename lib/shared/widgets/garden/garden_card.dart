@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:happy_plants/screens/home/tabs/garden/edit_garden.dart';
 import 'package:happy_plants/services/garden.dart';
 import 'package:happy_plants/shared/models/garden.dart';
 import 'package:provider/provider.dart';
@@ -22,14 +23,16 @@ class _GardenSingleState extends State<GardenSingle> {
   }
 
   /// Opens a form to edit the garden
-  void editGarden(String gardenId, CustomUser user){
-    //Todo
+  void editGarden(Garden garden, CustomUser user){
+    Navigator.pop(context);
+    Navigator.push(context, MaterialPageRoute(builder: (context) => EditGarden(garden: garden, user: user)));
   }
 
   /// Delete the garden
   void deleteGarden(String gardenId, CustomUser user) async {
+    Navigator.pop(context);
     await GardenService.deleteGarden(gardenId, user);
-    Navigator.of(context).pop();
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Deleted')), // TODO: refresh
     );
@@ -117,7 +120,7 @@ class _GardenSingleState extends State<GardenSingle> {
     actionItems: <CustomCupertinoContextMenuAction>[
       CustomCupertinoContextMenuAction(
         text: "Open",
-        color: Colors.black,
+        color: Theme.of(context).textTheme.bodyText1!.color!,
         icon: Icons.open_in_new_outlined,
         onPressed: (){
           ScaffoldMessenger.of(context).showSnackBar(
@@ -126,12 +129,9 @@ class _GardenSingleState extends State<GardenSingle> {
       ),
       CustomCupertinoContextMenuAction(
         text: "Edit",
-        color: Colors.black,
+        color: Theme.of(context).textTheme.bodyText1!.color!,
         icon: Icons.edit_outlined,
-        onPressed: (){
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(widget.garden.id + ' was popup Modified!')));
-        },
+        onPressed: () => editGarden(widget.garden, user!),
       ),
       CustomCupertinoContextMenuAction(
         text: "Delete",
