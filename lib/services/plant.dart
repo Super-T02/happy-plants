@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happy_plants/shared/models/plant.dart';
 import 'package:happy_plants/shared/models/user.dart';
 
-class GardenService {
+class PlantService {
 
   /// Adds a new plant
   static Future<void> addPlant( AddPlant newPlant, CustomUser user) {
