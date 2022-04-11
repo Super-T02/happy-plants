@@ -28,8 +28,10 @@ class _GardenSingleState extends State<GardenSingle> {
 
   /// Delete the garden
   void deleteGarden(String gardenId, CustomUser user) async {
+
+    Navigator.pop(context);
     await GardenService.deleteGarden(gardenId, user);
-    Navigator.of(context).pop();
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Deleted')), // TODO: refresh
     );
