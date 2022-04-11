@@ -5,6 +5,7 @@ class Plant{
   // Constructor
   Plant({
     required this.gardenID,
+    required this.id,
     required this.name,
     this.watering,
     this.plantSize,
@@ -20,6 +21,7 @@ class Plant{
   });
 
   // Required
+  String id;
   String gardenID;
   String name;
 
@@ -63,4 +65,40 @@ class PlantSize{
 
   int begin;
   int now;
+}
+
+class AddPlant{
+  // Constructor
+  AddPlant({
+    required this.gardenID,
+    required this.name,
+    this.watering,
+    this.plantSize,
+    this.fertilize,
+    this.dustOff,
+    this.icon,
+    this.potSize,
+    this.repot,
+    this.spray,
+    this.sunDemand,
+    this.temperature,
+    this.type
+  });
+
+  // Required
+  String gardenID;
+  String name;
+
+  // Not required
+  IntervalDateTime? dustOff;
+  Fertilize? fertilize;
+  IntervalDateTime? repot;
+  IntervalDateTime? spray;
+  String? icon;
+  PlantSize? plantSize;
+  Sizes? potSize;
+  Sizes? sunDemand;
+  int? temperature;
+  String? type;
+  Watering? watering;
 }
