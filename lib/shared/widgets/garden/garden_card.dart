@@ -119,7 +119,7 @@ class _GardenSingleState extends State<GardenSingle> {
     actionItems: <CustomCupertinoContextMenuAction>[
       CustomCupertinoContextMenuAction(
         text: "Open",
-        color: Colors.black,
+        color: Theme.of(context).textTheme.bodyText1!.color!,
         icon: Icons.open_in_new_outlined,
         onPressed: (){
           ScaffoldMessenger.of(context).showSnackBar(
@@ -128,7 +128,7 @@ class _GardenSingleState extends State<GardenSingle> {
       ),
       CustomCupertinoContextMenuAction(
         text: "Edit",
-        color: Colors.black,
+        color: Theme.of(context).textTheme.bodyText1!.color!,
         icon: Icons.edit_outlined,
         onPressed: (){
           ScaffoldMessenger.of(context).showSnackBar(

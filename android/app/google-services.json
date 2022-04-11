@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "337554174505-m1avi3dsfu23s68n8k4igkv2aj56tkrc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.happyPlants.happy_plants",
+            "certificate_hash": "088b02d3f0ba42a13d0c980a0178e6bf77334103"
+          }
+        },
+        {
           "client_id": "337554174505-2ss9qgn2b7ta61ofr8gkrub8h44nkq92.apps.googleusercontent.com",
           "client_type": 3
         }
