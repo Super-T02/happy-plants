@@ -104,7 +104,7 @@ class _EditGardenState extends State<EditGarden> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('New garden'),
+        title: const Text('Edit garden'),
         backgroundColor: Theme.of(context).bottomAppBarColor,
         foregroundColor: Theme.of(context).unselectedWidgetColor,
       ),
