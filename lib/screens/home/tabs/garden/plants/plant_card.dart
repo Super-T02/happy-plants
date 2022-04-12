@@ -42,6 +42,10 @@ class _PlantSingleState extends State<PlantSingle> {
     final user = Provider.of<CustomUser?>(context);
     final ThemeData theme = Theme.of(context);
 
+    widget.plant.icon ??= 'grass_outlined';
+    const imageAsWidget = AssetImage('assets/images/garden_backgrounds/one.jpg'); // One
+
+
     return CustomCupertinoContextMenu(
 
       // Handles gestures
@@ -54,7 +58,7 @@ class _PlantSingleState extends State<PlantSingle> {
         // Initial Card definition
         child: Card(
             semanticContainer: true,
-            margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+            margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0)
             ),
@@ -65,6 +69,10 @@ class _PlantSingleState extends State<PlantSingle> {
               // Image for the background of the card
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8.0),
+                  image: const DecorationImage(
+                      image: imageAsWidget,
+                      fit: BoxFit.cover
+                ),
               ),
 
               // Text on displayed on the card
