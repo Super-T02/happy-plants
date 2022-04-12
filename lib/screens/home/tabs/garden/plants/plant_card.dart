@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../../../services/plant.dart';
+import '../../../../../shared/models/garden.dart';
 import '../../../../../shared/models/plant.dart';
 import '../../../../../shared/models/user.dart';
 import '../../../../../shared/widgets/util/custom_cupertino_context_menu.dart';
 
 class PlantSingle extends StatefulWidget {
-  const PlantSingle({Key? key, required this.plant}) : super(key: key);
+  const PlantSingle({Key? key, required this.plant, required this.garden}) : super(key: key);
 
   final Plant plant;
+  final Garden garden;
 
   @override
   State<PlantSingle> createState() => _PlantSingleState();
@@ -16,7 +19,7 @@ class PlantSingle extends StatefulWidget {
 class _PlantSingleState extends State<PlantSingle> {
 
   /// Opens the garden
-  void openGarden(Plant plant, CustomUser user){
+  void openPlant(Plant plant, CustomUser user){
     //todo
   }
 
@@ -26,8 +29,12 @@ class _PlantSingleState extends State<PlantSingle> {
   }
 
   /// Delete the garden
-  void deletePlant(String plantId, CustomUser user) async {
-    //todo
+  void deletePlant(String plantId, String gardenID, CustomUser user) async {
+    await PlantService.deletePlant(plantId, gardenID, user);
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Deleted')), // TODO: refresh
+    );
   }
 
   @override
@@ -111,8 +118,7 @@ class _PlantSingleState extends State<PlantSingle> {
           color: theme.errorColor,
           icon: Icons.delete_outlined,
           onPressed: (){
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(widget.plant.name + ' was popup deleted!')));
+            deletePlant(widget.plant.id, widget.garden.id, user!);
           }
         ),
       ],

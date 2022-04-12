@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/type_picker.dart';
+import 'package:happy_plants/shared/utilities/sizes.dart';
 import 'package:provider/provider.dart';
 import '../../../../../services/plant.dart';
 import '../../../../../shared/models/garden.dart';
 import '../../../../../shared/models/plant.dart';
 import '../../../../../shared/models/user.dart';
 import '../../../../../shared/widgets/util/custom_form_field.dart';
+import 'gardenForm/name_picker.dart';
+import 'gardenForm/pot_size_picker.dart';
 
 class NewPlant extends StatefulWidget {
   const NewPlant({Key? key, required this.user, required this.garden}) : super(key: key);
@@ -21,15 +25,7 @@ class _NewPlantState extends State<NewPlant> {
 
   // Form controllers
   TextEditingController plantNameController = TextEditingController();
-
-  /// Validator for the plant name
-  String? nameValidator(String? value) {
-    if(value == null || value.isEmpty){
-      return 'Please enter a name';
-    } else {
-      return null;
-    }
-  }
+  TextEditingController plantTypeController = TextEditingController();
 
   void _onSubmitted(user, garden) async {
     if (_formKey.currentState!.validate()) {
@@ -41,6 +37,7 @@ class _NewPlantState extends State<NewPlant> {
           AddPlant(
             name: plantNameController.text,
             gardenID: garden.id,
+            type: plantTypeController.text,
           ), user);
 
       Navigator.pop(context);
@@ -57,6 +54,7 @@ class _NewPlantState extends State<NewPlant> {
     TextTheme textTheme = Theme.of(context).textTheme;
     InputDecorationTheme inputDecorationTheme = Theme.of(context).inputDecorationTheme;
     ThemeData theme = Theme.of(context);
+
 
     return Scaffold(
       appBar: AppBar(
@@ -80,18 +78,15 @@ class _NewPlantState extends State<NewPlant> {
                     // Form
                     children: <Widget>[
                       // Name
-                      CustomFormField(
-                          headingText: "Plant Name *",
-                          hintText: "Please enter a plant name",
-                          obscureText: false,
-                          suffixIcon: null,
-                          textInputType: TextInputType.name,
-                          textInputAction: TextInputAction.done,
-                          controller: plantNameController,
-                          maxLines: 1,
-                          validator: nameValidator
-                      ),
+                      NamePicker(plantNameController: plantNameController),
                       const SizedBox(height: 20),
+                      //type
+                      TypePicker(plantTypeController: plantTypeController),
+                      const SizedBox(height: 20),
+
+                      Text('--Category--', style: textTheme.bodyLarge),
+                      //pot size
+                      PotSizePicker(),
 
 
                       // Buttons

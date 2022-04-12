@@ -8,6 +8,7 @@ import '../../../../../shared/models/garden.dart';
 import '../../../../../shared/models/user.dart';
 import '../new_garden.dart';
 import 'new_plant.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class ListOfPlants extends StatefulWidget {
   const ListOfPlants({Key? key, required this.user, required this.garden}) : super(key: key);
@@ -49,7 +50,7 @@ class _ListOfPlantsState extends State<ListOfPlants> {
               crossAxisCount: 2,
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
                 Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                return PlantSingle(plant: Plant(name: data['name'], icon: data['icon'], id: document.id, gardenID: widget.garden.id));
+                return PlantSingle(plant: Plant(name: data['name'], icon: data['icon'], id: document.id, gardenID: widget.garden.id), garden: widget.garden);
               }).toList(),
               /*[
                 PlantSingle(plant: Plant(gardenID: widget.garden.id, name: 'test1', id: '1')),
@@ -57,22 +58,40 @@ class _ListOfPlantsState extends State<ListOfPlants> {
                 PlantSingle(plant: Plant(gardenID: widget.garden.id, name: 'test3', id: '3')),
               ],*/
             ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                // Navigate to new plant form
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => NewPlant(user: widget.user, garden: widget.garden))
-                );
-              },
-              backgroundColor: Theme.of(context).primaryColor,
-
-              child: Icon(
-                Icons.add,
-                size: 35,
-                color: Theme.of(context).unselectedWidgetColor, //scaffoldBackgroundColor for turned around color
+          floatingActionButton: SpeedDial(
+            icon: Icons.add,
+            activeIcon: Icons.close,
+            iconTheme: IconThemeData(size: 35, color: Theme.of(context).unselectedWidgetColor),
+            backgroundColor: Theme.of(context).primaryColor,
+            visible: true,
+            curve: Curves.bounceIn,
+            children: [
+              // FAB 1
+              SpeedDialChild(
+                  child: Icon(Icons.add_circle_outline_outlined),
+                  backgroundColor: Theme.of(context).primaryColor,
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => NewPlant(user: widget.user, garden: widget.garden))
+                    );
+                  },
+                  label: 'own',
+                  labelStyle: Theme.of(context).textTheme.bodyText1
               ),
-            ),
+              // FAB 2
+              SpeedDialChild(
+                  child: Icon(Icons.library_books_outlined), //todo right icon
+                  backgroundColor: Theme.of(context).primaryColor,
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('from template to be implemented!')));
+                  },
+                  label: 'template',
+                  labelStyle: Theme.of(context).textTheme.bodyText1
+              )
+            ],
+          ),
         );
       }
     );
