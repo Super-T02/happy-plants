@@ -1,35 +1,68 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happy_plants/shared/models/garden.dart';
 import 'package:happy_plants/shared/models/user.dart';
+import 'package:happy_plants/shared/utilities/util.dart';
 
 class GardenService {
 
   /// Adds a new garden
   static Future<void> addGarden(AddGarden newGarden, CustomUser user) {
-    CollectionReference gardens = getGardenCollectionRef(user);
+    dynamic result;
 
-    return gardens.add({
-      'icon': newGarden.icon,
-      'name': newGarden.name
-    });
+    try{
+      Util.startLoading();
+
+      CollectionReference gardens = getGardenCollectionRef(user);
+      result = gardens.add({
+        'icon': newGarden.icon,
+        'name': newGarden.name
+      });
+
+    } finally {
+      Util.endLoading();
+    }
+
+    return result;
+
+
     // TODO: Error handling
   }
 
   /// Updates a garden based on its gardenID
   static Future<void> patchGarden(String gardenID, String fieldName, dynamic updatedValue, CustomUser user) {
-    DocumentReference garden = getGardenDocRef(gardenID, user);
+    dynamic result;
 
-    return garden.update({
-      fieldName: updatedValue
-    });
+    try{
+      Util.startLoading();
+
+      DocumentReference garden = getGardenDocRef(gardenID, user);
+      result = garden.update({
+        fieldName: updatedValue
+      });
+
+    } finally {
+      Util.endLoading();
+    }
+
+    return result;
     // TODO: Error handling
   }
 
   /// Deletes a garden based on its gardenID
   static Future<void> deleteGarden(String gardenID, CustomUser user) {
-    DocumentReference garden = getGardenDocRef(gardenID, user);
+    dynamic result;
 
-    return garden.delete(); // TODO: Error handling
+    try{
+      Util.startLoading();
+
+      DocumentReference garden = getGardenDocRef(gardenID, user);
+      result = garden.delete();
+
+    } finally {
+      Util.endLoading();
+    }
+
+    return result; // TODO: Error handling
   }
 
   /// Get the ref on a garden instance based on the user and garden id

@@ -13,6 +13,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_plants/shared/utilities/theme.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 /// Start the app
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,6 +41,7 @@ class MyApp extends StatelessWidget {
         themeMode: ThemeMode.system,
         theme: MyAppTheme.lightTheme,
         darkTheme: MyAppTheme.darkTheme,
+        navigatorKey: navigatorKey,
         initialRoute: '/',
         routes: {
           '/': (context) => const Wrapper(),

@@ -1,10 +1,11 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:happy_plants/screens/authenticate/forget_password.dart';
 import 'package:happy_plants/services/authentication.dart';
 import 'package:happy_plants/shared/widgets/util/custom_button.dart';
 import 'package:happy_plants/shared/widgets/util/custom_form_field.dart';
+
+import '../../shared/utilities/util.dart';
 
 /// Widget for the email login
 class EmailLoginForm extends StatefulWidget {
