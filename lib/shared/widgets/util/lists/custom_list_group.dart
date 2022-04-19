@@ -20,13 +20,10 @@ class _CustomListGroupState extends State<CustomListGroup> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = [];
-
-    children.add(Text(widget.title));
-    for (var element in widget.children) {children.add(element);}
 
     return Column(
-      children: children,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List<Widget>.from([Text(widget.title)])..addAll(widget.children),
     );
   }
 }

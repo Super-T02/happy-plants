@@ -17,48 +17,50 @@ class _OptionsState extends State<Options> {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      children: [
+      children: <Widget>[
+        CustomListGroup(
+            title: 'Account Settings',
+            children: <Widget>[
+              CustomListTile(
+                title: const Text('Logout'),
+                leading: const Icon(Icons.logout),
+                onTap: () async {
+                  await _auth.signOut();
+                },
+              ),
 
-        CustomListGroup(title: 'My Group', children: [
-          CustomListTile(
-            title: const Text('Logout'),
-            leading: const Icon(Icons.logout),
-            onTap: () async {
-              await _auth.signOut();
-            },
-          ),CustomListTile(
-            title: const Text('Logout'),
-            leading: const Icon(Icons.logout),
-            onTap: () async {
-              await _auth.signOut();
-            },
-          )
-        ]),
+              CustomListTile(
+                title: const Text('Logout'),
+                leading: const Icon(Icons.logout),
+                onTap: () async {
+                  await _auth.signOut();
+                },
+              ),
+            ]
+        ),
 
-        CustomListTile(
-          title: const Text('Logout'),
-          leading: const Icon(Icons.logout),
-          onTap: () async {
-            await _auth.signOut();
-          },
-        ),CustomListTile(
-          title: const Text('Logout'),
-          leading: const Icon(Icons.logout),
-          onTap: () async {
-            await _auth.signOut();
-          },
-        ),CustomListTile(
-          title: const Text('Logout'),
-          leading: const Icon(Icons.logout),
-          onTap: () async {
-            await _auth.signOut();
-          },
-        ),CustomListTile(
-          title: const Text('Logout'),
-          leading: const Icon(Icons.logout),
-          onTap: () async {
-            await _auth.signOut();
-          },
+
+
+
+        CustomListGroup(
+            title: 'Test Settings',
+            children: <Widget>[
+              CustomListTile(
+                title: const Text('Logout'),
+                leading: const Icon(Icons.logout),
+                onTap: () async {
+                  await _auth.signOut();
+                },
+              ),
+
+              CustomListTile(
+                title: const Text('Logout'),
+                leading: const Icon(Icons.logout),
+                onTap: () async {
+                  await _auth.signOut();
+                },
+              ),
+            ]
         ),
       ],
     );
