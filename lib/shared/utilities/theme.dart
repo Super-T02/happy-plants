@@ -23,6 +23,7 @@ class MyAppTheme {
     // Text Styles
     textTheme: GoogleFonts.robotoTextTheme().copyWith(
       bodyText1: CTextStyles.normalTextLight,
+      headline3: CTextStyles.headline3light,
     ),
 
     // Icon Styles
@@ -33,6 +34,7 @@ class MyAppTheme {
       colorScheme: AppColors.buttonColorSchemeLight,
     ),
 
+    // List Styles
     listTileTheme: const ListTileThemeData(
       iconColor: AppColors.darkGrey,
       textColor: AppColors.darkGrey,
@@ -86,6 +88,7 @@ class MyAppTheme {
     // Text Styles
     textTheme: GoogleFonts.robotoTextTheme().copyWith(
       bodyText1: CTextStyles.normalTextDark,
+      headline3: CTextStyles.headline3dark,
     ),
 
     //Icon theme

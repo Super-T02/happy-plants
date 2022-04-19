@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:happy_plants/services/authentication.dart';
-import 'package:happy_plants/shared/utilities/app_colors.dart';
 import 'package:happy_plants/shared/widgets/util/lists/custom_list_group.dart';
 import 'package:happy_plants/shared/widgets/util/lists/custom_list_tile.dart';
 
