@@ -33,6 +33,12 @@ class MyAppTheme {
       colorScheme: AppColors.buttonColorSchemeLight,
     ),
 
+    listTileTheme: const ListTileThemeData(
+      iconColor: AppColors.darkGrey,
+      textColor: AppColors.darkGrey,
+      enableFeedback: true,
+    ),
+
     // Input styles
     inputDecorationTheme: InputDecorationTheme(
       labelStyle: CTextStyles.textFieldHeadingLight,

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:happy_plants/services/authentication.dart';
+import 'package:happy_plants/shared/utilities/app_colors.dart';
+import 'package:happy_plants/shared/widgets/util/lists/custom_list_group.dart';
+import 'package:happy_plants/shared/widgets/util/lists/custom_list_tile.dart';
 
 class Options extends StatefulWidget {
   const Options({Key? key}) : super(key: key);
@@ -13,19 +16,49 @@ class _OptionsState extends State<Options> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        ElevatedButton.icon(
-            onPressed: () async {
-              // TODO: Loading screen + error handling
+    return ListView(
+      children: [
+
+        CustomListGroup(title: 'My Group', children: [
+          CustomListTile(
+            title: const Text('Logout'),
+            leading: const Icon(Icons.logout),
+            onTap: () async {
               await _auth.signOut();
             },
-            style: ElevatedButton.styleFrom(
-              primary: Theme.of(context).primaryColor,
-            ),
-            icon: const Icon(Icons.logout_outlined),
-            label: const Text('Logout')
+          ),CustomListTile(
+            title: const Text('Logout'),
+            leading: const Icon(Icons.logout),
+            onTap: () async {
+              await _auth.signOut();
+            },
+          )
+        ]),
+
+        CustomListTile(
+          title: const Text('Logout'),
+          leading: const Icon(Icons.logout),
+          onTap: () async {
+            await _auth.signOut();
+          },
+        ),CustomListTile(
+          title: const Text('Logout'),
+          leading: const Icon(Icons.logout),
+          onTap: () async {
+            await _auth.signOut();
+          },
+        ),CustomListTile(
+          title: const Text('Logout'),
+          leading: const Icon(Icons.logout),
+          onTap: () async {
+            await _auth.signOut();
+          },
+        ),CustomListTile(
+          title: const Text('Logout'),
+          leading: const Icon(Icons.logout),
+          onTap: () async {
+            await _auth.signOut();
+          },
         ),
       ],
     );
