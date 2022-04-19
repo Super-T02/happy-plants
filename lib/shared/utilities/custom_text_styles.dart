@@ -19,7 +19,7 @@ class CTextStyles {
   static const textFieldHeadingLight = TextStyle(
       color: AppColors.darkGrey, fontSize: 16, fontWeight: FontWeight.w500);
   static const headline3light = TextStyle(
-      color: AppColors.darkGrey, fontSize: 16, fontWeight: FontWeight.w500);
+      color: AppColors.darkGrey, fontSize: 21, fontWeight: FontWeight.w500);
 
   // Dark
   static const normalTextDark = TextStyle(
@@ -31,6 +31,6 @@ class CTextStyles {
   static const textFieldHeadingDark = TextStyle(
       color: AppColors.whiteShade, fontSize: 16, fontWeight: FontWeight.w700);
   static const headline3dark = TextStyle(
-      color: AppColors.whiteShade, fontSize: 16, fontWeight: FontWeight.w500);
+      color: AppColors.whiteShade, fontSize: 21, fontWeight: FontWeight.w500);
 
 }

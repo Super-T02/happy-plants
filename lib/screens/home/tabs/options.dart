@@ -21,40 +21,34 @@ class _OptionsState extends State<Options> {
             title: 'Account Settings',
             children: <Widget>[
               CustomListTile(
-                title: const Text('Logout'),
-                leading: const Icon(Icons.logout),
+                title: 'Logout',
+                leading: Icons.logout,
                 onTap: () async {
                   await _auth.signOut();
                 },
               ),
-
               CustomListTile(
-                title: const Text('Logout'),
-                leading: const Icon(Icons.logout),
+                title: 'Logout',
+                leading: Icons.logout,
                 onTap: () async {
                   await _auth.signOut();
                 },
               ),
             ]
         ),
-
-
-
-
         CustomListGroup(
-            title: 'Test Settings',
+            title: 'Account Settings',
             children: <Widget>[
               CustomListTile(
-                title: const Text('Logout'),
-                leading: const Icon(Icons.logout),
+                title: 'Logout',
+                leading: Icons.logout,
                 onTap: () async {
                   await _auth.signOut();
                 },
               ),
-
               CustomListTile(
-                title: const Text('Logout'),
-                leading: const Icon(Icons.logout),
+                title: 'Logout',
+                leading: Icons.logout,
                 onTap: () async {
                   await _auth.signOut();
                 },

@@ -99,6 +99,13 @@ class MyAppTheme {
       colorScheme: AppColors.buttonColorSchemeDark,
     ),
 
+    // List Styles
+    listTileTheme: const ListTileThemeData(
+      iconColor: AppColors.grayShade,
+      textColor: AppColors.grayShade,
+      enableFeedback: true,
+    ),
+
 
     //Input theme
     inputDecorationTheme: InputDecorationTheme(

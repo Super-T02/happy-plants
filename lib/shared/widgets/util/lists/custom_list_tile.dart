@@ -10,8 +10,8 @@ class CustomListTile extends StatefulWidget {
 
   }) : super(key: key);
 
-  final Widget title;
-  final Widget? leading;
+  final String title;
+  final IconData? leading;
   final void Function()? onTap;
 
   @override
@@ -21,15 +21,17 @@ class CustomListTile extends StatefulWidget {
 class _CustomListTileState extends State<CustomListTile> {
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+
     return Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           border:  Border(
-              bottom: BorderSide(color: AppColors.grayShade)
+              bottom: BorderSide(color: theme.inputDecorationTheme.fillColor!)
           ),
         ),
         child: ListTile(
-          title: widget.title,
-          leading: const Icon(Icons.logout),
+          title: Text(widget.title, style: theme.textTheme.bodyText1),
+          leading: Icon(widget.leading),
           onTap: widget.onTap,
         )
     );
