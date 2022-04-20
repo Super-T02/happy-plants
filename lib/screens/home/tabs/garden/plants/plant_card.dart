@@ -43,8 +43,22 @@ class _PlantSingleState extends State<PlantSingle> {
     final ThemeData theme = Theme.of(context);
 
     widget.plant.icon ??= 'grass_outlined';
-    const imageAsWidget = AssetImage('assets/images/plant_backgrounds/cactus.jpg'); // One
+    String stringOfImageName = 'assets/images/garden_backgrounds/one.jpg';
+    AssetImage imageAsWidget = AssetImage(stringOfImageName);
 
+    //check if string of filename is known, if yes paste it in path
+    if(Plant.checkItemName(widget.plant.icon)) {
+      stringOfImageName = 'assets/images/plant_backgrounds/${widget.plant.icon}.jpg'; // Selected picture
+
+      try {//try to access picture in path created
+        imageAsWidget = AssetImage(stringOfImageName);
+      } catch (e) {
+        imageAsWidget = const AssetImage('assets/images/plant_backgrounds/cactus.jpg'); // One
+      }
+    }
+    else{
+      imageAsWidget = const AssetImage('assets/images/plant_backgrounds/bonsai.jpg'); // One
+    }
 
     return CustomCupertinoContextMenu(
 
@@ -69,7 +83,7 @@ class _PlantSingleState extends State<PlantSingle> {
               // Image for the background of the card
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8.0),
-                  image: const DecorationImage(
+                  image: DecorationImage(
                       image: imageAsWidget,
                       fit: BoxFit.cover
                 ),

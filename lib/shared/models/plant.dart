@@ -39,7 +39,18 @@ class Plant{
   int? temperature;
   String? type;
   Watering? watering;
+
+  static checkItemName(iconName){
+    if(allFiles.contains(iconName)){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
 }
+
 
 class IntervalDateTime{
   IntervalDateTime({required this.interval, required this.lastTime});
