@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/drop_down_category.dart';
 import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/type_picker.dart';
 import 'package:happy_plants/shared/utilities/sizes.dart';
 import 'package:provider/provider.dart';
@@ -114,9 +115,12 @@ class _NewPlantState extends State<NewPlant> {
                       TypePicker(plantTypeController: plantTypeController),
                       const SizedBox(height: 20),
 
+                      const DropDownCategory(heading: 'TestHeading1', description: 'TestDescription1', childrenWidgets: [PotSizePicker()]),
+
                       Text('--Category--', style: textTheme.bodyLarge),
+
                       //pot size
-                      PotSizePicker(),
+                      const PotSizePicker(),
 
 
                       // Buttons
