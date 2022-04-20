@@ -5,6 +5,7 @@ import '../../../../../shared/models/garden.dart';
 import '../../../../../shared/models/plant.dart';
 import '../../../../../shared/models/user.dart';
 import '../../../../../shared/widgets/util/custom_cupertino_context_menu.dart';
+import '../../../../../shared/widgets/util/image_card.dart';
 
 class PlantSingle extends StatefulWidget {
   const PlantSingle({Key? key, required this.plant, required this.garden}) : super(key: key);
@@ -17,7 +18,6 @@ class PlantSingle extends StatefulWidget {
 }
 
 class _PlantSingleState extends State<PlantSingle> {
-
   /// Opens the garden
   void openPlant(Plant plant, CustomUser user){
     //todo
@@ -43,7 +43,7 @@ class _PlantSingleState extends State<PlantSingle> {
     final ThemeData theme = Theme.of(context);
 
     widget.plant.icon ??= 'grass_outlined';
-    const imageAsWidget = AssetImage('assets/images/garden_backgrounds/one.jpg'); // One
+    const imageAsWidget = AssetImage('assets/images/plant_backgrounds/cactus.jpg'); // One
 
 
     return CustomCupertinoContextMenu(
@@ -131,8 +131,5 @@ class _PlantSingleState extends State<PlantSingle> {
         ),
       ],
     );
-
-
-
   }
 }

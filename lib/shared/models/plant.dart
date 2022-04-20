@@ -2,6 +2,8 @@ import '../utilities/sizes.dart';
 
 // Data structure for a plant
 class Plant{
+
+  static final List<String> allFiles = ['bogenhanf','bonsai','cactus','dragon_tree','houseleek','ivy','palm','peace_lily','scandens'];
   // Constructor
   Plant({
     required this.gardenID,

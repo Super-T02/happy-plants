@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/type_picker.dart';
 import 'package:happy_plants/shared/utilities/sizes.dart';
@@ -7,6 +8,7 @@ import '../../../../../shared/models/garden.dart';
 import '../../../../../shared/models/plant.dart';
 import '../../../../../shared/models/user.dart';
 import '../../../../../shared/widgets/util/custom_form_field.dart';
+import '../../../../../shared/widgets/util/image_card.dart';
 import 'gardenForm/name_picker.dart';
 import 'gardenForm/pot_size_picker.dart';
 
@@ -22,10 +24,22 @@ class NewPlant extends StatefulWidget {
 
 class _NewPlantState extends State<NewPlant> {
   final _formKey= GlobalKey<FormState>();
+  final List<ImageCard> images = Plant.allFiles.map(
+          (image) => ImageCard(
+        url: "assets/images/plant_backgrounds/$image.jpg",
+        name: image,
+      )
+  ).toList();
+
+  String pictureName = "one";
 
   // Form controllers
   TextEditingController plantNameController = TextEditingController();
   TextEditingController plantTypeController = TextEditingController();
+
+  void pictureChanged(pageNumber, reason) {
+    pictureName = Plant.allFiles[pageNumber];
+  }
 
   void _onSubmitted(user, garden) async {
     if (_formKey.currentState!.validate()) {
@@ -36,6 +50,7 @@ class _NewPlantState extends State<NewPlant> {
       await PlantService.addPlant(
           AddPlant(
             name: plantNameController.text,
+            icon: pictureName.toLowerCase(),
             gardenID: garden.id,
             type: plantTypeController.text,
           ), user);
@@ -51,6 +66,7 @@ class _NewPlantState extends State<NewPlant> {
   @override
   Widget build(BuildContext context) {
     //final user = Provider.of<CustomUser?>(context);
+    CarouselController imageCarouselController = CarouselController();
     TextTheme textTheme = Theme.of(context).textTheme;
     InputDecorationTheme inputDecorationTheme = Theme.of(context).inputDecorationTheme;
     ThemeData theme = Theme.of(context);
@@ -77,6 +93,20 @@ class _NewPlantState extends State<NewPlant> {
 
                     // Form
                     children: <Widget>[
+                      //icon/image carousel
+                      CarouselSlider(
+                          carouselController: imageCarouselController,
+                          items: images,
+                          options: CarouselOptions(
+                            height: 180.0,
+                            enlargeCenterPage: true,
+                            aspectRatio: 16 / 9,
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            enableInfiniteScroll: true,
+                            viewportFraction: 0.8,
+                            onPageChanged: pictureChanged,
+                          )
+                      ),
                       // Name
                       NamePicker(plantNameController: plantNameController),
                       const SizedBox(height: 20),
