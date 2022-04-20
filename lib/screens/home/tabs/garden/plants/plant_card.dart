@@ -93,8 +93,9 @@ class _PlantSingleState extends State<PlantSingle> {
               child: Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 0, 16),
                   child: FittedBox(
-                    fit: BoxFit.scaleDown,
+                    fit: BoxFit.none,
                     alignment: Alignment.bottomLeft,
+                    clipBehavior: Clip.hardEdge,
                     child: Card(
                       color: Colors.black45,
                       shape: RoundedRectangleBorder(
@@ -102,7 +103,9 @@ class _PlantSingleState extends State<PlantSingle> {
                       ),
                       child: Text(
                         widget.plant.name,
+                        overflow: TextOverflow.ellipsis,
                         softWrap: true,
+                        maxLines: 1,
                         style: Theme.of(context).textTheme.headline5!.copyWith(
                           color: Colors.white,
                         ),
