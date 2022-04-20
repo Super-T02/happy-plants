@@ -20,11 +20,18 @@ class _DropDownCategoryState extends State<DropDownCategory> {
     InputDecorationTheme inputDecorationTheme = Theme.of(context).inputDecorationTheme;
     ThemeData theme = Theme.of(context);
 
-    return ExpansionTile(
-      title: Text(widget.heading, style: theme.textTheme.bodyText1),
-      subtitle: Text(widget.description),
-      children: widget.childrenWidgets,
+    return Column(
+      children: [
+        ExpansionTile(
+          title: Text(widget.heading, style: theme.textTheme.headline3),
+          subtitle: Text(widget.description, style: theme.textTheme.bodyText1),
+          tilePadding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+          children: widget.childrenWidgets
+
+        ),
+      ],
     );
+
   }
 }
 

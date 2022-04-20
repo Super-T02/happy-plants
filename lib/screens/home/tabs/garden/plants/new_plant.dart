@@ -110,17 +110,24 @@ class _NewPlantState extends State<NewPlant> {
                       ),
                       // Name
                       NamePicker(plantNameController: plantNameController),
-                      const SizedBox(height: 20),
                       //type
                       TypePicker(plantTypeController: plantTypeController),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 10),
 
-                      const DropDownCategory(heading: 'TestHeading1', description: 'TestDescription1', childrenWidgets: [PotSizePicker()]),
-
-                      Text('--Category--', style: textTheme.bodyLarge),
-
-                      //pot size
-                      const PotSizePicker(),
+                      //Plant size
+                      const DropDownCategory(heading: 'Plant Size', description: 'beginning, end', childrenWidgets: [PotSizePicker(), SizedBox(height: 10)]),
+                      //watering
+                      const DropDownCategory(heading: 'Watering', description: 'amount, interval, lastTime', childrenWidgets: [PotSizePicker()]),
+                      //spray
+                      const DropDownCategory(heading: 'Spray plants', description: 'interval, lastTime', childrenWidgets: [PotSizePicker()]),
+                      //fertilize
+                      const DropDownCategory(heading: 'Fertilize', description: 'amount, interval, lastTime', childrenWidgets: [PotSizePicker()]),
+                      //environment
+                      const DropDownCategory(heading: 'Environment', description: 'temperature, sun-need', childrenWidgets: [PotSizePicker()]),
+                      //repot
+                      const DropDownCategory(heading: 'Reopt', description: 'interval, lastTime', childrenWidgets: [PotSizePicker()]),
+                      //dust off
+                      const DropDownCategory(heading: 'Dust off', description: 'interval, lastTime', childrenWidgets: [PotSizePicker()]),
 
 
                       // Buttons
