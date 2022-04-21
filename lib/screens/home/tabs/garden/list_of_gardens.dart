@@ -53,6 +53,5 @@ class _ListOfGardensState extends State<ListOfGardens> {
         );
       },
     );
-
   }
 }

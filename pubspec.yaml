@@ -51,6 +51,9 @@ dependencies:
   flutter_svg: ^1.0.3
   flutter_spinkit: ^5.1.0
 
+  #ui elements:
+  flutter_speed_dial: ^3.0.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -81,6 +84,7 @@ flutter:
   assets:
     - assets/images/garden_backgrounds/
     - assets/images/
+    - assets/images/plant_backgrounds/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
