@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/widgets/dialogs/submit_dialog.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../services/authentication.dart';
 import '../../../../../shared/widgets/util/lists/custom_list_group.dart';
@@ -25,17 +27,17 @@ class AccountSettings extends StatelessWidget {
 
   /// Opens the dialog for changing the username
   void openChangeUsername() {
-    
+
   }
 
   /// Opens the dialog for changing the password
   void openChangePassword() {
-    
+
   }
 
   @override
   Widget build(BuildContext context) {
-
+    final user = Provider.of<CustomUser?>(context);
 
     return CustomListGroup(
         key: _key,
@@ -48,6 +50,7 @@ class AccountSettings extends StatelessWidget {
           ),
           CustomListTile(
             title: 'Change username',
+            subtitle: 'Current: ${user?.name}',
             leading: Icons.person_outline,
             onTap: openChangeUsername,
           ),
@@ -60,3 +63,4 @@ class AccountSettings extends StatelessWidget {
     );
   }
 }
+
