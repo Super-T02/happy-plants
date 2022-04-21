@@ -51,6 +51,7 @@ class _CustomListGroupSwitchState extends State<CustomListGroupSwitch> {
                 Text(widget.title, style: theme.textTheme.headline3,),
                 Switch(
                     value: isEnabled!,
+                    activeColor: theme.primaryColor,
                     onChanged: (changedValue) {
                       setState(() {
                         isEnabled = changedValue;
