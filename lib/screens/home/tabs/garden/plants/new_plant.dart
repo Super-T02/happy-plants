@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/drop_down_category.dart';
+import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/plant_size_picker.dart';
 import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/type_picker.dart';
 import 'package:happy_plants/shared/utilities/sizes.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +12,7 @@ import '../../../../../shared/models/user.dart';
 import '../../../../../shared/widgets/util/custom_form_field.dart';
 import '../../../../../shared/widgets/util/image_card.dart';
 import 'gardenForm/name_picker.dart';
-import 'gardenForm/pot_size_picker.dart';
+import 'gardenForm/size_picker.dart';
 
 class NewPlant extends StatefulWidget {
   const NewPlant({Key? key, required this.user, required this.garden}) : super(key: key);
@@ -37,14 +38,16 @@ class _NewPlantState extends State<NewPlant> {
   // Form controllers
   TextEditingController plantNameController = TextEditingController();
   TextEditingController plantTypeController = TextEditingController();
+  TextEditingController plantSizeBeginningController = TextEditingController();
+  TextEditingController plantSizeEndController = TextEditingController();
 
   void pictureChanged(pageNumber, reason) {
     pictureName = Plant.allFiles[pageNumber];
   }
 
+
   void _onSubmitted(user, garden) async {
     if (_formKey.currentState!.validate()) {
-
       // TODO: Loading spinner
 
       // add the plant
@@ -54,6 +57,8 @@ class _NewPlantState extends State<NewPlant> {
             icon: pictureName.toLowerCase(),
             gardenID: garden.id,
             type: plantTypeController.text,
+            //plantSize: PlantSize(begin: int.parse(plantSizeBeginningController.text), now: int.parse(plantSizeEndController.text)),
+            //todo: plant size isn't saved
           ), user);
 
       Navigator.pop(context);
@@ -71,7 +76,6 @@ class _NewPlantState extends State<NewPlant> {
     TextTheme textTheme = Theme.of(context).textTheme;
     InputDecorationTheme inputDecorationTheme = Theme.of(context).inputDecorationTheme;
     ThemeData theme = Theme.of(context);
-
 
     return Scaffold(
       appBar: AppBar(
@@ -115,19 +119,23 @@ class _NewPlantState extends State<NewPlant> {
                       const SizedBox(height: 10),
 
                       //Plant size
-                      const DropDownCategory(heading: 'Plant Size', description: 'beginning, end', childrenWidgets: [PotSizePicker(), SizedBox(height: 10)]),
+                      DropDownCategory(heading: 'Plant Size', description: 'beginning, end', childrenWidgets: [
+                        PlantSizePicker(plantSizeController: plantSizeBeginningController, heading: 'Plant size beginning (cm)', hint: 'Please enter the size your plant had in the beginning'),
+                        PlantSizePicker(plantSizeController: plantSizeEndController, heading: 'Plant size end (cm)', hint: 'Please enter the size your plant has right now'),
+                        const SizedBox(height: 10)
+                      ]),
                       //watering
-                      const DropDownCategory(heading: 'Watering', description: 'amount, interval, lastTime', childrenWidgets: [PotSizePicker()]),
+                      const DropDownCategory(heading: 'Watering', description: 'amount, interval, lastTime', childrenWidgets: [SizePicker(title: 'beginning')]),
                       //spray
-                      const DropDownCategory(heading: 'Spray plants', description: 'interval, lastTime', childrenWidgets: [PotSizePicker()]),
+                      const DropDownCategory(heading: 'Spray plants', description: 'interval, lastTime', childrenWidgets: [SizePicker(title: 'beginning')]),
                       //fertilize
-                      const DropDownCategory(heading: 'Fertilize', description: 'amount, interval, lastTime', childrenWidgets: [PotSizePicker()]),
+                      const DropDownCategory(heading: 'Fertilize', description: 'amount, interval, lastTime', childrenWidgets: [SizePicker(title: 'beginning')]),
                       //environment
-                      const DropDownCategory(heading: 'Environment', description: 'temperature, sun-need', childrenWidgets: [PotSizePicker()]),
+                      const DropDownCategory(heading: 'Environment', description: 'temperature, sun-need', childrenWidgets: [SizePicker(title: 'beginning')]),
                       //repot
-                      const DropDownCategory(heading: 'Reopt', description: 'interval, lastTime', childrenWidgets: [PotSizePicker()]),
+                      const DropDownCategory(heading: 'Reopt', description: 'interval, lastTime', childrenWidgets: [SizePicker(title: 'beginning')]),
                       //dust off
-                      const DropDownCategory(heading: 'Dust off', description: 'interval, lastTime', childrenWidgets: [PotSizePicker()]),
+                      const DropDownCategory(heading: 'Dust off', description: 'interval, lastTime', childrenWidgets: [SizePicker(title: 'beginning')]),
 
 
                       // Buttons
