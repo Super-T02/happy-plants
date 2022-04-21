@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'tabs/garden.dart';
 import 'tabs/timeline.dart';
-import 'tabs/options.dart';
+import 'tabs/options/options.dart';
 
 class Home extends StatefulWidget{
   const Home({Key? key, required this.title}) : super(key: key);

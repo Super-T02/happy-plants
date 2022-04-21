@@ -46,20 +46,22 @@ class DesignSettings extends SettingsInterface{
 /// Settings for the vacations, if the mode is enabled the person gets no push
 /// messages and if implemented a mail to the given contact person will be sent:
 /// - enabled (default: false)
-/// - duration in days (default: 5 days)
+/// - until (default: 5 days)
 class VacationSettings extends SettingsInterface{
   bool? enabled;
-  int? duration; // Duration in days
+  DateTime? duration; // Duration in days
 
   VacationSettings({
     this.enabled = false,
-    this.duration = 5,
-  });
+    duration = 5
+  }){
+    this.duration = DateTime.now().add(Duration(days: duration!));
+  }
 
   @override
   void setDefault() {
     enabled = false;
-    duration = 5;
+    duration = DateTime.now().add(const Duration(days: 5));
   }
 }
 
