@@ -21,9 +21,13 @@ class _OptionsState extends State<Options> {
   Widget build(BuildContext context) {
     return ListView(
       children: <Widget>[
+
+        // ALWAYS DISPLAYED
         AccountSettings(),
-        PushNotificationSettings(),
         DesignSettings(),
+
+        // OPTIONAL SETTINGS
+        PushNotificationSettings(),
         VacationSettings(),
       ]
     );

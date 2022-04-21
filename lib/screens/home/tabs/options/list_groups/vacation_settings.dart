@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:happy_plants/shared/widgets/util/lists/custom_list_group_switch.dart';
 import '../../../../../services/authentication.dart';
-import '../../../../../shared/widgets/util/lists/custom_list_group.dart';
 import '../../../../../shared/widgets/util/lists/custom_list_tile.dart';
 
 class VacationSettings extends StatelessWidget {
@@ -10,8 +9,12 @@ class VacationSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomListGroup(
+    return CustomListGroupSwitch(
         title: 'Vacation',
+        isEnabled: false,
+        onSwitchChange: (bool value) {
+          // TODO
+        },
         children: <Widget>[
           CustomListTile(
             title: 'Set vacation until ...',
