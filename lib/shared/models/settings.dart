@@ -14,6 +14,14 @@ class Settings{
     required this.pushNotificationSettings,
   });
 
+  Map toJSON(){
+    return {
+      "designSettings": designSettings.toJSON,
+      "vacationSettings": vacationSettings.toJSON,
+      "pushNotificationSettings": pushNotificationSettings.toJSON,
+    };
+  }
+
   /// Generates a default Object
   static Settings getDefault() {
     return Settings(
@@ -34,6 +42,12 @@ class DesignSettings extends SettingsInterface{
   DesignSettings({
     this.colorScheme = ColorSchemes.system,
   });
+
+  Map toJSON() {
+    return {
+      "colorScheme": colorScheme.toString()
+    };
+  }
 
   @override
   void setDefault() {
@@ -58,6 +72,13 @@ class VacationSettings extends SettingsInterface{
     this.duration = DateTime.now().add(Duration(days: duration!));
   }
 
+  Map toJSON(){
+    return {
+      "enabled": enabled,
+      "duration": duration?.toUtc(),
+    };
+  }
+
   @override
   void setDefault() {
     enabled = false;
@@ -79,6 +100,16 @@ class PushNotificationSettings extends SettingsInterface{
     this.enabled = true,
     this.notificationTime = const TimeOfDay(hour: 9, minute: 0),
   });
+
+  Map toJSON(){
+    return {
+      "enabled": enabled,
+      "duration": {
+        "hour": notificationTime?.hour,
+        "minute": notificationTime?.minute,
+      },
+    };
+  }
 
   @override
   void setDefault() {

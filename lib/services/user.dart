@@ -54,7 +54,7 @@ class UserService{
     return users.doc(user.uid).set({
       "isEmailPasswordAuth": user.isEmailPasswordAuth,
       "email": user.email,
-      // "settings": user.settings.toJSON, TODO: Implement
+      "settings": user.settings?.toJSON,
       "name": user.name,
     });
 
