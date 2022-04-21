@@ -4,6 +4,7 @@ import 'package:happy_plants/shared/utilities/custom_accordion.dart';
 import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/plant_size_picker.dart';
 import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/type_picker.dart';
 import 'package:happy_plants/shared/utilities/sizes.dart';
+import 'package:happy_plants/shared/widgets/forms/custom_datepicker.dart';
 import 'package:provider/provider.dart';
 import '../../../../../services/plant.dart';
 import '../../../../../shared/models/garden.dart';
@@ -127,7 +128,7 @@ class _NewPlantState extends State<NewPlant> {
                       //watering
                       const CustomAccordion(heading: 'Watering', description: 'amount, interval, lastTime', childrenWidgets: [SizePicker(title: 'beginning')]),
                       //spray
-                      const CustomAccordion(heading: 'Spray plants', description: 'interval, lastTime', childrenWidgets: [SizePicker(title: 'beginning')]),
+                      const CustomAccordion(heading: 'Spray plants', description: 'interval, lastTime', childrenWidgets: [CustomDatePicker()]),
                       //fertilize
                       const CustomAccordion(heading: 'Fertilize', description: 'amount, interval, lastTime', childrenWidgets: [SizePicker(title: 'beginning')]),
                       //environment
