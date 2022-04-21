@@ -57,7 +57,7 @@ class _NewPlantState extends State<NewPlant> {
             icon: pictureName.toLowerCase(),
             gardenID: garden.id,
             type: plantTypeController.text,
-            //plantSize: PlantSize(begin: int.parse(plantSizeBeginningController.text), now: int.parse(plantSizeEndController.text)),
+            plantSize: PlantSize(begin: int.parse(plantSizeBeginningController.text), now: int.parse(plantSizeEndController.text)),
             //todo: plant size isn't saved
           ), user);
 

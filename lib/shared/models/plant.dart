@@ -57,6 +57,13 @@ class IntervalDateTime{
 
   int interval; // in days
   DateTime lastTime;
+
+  Map toJSON(){
+    return {
+      "interval":interval,
+      "lastTime":lastTime.toUtc(),
+    };
+  }
 }
 
 class Fertilize extends IntervalDateTime{
@@ -64,6 +71,12 @@ class Fertilize extends IntervalDateTime{
       : super(interval: interval, lastTime: lastTime);
 
   int amount; // in
+
+  Map toJSON(){
+    return {
+      "amount":amount,
+    };
+  }
 }
 
 class Watering extends IntervalDateTime{
@@ -71,6 +84,12 @@ class Watering extends IntervalDateTime{
       : super(interval: interval, lastTime: lastTime);
 
   int waterAmount; // in ml
+
+  Map toJSON(){
+    return {
+      "waterAmount":waterAmount,
+    };
+  }
 }
 
 class PlantSize{
@@ -78,6 +97,13 @@ class PlantSize{
 
   int begin;
   int now;
+
+  Map toJSON(){
+    return {
+      "begin":begin,
+      "now":now,
+    };
+  }
 }
 
 class AddPlant{

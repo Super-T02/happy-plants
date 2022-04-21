@@ -30,18 +30,18 @@ class PlantService {
     }
 
     return plants.add({
-      'dustOff': dustOff,
-      'fertilize': fertilize,
+      'dustOff': dustOff.toJSON(),
+      'fertilize': fertilize.toJSON(),
       'icon': newPlant.icon,
       'name': newPlant.name,
-      'plantSize': plantSize,
+      'plantSize': plantSize.toJSON(),
       'potSize': newPlant.potSize,
-      'repot': repot,
-      'spray': spray,
+      'repot': repot.toJSON(),
+      'spray': spray.toJSON(),
       'sunDemand': newPlant.sunDemand,
       'temperature': newPlant.temperature,
       'type': newPlant.type,
-      'watering': watering,
+      'watering': watering.toJSON(),
     });
 
     // TODO: Error handling
@@ -77,7 +77,7 @@ class PlantService {
       'fertilize': fertilize,
       'icon': updatedPlant.icon,
       'name': updatedPlant.name,
-      'plantSize': plantSize,
+      'plantSize': plantSize.toJSON(),
       'potSize': updatedPlant.potSize,
       'repot': repot,
       'spray': spray,
