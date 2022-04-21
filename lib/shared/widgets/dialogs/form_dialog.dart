@@ -1,42 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:happy_plants/shared/widgets/util/custom_button.dart';
 
-class SubmitDialog extends StatelessWidget {
-  const SubmitDialog({
+class FormDialog extends StatelessWidget {
+  const FormDialog({
     Key? key,
     required this.title,
-    required this.text,
     required this.onSubmit,
-    this.submitText = 'Yes',
+    required this.children,
+    this.description,
     this.onAbort,
   }) : super(key: key);
-  final String submitText;
-  final String title;
-  final String text;
-  final Function onSubmit;
-  final Function? onAbort;
 
+  final String title;
+  final List<Widget> children;
+  final Function onSubmit;
+  final String? description;
+  final Function? onAbort;
 
 
   @override
   Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
+    Widget? text;
+
+    if(description != null) {
+      text = Text(description!);
+    } else {
+      text = const SizedBox();
+    }
+
     return AlertDialog(
       title: Text(title, textAlign: TextAlign.center,),
       actions: [
         CustomButton(
           onTap: (){
+            if (_formKey.currentState!.validate()) {
               Navigator.pop(context);
               onSubmit();
-            },
-          text: submitText,
-          isDanger: true,
+            }
+          },
+          text: 'Submit',
+          isPrimary: true,
         ),
         const SizedBox(height: 16.0,),
         CustomButton(
           onTap: (){
-              Navigator.pop(context);
-              if(onAbort != null) onAbort!();
-            },
+            Navigator.pop(context);
+            if(onAbort != null) onAbort!();
+          },
           text: 'Abort',
         )
       ],
@@ -46,7 +57,14 @@ class SubmitDialog extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text(text),
+          text,
+          Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: children,
+            ),
+          )
         ],
       ),
     );

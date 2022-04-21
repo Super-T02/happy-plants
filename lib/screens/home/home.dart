@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../shared/models/user.dart';
 import 'tabs/garden.dart';
 import 'tabs/timeline.dart';
 import 'tabs/options/options.dart';
@@ -14,11 +16,7 @@ class Home extends StatefulWidget{
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    Garden(),
-    Timeline(),
-    Options(),
-  ];
+
 
   void _onItemTapped(int index) {
     setState(() {
@@ -28,6 +26,13 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<CustomUser?>(context);
+
+    final List<Widget> _widgetOptions = <Widget>[
+      const Garden(),
+      const Timeline(),
+      Options(userId: user!.uid,),
+    ];
 
     return Scaffold(
       body: Center(

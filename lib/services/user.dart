@@ -19,7 +19,7 @@ class UserService{
   }
 
   /// Generate add a new User to the Firestore
-  static Future<void> generateUser(CustomUser? user) async {
+  static Future<void> generateUser(CustomUser? user, bool isEmailPasswordAuth) async {
     if(user != null){
     bool exists = await UserService.userExists(user);
 
@@ -27,12 +27,39 @@ class UserService{
         return users.doc(user.uid).set({
           'email': user.email.trim(),
           'name': user.name?.trim(),
+          'isEmailPasswordAuth': isEmailPasswordAuth,
         });
       }
     }
 
     return;
     // TODO: Error handling
+  }
+
+  /// Returns the userdata mapped to the dbUser
+  static Future<DbUser> getCurrentDbUser(String userId) async {
+    final snapshot = await users.doc(userId).get();
+    Map<String, dynamic> data = snapshot.data()! as Map<String, dynamic>;
+    return DbUser(
+        isEmailPasswordAuth: data['isEmailPasswordAuth'],
+        uid: userId,
+        email: data['email'],
+        settings: data['settings'],
+        name: data['name']
+    );
+  }
+
+  /// Replaces the db entry for the user
+  static Future<void> putNewDbUser(DbUser user){
+    return users.doc(user.uid).set({
+      "isEmailPasswordAuth": user.isEmailPasswordAuth,
+      "email": user.email,
+      // "settings": user.settings.toJSON, TODO: Implement
+      "name": user.name,
+    });
+
+    // TODO: Error handling
+
   }
 
 

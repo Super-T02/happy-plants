@@ -62,7 +62,7 @@ class AuthService{
     CustomUser? user = _userFromFirebaseUser(result.user);
 
     // generate user in the Firestore
-    await UserService.generateUser(user);
+    await UserService.generateUser(user, false);
 
 
     return user;
@@ -81,7 +81,7 @@ class AuthService{
       user?.name = name;
 
       // generate user in the Firestore
-      await UserService.generateUser(user);
+      await UserService.generateUser(user, true);
 
     } on FirebaseAuthException catch(e){
       if(e.code == 'weak-password') {
