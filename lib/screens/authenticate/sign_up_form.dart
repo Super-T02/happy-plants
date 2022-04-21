@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../services/authentication.dart';
+import '../../shared/utilities/util.dart';
 import '../../shared/widgets/util/custom_button.dart';
 import '../../shared/widgets/util/custom_form_field.dart';
 
@@ -82,6 +83,7 @@ class _SignUpFormState extends State<SignUpForm> {
     void _submit() async {
       // Check for valid form
       if (_formKey.currentState!.validate()) {
+
         await _authService.signUpEmail(
             nameController.text.trim(),
             emailController.text.trim(),

@@ -30,6 +30,7 @@ class CustomDropDown extends StatefulWidget {
 class _CustomDropDownState extends State<CustomDropDown> {
 
 
+  //dropdown buttons choices
   Widget? suffixIcon;
 
   final FocusNode _focus = FocusNode();
@@ -65,7 +66,6 @@ class _CustomDropDownState extends State<CustomDropDown> {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
-    ThemeData theme = Theme.of(context);
 
     //dropdown buttons choices
     String? _currentValue = widget.value;

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:happy_plants/services/user.dart';
 import 'package:happy_plants/shared/models/user.dart';
+import 'package:happy_plants/shared/utilities/util.dart';
 
 /// Authentication service, handing all necessary functions for managing the
 /// registration and authentication of users
@@ -28,6 +29,8 @@ class AuthService{
   /// Sign in with Email
   Future signInEmail(email, password) async {
     try{
+      Util.startLoading();
+
       // Try to login the user
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email,
@@ -42,11 +45,16 @@ class AuthService{
       } else if (e.code == 'wrong-password') {
         // TODO: Alert for false password
       }
+    } finally {
+      Util.endLoading();
     }
   }
 
   /// Sign in with google
   Future<CustomUser?> signInWithGoogle() async {
+
+    Util.startLoading();
+
     // Trigger the auth flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -64,6 +72,7 @@ class AuthService{
     // generate user in the Firestore
     await UserService.generateUser(user, false);
 
+    Util.endLoading();
 
     return user;
   }
@@ -71,6 +80,8 @@ class AuthService{
   /// Register with Email
   Future signUpEmail(String name,String email,String password) async{
     try{
+      Util.startLoading();
+
       // Try to login the user
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email,
@@ -91,23 +102,35 @@ class AuthService{
       }
     } catch(e) {
       // TODO: Print error
+    } finally {
+      Util.endLoading();
     }
   }
 
   ///Sign out
   Future signOut() async {
     try{
+      Util.startLoading();
+
       await GoogleSignIn().signOut();
       return await _auth.signOut();
     } catch(e){
       // TODO: Handle error
       return null;
+    } finally {
+      Util.endLoading();
     }
   }
 
   ///Reset Password
   Future resetPassword(String email) async {
-    return await _auth.sendPasswordResetEmail(email: email);
+
+    try{
+      Util.startLoading();
+      await _auth.sendPasswordResetEmail(email: email);
+    } finally {
+      Util.endLoading();
+    }
 
     // TODO: error handling
   }

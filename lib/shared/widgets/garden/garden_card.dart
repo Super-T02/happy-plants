@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:happy_plants/screens/home/tabs/garden/list_of_gardens.dart';
+import 'package:happy_plants/screens/home/tabs/garden/plants/list_of_plants.dart';
 import 'package:happy_plants/screens/home/tabs/garden/edit_garden.dart';
 import 'package:happy_plants/services/garden.dart';
 import 'package:happy_plants/shared/models/garden.dart';
@@ -18,8 +20,11 @@ class GardenSingle extends StatefulWidget {
 class _GardenSingleState extends State<GardenSingle> {
 
   /// Opens the garden
-  void openGarden(String gardenId, CustomUser user){
-    //Todo
+  void openGarden(Garden garden, CustomUser user){
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ListOfPlants(user: user, garden: garden))
+    );
   }
 
   /// Opens a form to edit the garden
@@ -65,9 +70,7 @@ class _GardenSingleState extends State<GardenSingle> {
       // Handles gestures
       child: GestureDetector(
         onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(widget.garden.name + ' was clicked!')),
-          );
+          openGarden(widget.garden, user!);
         },
 
         // Initial Card definition
