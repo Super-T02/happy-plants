@@ -1,6 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/drop_down_category.dart';
+import 'package:happy_plants/shared/utilities/custom_accordion.dart';
 import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/plant_size_picker.dart';
 import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/type_picker.dart';
 import 'package:happy_plants/shared/utilities/sizes.dart';
@@ -119,23 +119,23 @@ class _NewPlantState extends State<NewPlant> {
                       const SizedBox(height: 10),
 
                       //Plant size
-                      DropDownCategory(heading: 'Plant Size', description: 'beginning, end', childrenWidgets: [
+                      CustomAccordion(heading: 'Plant Size', description: 'beginning, end', childrenWidgets: [
                         PlantSizePicker(plantSizeController: plantSizeBeginningController, heading: 'Plant size beginning (cm)', hint: 'Please enter the size your plant had in the beginning'),
                         PlantSizePicker(plantSizeController: plantSizeEndController, heading: 'Plant size end (cm)', hint: 'Please enter the size your plant has right now'),
                         const SizedBox(height: 10)
                       ]),
                       //watering
-                      const DropDownCategory(heading: 'Watering', description: 'amount, interval, lastTime', childrenWidgets: [SizePicker(title: 'beginning')]),
+                      const CustomAccordion(heading: 'Watering', description: 'amount, interval, lastTime', childrenWidgets: [SizePicker(title: 'beginning')]),
                       //spray
-                      const DropDownCategory(heading: 'Spray plants', description: 'interval, lastTime', childrenWidgets: [SizePicker(title: 'beginning')]),
+                      const CustomAccordion(heading: 'Spray plants', description: 'interval, lastTime', childrenWidgets: [SizePicker(title: 'beginning')]),
                       //fertilize
-                      const DropDownCategory(heading: 'Fertilize', description: 'amount, interval, lastTime', childrenWidgets: [SizePicker(title: 'beginning')]),
+                      const CustomAccordion(heading: 'Fertilize', description: 'amount, interval, lastTime', childrenWidgets: [SizePicker(title: 'beginning')]),
                       //environment
-                      const DropDownCategory(heading: 'Environment', description: 'temperature, sun-need', childrenWidgets: [SizePicker(title: 'beginning')]),
+                      const CustomAccordion(heading: 'Environment', description: 'temperature, sun-need', childrenWidgets: [SizePicker(title: 'beginning')]),
                       //repot
-                      const DropDownCategory(heading: 'Reopt', description: 'interval, lastTime', childrenWidgets: [SizePicker(title: 'beginning')]),
+                      const CustomAccordion(heading: 'Reopt', description: 'interval, lastTime', childrenWidgets: [SizePicker(title: 'beginning')]),
                       //dust off
-                      const DropDownCategory(heading: 'Dust off', description: 'interval, lastTime', childrenWidgets: [SizePicker(title: 'beginning')]),
+                      const CustomAccordion(heading: 'Dust off', description: 'interval, lastTime', childrenWidgets: [SizePicker(title: 'beginning')]),
 
 
                       // Buttons

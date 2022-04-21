@@ -24,6 +24,7 @@ class MyAppTheme {
     textTheme: GoogleFonts.robotoTextTheme().copyWith(
       bodyText1: CTextStyles.normalTextLight,
       headline3: CTextStyles.headline3light,
+      subtitle2: CTextStyles.textFieldHintStyleLight,
     ),
 
     // Icon Styles
@@ -89,6 +90,7 @@ class MyAppTheme {
     textTheme: GoogleFonts.robotoTextTheme().copyWith(
       bodyText1: CTextStyles.normalTextDark,
       headline3: CTextStyles.headline3dark,
+      subtitle2: CTextStyles.textFieldHintStyleDark,
     ),
 
     //Icon theme
