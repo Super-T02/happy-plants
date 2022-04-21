@@ -52,11 +52,6 @@ class _ListOfPlantsState extends State<ListOfPlants> {
                 Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
                 return PlantSingle(plant: Plant(name: data['name'], icon: data['icon'], id: document.id, gardenID: widget.garden.id), garden: widget.garden);
               }).toList(),
-              /*[
-                PlantSingle(plant: Plant(gardenID: widget.garden.id, name: 'test1', id: '1')),
-                PlantSingle(plant: Plant(gardenID: widget.garden.id, name: 'test2', id: '2')),
-                PlantSingle(plant: Plant(gardenID: widget.garden.id, name: 'test3', id: '3')),
-              ],*/
             ),
           floatingActionButton: SpeedDial(
             icon: Icons.add,

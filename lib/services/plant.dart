@@ -89,6 +89,8 @@ class PlantService {
     // TODO: Error handling
   }
 
+  //TODO: ladebalken einfuegen
+
   /// Deletes a plants based on its plantId
   static Future<void> deletePlant(String plantId, String gardenID, CustomUser user) {
     DocumentReference plant = getPlantDocRef(plantId, gardenID, user);

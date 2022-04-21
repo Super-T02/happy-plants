@@ -7,6 +7,7 @@ import '../../../../../services/plant.dart';
 import '../../../../../shared/models/garden.dart';
 import '../../../../../shared/models/plant.dart';
 import '../../../../../shared/models/user.dart';
+import '../../../../../shared/utilities/util.dart';
 import '../../../../../shared/widgets/util/custom_form_field.dart';
 import '../../../../../shared/widgets/util/image_card.dart';
 import 'gardenForm/name_picker.dart';
@@ -43,8 +44,6 @@ class _NewPlantState extends State<NewPlant> {
 
   void _onSubmitted(user, garden) async {
     if (_formKey.currentState!.validate()) {
-
-      // TODO: Loading spinner
 
       // add the plant
       await PlantService.addPlant(
@@ -124,6 +123,7 @@ class _NewPlantState extends State<NewPlant> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           // Submit Button
+                          //TODO: implement generalized button import
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 primary: theme.primaryColor
