@@ -174,7 +174,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   const SizedBox(height: 18.0,),
 
                   // Login Button
-                  LoginButton(
+                  CustomButton(
                     onTap: () => _submit(),
                     text: 'Sign Up',
                     isPrimary: true,
@@ -183,7 +183,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
                   const SizedBox(height: 18.0,),
 
-                  LoginButton(
+                  CustomButton(
                     onTap: () => Navigator.of(context).pop(),
                     text: 'Abort',
                   ),

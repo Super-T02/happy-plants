@@ -132,7 +132,7 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
           ),
 
           // Login Button
-          LoginButton(
+          CustomButton(
             onTap: () => _submit(),
             text: 'Sign In',
             isPrimary: true,
@@ -141,14 +141,14 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
           const SizedBox(height: 16.0,),
           
           // Google Login
-          LoginButton(
+          CustomButton(
             onTap: () => _withGoogle(),
             text: 'With Google',
           ),
           
           // Sign Up Button
           const SizedBox(height: 16.0,),
-          LoginButton(
+          CustomButton(
             onTap: () => Navigator.pushNamed(context, '/signUp'),
             text: 'Register with Email',
           ),
