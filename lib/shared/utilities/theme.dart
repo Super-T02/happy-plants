@@ -23,6 +23,7 @@ class MyAppTheme {
     // Text Styles
     textTheme: GoogleFonts.robotoTextTheme().copyWith(
       bodyText1: CTextStyles.normalTextLight,
+      headline3: CTextStyles.headline3light,
     ),
 
     // Icon Styles
@@ -31,6 +32,13 @@ class MyAppTheme {
     // Button Theme
     buttonTheme: const ButtonThemeData(
       colorScheme: AppColors.buttonColorSchemeLight,
+    ),
+
+    // List Styles
+    listTileTheme: const ListTileThemeData(
+      iconColor: AppColors.darkGrey,
+      textColor: AppColors.darkGrey,
+      enableFeedback: true,
     ),
 
     // Input styles
@@ -80,6 +88,7 @@ class MyAppTheme {
     // Text Styles
     textTheme: GoogleFonts.robotoTextTheme().copyWith(
       bodyText1: CTextStyles.normalTextDark,
+      headline3: CTextStyles.headline3dark,
     ),
 
     //Icon theme
@@ -88,6 +97,13 @@ class MyAppTheme {
     // Button Theme
     buttonTheme: const ButtonThemeData(
       colorScheme: AppColors.buttonColorSchemeDark,
+    ),
+
+    // List Styles
+    listTileTheme: const ListTileThemeData(
+      iconColor: AppColors.grayShade,
+      textColor: AppColors.grayShade,
+      enableFeedback: true,
     ),
 
 

@@ -11,13 +11,16 @@ class CustomDropDown extends StatefulWidget {
     required this.hint,
     this.icon,
     this.validator,
+    this.value,
   }) : super(key: key);
 
   final List<String> menuItems;
   final String title;
+
   final Function(String? newValue) onChange;
   final String hint;
   final IconData? icon;
+  final String? value;
   final String? Function(String? value)? validator;
 
   @override
@@ -26,8 +29,8 @@ class CustomDropDown extends StatefulWidget {
 
 class _CustomDropDownState extends State<CustomDropDown> {
 
+
   //dropdown buttons choices
-  String? _currentValue;
   Widget? suffixIcon;
 
   final FocusNode _focus = FocusNode();
@@ -63,7 +66,9 @@ class _CustomDropDownState extends State<CustomDropDown> {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
-    ThemeData theme = Theme.of(context);
+
+    //dropdown buttons choices
+    String? _currentValue = widget.value;
 
     if(widget.icon != null) {
       suffixIcon = Icon(widget.icon, color: _getIconColor());
