@@ -53,6 +53,7 @@ dependencies:
 
   #ui elements:
   flutter_speed_dial: ^3.0.5
+  fluttericon: ^2.0.0
 
 dev_dependencies:
   flutter_test:
