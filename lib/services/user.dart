@@ -62,5 +62,22 @@ class UserService{
 
   }
 
+  /// Generates a snapshot stream of the user instance
+  static Stream<DbUser> userStream(String id) {
+    final snapshot = FirebaseFirestore.instance.collection('users').doc(id).snapshots();
+
+
+
+    return snapshot.map((data) {
+      return DbUser(
+        isEmailPasswordAuth: data['isEmailPasswordAuth'],
+        uid: data['uid'],
+        email: data['email'],
+        name: data['name'],
+        settings: data['settings'],
+      );
+    });
+  }
+
 
 }
