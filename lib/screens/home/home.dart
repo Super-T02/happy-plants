@@ -26,12 +26,10 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<CustomUser?>(context);
-
     final List<Widget> _widgetOptions = <Widget>[
       const Garden(),
       const Timeline(),
-      Options(userId: user!.uid,),
+      const Options(),
     ];
 
     return Scaffold(

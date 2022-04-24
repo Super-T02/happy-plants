@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:happy_plants/shared/models/user.dart';
+import 'package:happy_plants/shared/models/settings.dart';
 
 class UserService{
   static final CollectionReference users = FirebaseFirestore.instance.collection('users');
@@ -51,10 +53,12 @@ class UserService{
 
   /// Replaces the db entry for the user
   static Future<void> putNewDbUser(DbUser user){
+    user.settings ??= CustomSettings.getDefault();
+
     return users.doc(user.uid).set({
       "isEmailPasswordAuth": user.isEmailPasswordAuth,
       "email": user.email,
-      "settings": user.settings?.toJSON,
+      "settings": user.settings!.toJSON(),
       "name": user.name,
     });
 
@@ -66,16 +70,56 @@ class UserService{
   static Stream<DbUser> userStream(String id) {
     final snapshot = FirebaseFirestore.instance.collection('users').doc(id).snapshots();
 
-
-
     return snapshot.map((data) {
-      return DbUser(
+      DbUser user = DbUser(
         isEmailPasswordAuth: data['isEmailPasswordAuth'],
-        uid: data['uid'],
+        uid: id,
         email: data['email'],
         name: data['name'],
-        settings: data['settings'],
       );
+
+      if(data['settings'] == null) {
+        user.settings = CustomSettings.getDefault();
+
+      } else {
+        ThemeMode _mode;
+        TimeOfDay _notificationTime = TimeOfDay(
+            hour:  data['settings']['pushNotificationSettings']['notificationTime']['hour'],
+            minute:  data['settings']['pushNotificationSettings']['notificationTime']['minute']
+        );
+
+        switch(data['settings']['designSettings']['colorScheme']){
+          case 'ThemeMode.system':
+            _mode = ThemeMode.system;
+            break;
+          case 'ThemeMode.light':
+            _mode = ThemeMode.light;
+            break;
+          case 'ThemeMode.dark':
+            _mode = ThemeMode.dark;
+            break;
+          default:
+            throw Error();
+            break;
+        }
+
+        // Build the user Settings
+        user.settings = CustomSettings(
+          designSettings: DesignSettingsModel(
+            colorScheme: _mode,
+          ),
+          pushNotificationSettings: PushNotificationSettingsModel(
+            enabled: data['settings']['pushNotificationSettings']['enabled'],
+            notificationTime: _notificationTime,
+          ),
+          vacationSettings: VacationSettingsModel(
+            enabled: data['settings']['vacationSettings']['enabled'],
+            duration: 5, // TODO: if vacation mode is implemented this line needs to be replaced
+          ),
+        );
+      }
+
+      return user;
     });
   }
 

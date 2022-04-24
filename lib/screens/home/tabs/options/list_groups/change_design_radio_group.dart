@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:happy_plants/shared/models/user.dart';
-
 import '../../../../../shared/models/settings.dart';
 import '../../../../../shared/widgets/dialogs/information_dialog.dart';
 import '../../../../../shared/widgets/forms/custom_radio_button.dart';
 
 class ChangeDesignRadioGroup extends StatefulWidget {
-  const ChangeDesignRadioGroup({Key? key, required this.user, required this.triggerReload}) : super(key: key);
+  const ChangeDesignRadioGroup({Key? key, required this.user}) : super(key: key);
   final DbUser user;
-  final Function triggerReload;
 
   @override
   State<ChangeDesignRadioGroup> createState() => _ChangeDesignRadioGroupState();

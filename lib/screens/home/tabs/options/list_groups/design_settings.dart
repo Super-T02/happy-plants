@@ -1,31 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:happy_plants/screens/home/tabs/options/list_groups/change_design_radio_group.dart';
 import 'package:happy_plants/shared/models/settings.dart';
-import '../../../../../services/authentication.dart';
 import '../../../../../shared/models/user.dart';
 import '../../../../../shared/widgets/util/lists/custom_list_group.dart';
 import '../../../../../shared/widgets/util/lists/custom_list_tile.dart';
 
 class DesignSettings extends StatelessWidget {
-  DesignSettings({Key? key, required this.user, required this.triggerReload}) : super(key: key);
+  DesignSettings({Key? key, required this.user}) : super(key: key);
   final GlobalKey _key = GlobalKey();
-  final AuthService _auth = AuthService();
   final DbUser user;
-  final Function triggerReload;
 
   /// Opens the dialog for changing the theme
   void openThemeDialog() {
     showDialog(context: _key.currentContext!, builder: (BuildContext context){
       ThemeMode mode;
 
-      if(user.settings?.designSettings.colorScheme != null) {
+      user.settings ??= CustomSettings.getDefault();
+
+      if(user.settings!.designSettings.colorScheme == null) {
+        user.settings!.designSettings = DesignSettingsModel();
         mode = user.settings!.designSettings.colorScheme!;
       } else {
-        user.settings!.designSettings = DesignSettingsModel();
         mode = user.settings!.designSettings.colorScheme!;
       }
 
-      return ChangeDesignRadioGroup(user: user,triggerReload: triggerReload,);
+      return ChangeDesignRadioGroup(user: user);
     });
   }
 

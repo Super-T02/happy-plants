@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 /// Main model for the settings. It is the top level Object for all Settings
 /// defined bellow
-class Settings{
+class CustomSettings{
   DesignSettingsModel designSettings;
   VacationSettingsModel vacationSettings;
   PushNotificationSettingsModel pushNotificationSettings;
 
 
-  Settings({
+  CustomSettings({
     required this.designSettings,
     required this.vacationSettings,
     required this.pushNotificationSettings,
@@ -16,15 +16,15 @@ class Settings{
 
   Map toJSON(){
     return {
-      "designSettings": designSettings.toJSON,
-      "vacationSettings": vacationSettings.toJSON,
-      "pushNotificationSettings": pushNotificationSettings.toJSON,
+      "designSettings": designSettings.toJSON(),
+      "vacationSettings": vacationSettings.toJSON(),
+      "pushNotificationSettings": pushNotificationSettings.toJSON(),
     };
   }
 
   /// Generates a default Object
-  static Settings getDefault() {
-    return Settings(
+  static CustomSettings getDefault() {
+    return CustomSettings(
       designSettings: DesignSettingsModel(),
       vacationSettings: VacationSettingsModel(),
       pushNotificationSettings: PushNotificationSettingsModel(),
@@ -104,7 +104,7 @@ class PushNotificationSettingsModel extends SettingsInterface{
   Map toJSON(){
     return {
       "enabled": enabled,
-      "duration": {
+      "notificationTime": {
         "hour": notificationTime?.hour,
         "minute": notificationTime?.minute,
       },
