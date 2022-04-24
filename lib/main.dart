@@ -6,6 +6,8 @@ import 'package:happy_plants/screens/wrapper.dart';
 import 'package:happy_plants/services/authentication.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'config.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -15,9 +17,11 @@ import 'package:happy_plants/shared/utilities/theme.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
+
 /// Start the app
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  sharedPreferences = await SharedPreferences.getInstance();
 
   // Load firebase
   await Firebase.initializeApp(
@@ -36,21 +40,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  ThemeMode? _themeMode;
 
   @override
   void initState() {
-    _themeMode = ThemeMode.system;
-    super.initState();
-  }
-
-
-
-  void changeColorScheme(ThemeMode newColorScheme) {
-    setState(() {
-      _themeMode = newColorScheme;
-      debugPrint(_themeMode.toString());
+    currentTheme.addListener(() {
+      setState(() {});
     });
+    super.initState();
   }
 
   @override
@@ -60,13 +56,13 @@ class _MyAppState extends State<MyApp> {
       initialData: null,
       child: MaterialApp(
         title: 'Happy Plants',
-        themeMode: _themeMode!,
+        themeMode: currentTheme.currentMode,
         theme: MyAppTheme.lightTheme,
         darkTheme: MyAppTheme.darkTheme,
         navigatorKey: navigatorKey,
         initialRoute: '/',
         routes: {
-          '/': (context) => Wrapper(changeColorScheme: changeColorScheme,),
+          '/': (context) => const Wrapper(),
           '/newGarden': (context) => const NewGarden(),
           '/forgetPassword': (context) => const ForgetPassword(),
           '/signUp': (context) => const SignUpForm(),

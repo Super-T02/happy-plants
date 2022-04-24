@@ -6,10 +6,9 @@ import '../../../../../shared/widgets/util/lists/custom_list_group.dart';
 import '../../../../../shared/widgets/util/lists/custom_list_tile.dart';
 
 class DesignSettings extends StatelessWidget {
-  DesignSettings({Key? key, required this.user, required this.changeColorScheme}) : super(key: key);
+  DesignSettings({Key? key, required this.user}) : super(key: key);
   final GlobalKey _key = GlobalKey();
   final DbUser user;
-  final Function(ThemeMode newMode) changeColorScheme;
 
   /// Opens the dialog for changing the theme
   void openThemeDialog() {
@@ -25,7 +24,7 @@ class DesignSettings extends StatelessWidget {
         mode = user.settings!.designSettings.colorScheme!;
       }
 
-      return ChangeDesignRadioGroup(user: user, changeColorScheme: changeColorScheme,);
+      return ChangeDesignRadioGroup(user: user);
     });
   }
 

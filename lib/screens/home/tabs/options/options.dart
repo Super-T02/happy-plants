@@ -7,8 +7,7 @@ import 'package:happy_plants/services/authentication.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:provider/provider.dart';
 class Options extends StatefulWidget {
-  const Options({Key? key, required this.changeColorScheme}) : super(key: key);
-  final Function(ThemeMode newMode) changeColorScheme;
+  const Options({Key? key}) : super(key: key);
 
   @override
   State<Options> createState() => _OptionsState();
@@ -32,7 +31,7 @@ class _OptionsState extends State<Options> {
 
             // ALWAYS DISPLAYED
             AccountSettings(user: user),
-            DesignSettings(user: user, changeColorScheme: widget.changeColorScheme,),
+            DesignSettings(user: user),
 
             // OPTIONAL SETTINGS
             PushNotificationSettings(),

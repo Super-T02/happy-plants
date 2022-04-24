@@ -8,8 +8,7 @@ import 'package:provider/provider.dart';
 /// Wrapper holding the SignIn and home widget.
 /// It decides which will be chosen on the auth state of the user.
 class Wrapper extends StatelessWidget {
-  const Wrapper({Key? key, required this.changeColorScheme}) : super(key: key);
-  final Function(ThemeMode newMode) changeColorScheme;
+  const Wrapper({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +19,11 @@ class Wrapper extends StatelessWidget {
       return const SignIn(title: 'Happy Plants');
     } else {
       return StreamProvider<DbUser?>.value(
-        value: UserService.userStream(user.uid),
+        value: UserService().userStream(user.uid),
         initialData: null,
-        child: Home(title: 'Happy Plants', changeColorScheme: changeColorScheme,),
+        child: const Home(
+          title: 'Happy Plants',
+        ),
       );
     }
   }

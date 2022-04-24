@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:happy_plants/config.dart';
 import 'package:happy_plants/services/user.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import '../../../../../shared/models/settings.dart';
@@ -6,9 +7,8 @@ import '../../../../../shared/widgets/dialogs/information_dialog.dart';
 import '../../../../../shared/widgets/forms/custom_radio_button.dart';
 
 class ChangeDesignRadioGroup extends StatefulWidget {
-  const ChangeDesignRadioGroup({Key? key, required this.user, required this.changeColorScheme}) : super(key: key);
+  const ChangeDesignRadioGroup({Key? key, required this.user}) : super(key: key);
   final DbUser user;
-  final Function(ThemeMode newMode) changeColorScheme;
 
   @override
   State<ChangeDesignRadioGroup> createState() => _ChangeDesignRadioGroupState();
@@ -43,7 +43,7 @@ class _ChangeDesignRadioGroupState extends State<ChangeDesignRadioGroup> {
     widget.user.settings!.designSettings.colorScheme = _mode!;
     // TODO: Loading
     await UserService.putNewDbUser(widget.user);
-    widget.changeColorScheme(_mode!);
+    currentTheme.changeThemeMode(_mode!);
   }
 
   @override

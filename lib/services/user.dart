@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:happy_plants/config.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/models/settings.dart';
 
@@ -38,19 +39,6 @@ class UserService{
     // TODO: Error handling
   }
 
-  /// Returns the userdata mapped to the dbUser
-  static Future<DbUser> getCurrentDbUser(String userId) async {
-    final snapshot = await users.doc(userId).get();
-    Map<String, dynamic> data = snapshot.data()! as Map<String, dynamic>;
-    return DbUser(
-        isEmailPasswordAuth: data['isEmailPasswordAuth'],
-        uid: userId,
-        email: data['email'],
-        settings: data['settings'],
-        name: data['name']
-    );
-  }
-
   /// Replaces the db entry for the user
   static Future<void> putNewDbUser(DbUser user){
     user.settings ??= CustomSettings.getDefault();
@@ -67,7 +55,11 @@ class UserService{
   }
 
   /// Generates a snapshot stream of the user instance
-  static Stream<DbUser> userStream(String id) {
+  Stream<DbUser?> userStream(String? id) {
+
+    if(id == null) return Stream.value(null);
+
+    // ID is not null:
     final snapshot = FirebaseFirestore.instance.collection('users').doc(id).snapshots();
 
     return snapshot.map((data) {
@@ -83,11 +75,14 @@ class UserService{
 
       } else {
         ThemeMode _mode;
+
+        // map time of day
         TimeOfDay _notificationTime = TimeOfDay(
             hour:  data['settings']['pushNotificationSettings']['notificationTime']['hour'],
             minute:  data['settings']['pushNotificationSettings']['notificationTime']['minute']
         );
 
+        // chose theme mode
         switch(data['settings']['designSettings']['colorScheme']){
           case 'ThemeMode.system':
             _mode = ThemeMode.system;
