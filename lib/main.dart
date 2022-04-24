@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    _themeMode = ThemeMode.light;
+    _themeMode = ThemeMode.system;
     super.initState();
   }
 
