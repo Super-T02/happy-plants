@@ -31,6 +31,7 @@ class UserService{
           'email': user.email.trim(),
           'name': user.name?.trim(),
           'isEmailPasswordAuth': isEmailPasswordAuth,
+          'settings': CustomSettings.getDefault().toJSON(),
         });
       }
     }
