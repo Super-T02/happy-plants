@@ -6,9 +6,10 @@ import '../../../../../shared/widgets/util/lists/custom_list_group.dart';
 import '../../../../../shared/widgets/util/lists/custom_list_tile.dart';
 
 class DesignSettings extends StatelessWidget {
-  DesignSettings({Key? key, required this.user}) : super(key: key);
+  DesignSettings({Key? key, required this.user, required this.changeColorScheme}) : super(key: key);
   final GlobalKey _key = GlobalKey();
   final DbUser user;
+  final Function(ThemeMode newMode) changeColorScheme;
 
   /// Opens the dialog for changing the theme
   void openThemeDialog() {
@@ -24,19 +25,33 @@ class DesignSettings extends StatelessWidget {
         mode = user.settings!.designSettings.colorScheme!;
       }
 
-      return ChangeDesignRadioGroup(user: user);
+      return ChangeDesignRadioGroup(user: user, changeColorScheme: changeColorScheme,);
     });
+  }
+
+  String getCurrentColorScheme() {
+    switch(user.settings?.designSettings.colorScheme){
+      case ThemeMode.system:
+        return "Current: System";
+      case ThemeMode.light:
+        return "Current: Light";
+      case ThemeMode.dark:
+        return "Current: Dark";
+      default:
+        return " ";
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+
     return CustomListGroup(
       key: _key,
       title: 'Design',
       children: <Widget>[
         CustomListTile(
           title: 'Change Colorscheme',
-          subtitle: 'Current: Dark', // TODO: Dynamic
+          subtitle: getCurrentColorScheme(),
           leading: Icons.color_lens_outlined,
           onTap: openThemeDialog,
         ),

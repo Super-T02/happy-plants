@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:happy_plants/services/user.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import '../../../../../shared/models/settings.dart';
 import '../../../../../shared/widgets/dialogs/information_dialog.dart';
 import '../../../../../shared/widgets/forms/custom_radio_button.dart';
 
 class ChangeDesignRadioGroup extends StatefulWidget {
-  const ChangeDesignRadioGroup({Key? key, required this.user}) : super(key: key);
+  const ChangeDesignRadioGroup({Key? key, required this.user, required this.changeColorScheme}) : super(key: key);
   final DbUser user;
+  final Function(ThemeMode newMode) changeColorScheme;
 
   @override
   State<ChangeDesignRadioGroup> createState() => _ChangeDesignRadioGroupState();
@@ -18,15 +20,16 @@ class _ChangeDesignRadioGroupState extends State<ChangeDesignRadioGroup> {
 
   @override
   void initState() {
-    if(widget.user.settings?.designSettings.colorScheme != null) {
+    if(widget.user.settings!.designSettings.colorScheme == null) {
+      widget.user.settings!.designSettings = DesignSettingsModel();
       _mode = widget.user.settings!.designSettings.colorScheme!;
     } else {
-      widget.user.settings!.designSettings = DesignSettingsModel();
       _mode = widget.user.settings!.designSettings.colorScheme!;
     }
     super.initState();
   }
 
+  /// changes the mode of the current radio group
   changeMode(ThemeMode? newMode) {
     if(newMode != null) {
       setState(() {
@@ -35,14 +38,20 @@ class _ChangeDesignRadioGroupState extends State<ChangeDesignRadioGroup> {
     }
   }
 
+  /// Handles the submit of the dialog
+  void onSubmit() async {
+    widget.user.settings!.designSettings.colorScheme = _mode!;
+    // TODO: Loading
+    await UserService.putNewDbUser(widget.user);
+    widget.changeColorScheme(_mode!);
+  }
+
   @override
   Widget build(BuildContext context) {
     return InformationDialog(
       title: 'Chose your color theme',
       submitText: 'Ok',
-      onSubmit: () {
-        //TODO
-      },
+      onSubmit: onSubmit,
       children: [
         CustomRadioButton<ThemeMode>(
           value: ThemeMode.system,

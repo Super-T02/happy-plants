@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../shared/models/user.dart';
 import 'tabs/garden.dart';
 import 'tabs/timeline.dart';
 import 'tabs/options/options.dart';
 
 class Home extends StatefulWidget{
-  const Home({Key? key, required this.title}) : super(key: key);
+  const Home({Key? key, required this.title, required this.changeColorScheme}) : super(key: key);
   final String title;
+  final Function(ThemeMode newMode) changeColorScheme;
 
   @override
   State<Home> createState() => _HomeState();
@@ -29,7 +28,7 @@ class _HomeState extends State<Home> {
     final List<Widget> _widgetOptions = <Widget>[
       const Garden(),
       const Timeline(),
-      const Options(),
+      Options(changeColorScheme: widget.changeColorScheme,),
     ];
 
     return Scaffold(

@@ -28,8 +28,30 @@ void main() async {
 }
 
 /// Main (root) widget
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  ThemeMode? _themeMode;
+
+  @override
+  void initState() {
+    _themeMode = ThemeMode.light;
+    super.initState();
+  }
+
+
+
+  void changeColorScheme(ThemeMode newColorScheme) {
+    setState(() {
+      _themeMode = newColorScheme;
+      debugPrint(_themeMode.toString());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,13 +60,13 @@ class MyApp extends StatelessWidget {
       initialData: null,
       child: MaterialApp(
         title: 'Happy Plants',
-        themeMode: ThemeMode.system,
+        themeMode: _themeMode!,
         theme: MyAppTheme.lightTheme,
         darkTheme: MyAppTheme.darkTheme,
         navigatorKey: navigatorKey,
         initialRoute: '/',
         routes: {
-          '/': (context) => const Wrapper(),
+          '/': (context) => Wrapper(changeColorScheme: changeColorScheme,),
           '/newGarden': (context) => const NewGarden(),
           '/forgetPassword': (context) => const ForgetPassword(),
           '/signUp': (context) => const SignUpForm(),
@@ -53,4 +75,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 
