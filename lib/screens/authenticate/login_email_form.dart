@@ -4,8 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:happy_plants/services/authentication.dart';
 import 'package:happy_plants/shared/widgets/util/custom_button.dart';
 import 'package:happy_plants/shared/widgets/util/custom_form_field.dart';
-
-import '../../shared/utilities/util.dart';
+import 'package:fluttericon/font_awesome_icons.dart';
 
 /// Widget for the email login
 class EmailLoginForm extends StatefulWidget {
@@ -133,25 +132,31 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
           ),
 
           // Login Button
-          LoginButton(
+          CustomButton(
             onTap: () => _submit(),
             text: 'Sign In',
+            iconData: FontAwesome.login,
+            isListMode: true,
             isPrimary: true,
           ),
 
           const SizedBox(height: 16.0,),
           
           // Google Login
-          LoginButton(
+          CustomButton(
             onTap: () => _withGoogle(),
             text: 'With Google',
+            iconData: FontAwesome.google,
+            isListMode: true,
           ),
           
           // Sign Up Button
           const SizedBox(height: 16.0,),
-          LoginButton(
+          CustomButton(
             onTap: () => Navigator.pushNamed(context, '/signUp'),
             text: 'Register with Email',
+            iconData: Icons.mail_outline,
+            isListMode: true,
           ),
           
         ],

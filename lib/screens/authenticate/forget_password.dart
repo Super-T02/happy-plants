@@ -93,17 +93,21 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                 const SizedBox(height: 16.0,),
 
                 // Login Button
-                LoginButton(
+                CustomButton(
                   onTap: () => _submit(),
                   text: 'Reset Password',
                   isPrimary: true,
+                  iconData: Icons.lock_reset,
+                  isListMode: true,
                 ),
 
                 const SizedBox(height: 16.0,),
 
-                LoginButton(
+                CustomButton(
                   onTap: () => Navigator.of(context).pop(),
                   text: 'Abort',
+                  iconData: Icons.close_outlined,
+                  isListMode: true,
                 ),
               ],
             ),

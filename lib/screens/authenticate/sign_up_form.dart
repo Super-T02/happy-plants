@@ -1,6 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttericon/font_awesome_icons.dart';
 
 import '../../services/authentication.dart';
 import '../../shared/utilities/util.dart';
@@ -176,18 +177,22 @@ class _SignUpFormState extends State<SignUpForm> {
                   const SizedBox(height: 18.0,),
 
                   // Login Button
-                  LoginButton(
+                  CustomButton(
                     onTap: () => _submit(),
                     text: 'Sign Up',
                     isPrimary: true,
+                    iconData: Icons.check_outlined,
+                    isListMode: true,
                   ),
                   // Login Button
 
                   const SizedBox(height: 18.0,),
 
-                  LoginButton(
+                  CustomButton(
                     onTap: () => Navigator.of(context).pop(),
                     text: 'Abort',
+                    iconData: Icons.close_outlined,
+                    isListMode: true,
                   ),
                 ],
               ),

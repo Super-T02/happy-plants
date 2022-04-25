@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:happy_plants/config.dart';
 import 'package:happy_plants/services/user.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/utilities/util.dart';
@@ -70,7 +71,7 @@ class AuthService{
     CustomUser? user = _userFromFirebaseUser(result.user);
 
     // generate user in the Firestore
-    await UserService.generateUser(user);
+    await UserService.generateUser(user, false);
 
     Util.endLoading();
 
@@ -92,7 +93,7 @@ class AuthService{
       user?.name = name;
 
       // generate user in the Firestore
-      await UserService.generateUser(user);
+      await UserService.generateUser(user, true);
 
     } on FirebaseAuthException catch(e){
       if(e.code == 'weak-password') {
@@ -118,6 +119,7 @@ class AuthService{
       // TODO: Handle error
       return null;
     } finally {
+      modeInit = false;
       Util.endLoading();
     }
   }

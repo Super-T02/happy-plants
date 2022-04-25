@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:happy_plants/config.dart';
+import 'package:happy_plants/shared/models/user.dart';
+import 'package:provider/provider.dart';
 import 'tabs/garden.dart';
 import 'tabs/timeline.dart';
-import 'tabs/options.dart';
+import 'tabs/options/options.dart';
 
 class Home extends StatefulWidget{
   const Home({Key? key, required this.title}) : super(key: key);
@@ -13,12 +16,7 @@ class Home extends StatefulWidget{
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
-
-  static const List<Widget> _widgetOptions = <Widget>[
-    Garden(),
-    Timeline(),
-    Options(),
-  ];
+  bool loading = true;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -28,6 +26,23 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final dbUser = Provider.of<DbUser?>(context);
+
+    // Reloads until the db user is loaded
+    if(!modeInit) {
+      Future.delayed(Duration.zero,() {
+        if(dbUser != null && dbUser.settings != null){
+          currentTheme.changeThemeMode(dbUser.settings!.designSettings.colorScheme!);
+          modeInit = true;
+        }
+      });
+    }
+
+    final List<Widget> _widgetOptions = <Widget>[
+      const Garden(),
+      const Timeline(),
+      const Options(),
+    ];
 
     return Scaffold(
       body: Center(

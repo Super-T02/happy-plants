@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:happy_plants/screens/authenticate/sign_in.dart';
 import 'package:happy_plants/screens/home/home.dart';
+import 'package:happy_plants/services/user.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:provider/provider.dart';
 
@@ -17,8 +18,13 @@ class Wrapper extends StatelessWidget {
     if(user == null){
       return const SignIn(title: 'Happy Plants');
     } else {
-      return const Home(title: 'Happy Plants');
+      return StreamProvider<DbUser?>.value(
+        value: UserService().userStream(user.uid),
+        initialData: null,
+        child: const Home(
+          title: 'Happy Plants',
+        ),
+      );
     }
-
   }
 }
