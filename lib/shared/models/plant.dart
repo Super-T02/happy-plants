@@ -61,7 +61,7 @@ class IntervalDateTime{
   Map toJSON(){
     return {
       "interval":interval,
-      "lastTime":lastTime?.toUtc(),
+      "lastTime":lastTime,
     };
   }
 }
@@ -76,6 +76,8 @@ class Fertilize extends IntervalDateTime{
   Map toJSON(){
     return {
       "amount": amount,
+      "interval":interval,
+      "lastTime":lastTime,
     };
   }
 }
@@ -90,6 +92,8 @@ class Watering extends IntervalDateTime{
   Map toJSON(){
     return {
       "waterAmount":waterAmount,
+      "interval":interval,
+      "lastTime":lastTime,
     };
   }
 }

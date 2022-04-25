@@ -15,6 +15,7 @@ class CustomFormField extends StatefulWidget {
         required this.maxLines,
         required this.validator,
         this.suffixIcon,
+        this.onChange,
       })
       : super(key: key);
 
@@ -27,6 +28,7 @@ class CustomFormField extends StatefulWidget {
   final TextEditingController controller;
   final int maxLines;
   final FormFieldValidator<String> validator;
+  final Function(String? value)? onChange;
 
   @override
   State<CustomFormField> createState() => _CustomFormFieldState();
@@ -85,6 +87,9 @@ class _CustomFormFieldState extends State<CustomFormField> {
             keyboardType: widget.textInputType,
             obscureText: widget.obscureText,
             style: Theme.of(context).textTheme.bodyText1,
+            onChanged: (String? value){
+              if(widget.onChange != null) widget.onChange!(value);
+            },
             // Decoration
             decoration: InputDecoration(
                 focusColor: AppColors.accent1,

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:happy_plants/shared/models/plant.dart';
 import 'package:happy_plants/shared/models/user.dart';
+import '../shared/utilities/sizes.dart';
 
 class PlantService {
 
@@ -35,10 +36,10 @@ class PlantService {
       'icon': newPlant.icon,
       'name': newPlant.name,
       'plantSize': plantSize.toJSON(),
-      'potSize': newPlant.potSize,
+      'potSize': SizeHelper.getStringFromSize(newPlant.potSize),
       'repot': repot.toJSON(),
       'spray': spray.toJSON(),
-      'sunDemand': newPlant.sunDemand,
+      'sunDemand': SizeHelper.getStringFromSize(newPlant.sunDemand),
       'temperature': newPlant.temperature,
       'type': newPlant.type,
       'watering': watering.toJSON(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:happy_plants/shared/utilities/app_colors.dart';
 import 'package:happy_plants/shared/utilities/custom_button.dart';
 
 class CustomDatePicker extends StatefulWidget {
@@ -20,12 +21,30 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
       initialDate: selectedDate, // Refer step 1
       firstDate: DateTime(2021),
       lastDate: DateTime(2025),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: AppColors.accent1, // header background color
+              onPrimary: AppColors.lightWhiteHighlight, // header text color
+              onSurface: Theme.of(context).textTheme.bodyText1!.color!, // body text color
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                primary: AppColors.accent1, // button text color
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
       });
     }
+    widget.onSubmit(selectedDate);
   }
 
   Widget build(BuildContext context) {

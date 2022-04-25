@@ -30,6 +30,7 @@ class _CustomAccordionState extends State<CustomAccordion> {
           children: widget.childrenWidgets,
           iconColor: AppColors.darkGrey,
         ),
+        const SizedBox(height: 10)
       ],
     );
 
