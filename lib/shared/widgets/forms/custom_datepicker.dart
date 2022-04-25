@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:happy_plants/shared/utilities/custom_button.dart';
 
 class CustomDatePicker extends StatefulWidget {
   const CustomDatePicker({Key? key}) : super(key: key);
@@ -25,22 +26,27 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
   }
 
   Widget build(BuildContext context) {
+    TextTheme textTheme = Theme.of(context).textTheme;
+    InputDecorationTheme inputDecorationTheme = Theme.of(context).inputDecorationTheme;
+    ThemeData theme = Theme.of(context);
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Text(
-          "${selectedDate.toLocal()}".split(' ')[0],
-          style: const TextStyle(fontSize: 55, fontWeight: FontWeight.bold),
+          "Last time watered: ",
+          style: textTheme.bodyText1,
         ),
         const SizedBox(
-          height: 20.0,
+          width: 20.0,
         ),
         ElevatedButton(
           onPressed: () => _selectDate(context), // Refer step 3
-          child: const Text(
-            'Select date',
+          style: CustomButtonStyle.buttonStyle,
+          child: Text(
+            "${selectedDate.toLocal()}".split(' ')[0],
             style:
-            TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            textTheme.bodyText1,
           ),
         ),
       ],
