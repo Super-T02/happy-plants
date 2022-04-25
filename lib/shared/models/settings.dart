@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 /// Main model for the settings. It is the top level Object for all Settings
 /// defined bellow
-class Settings{
-  DesignSettings designSettings;
-  VacationSettings vacationSettings;
-  PushNotificationSettings pushNotificationSettings;
+class CustomSettings{
+  DesignSettingsModel designSettings;
+  VacationSettingsModel vacationSettings;
+  PushNotificationSettingsModel pushNotificationSettings;
 
 
-  Settings({
+  CustomSettings({
     required this.designSettings,
     required this.vacationSettings,
     required this.pushNotificationSettings,
@@ -16,18 +16,18 @@ class Settings{
 
   Map toJSON(){
     return {
-      "designSettings": designSettings.toJSON,
-      "vacationSettings": vacationSettings.toJSON,
-      "pushNotificationSettings": pushNotificationSettings.toJSON,
+      "designSettings": designSettings.toJSON(),
+      "vacationSettings": vacationSettings.toJSON(),
+      "pushNotificationSettings": pushNotificationSettings.toJSON(),
     };
   }
 
   /// Generates a default Object
-  static Settings getDefault() {
-    return Settings(
-      designSettings: DesignSettings(),
-      vacationSettings: VacationSettings(),
-      pushNotificationSettings: PushNotificationSettings(),
+  static CustomSettings getDefault() {
+    return CustomSettings(
+      designSettings: DesignSettingsModel(),
+      vacationSettings: VacationSettingsModel(),
+      pushNotificationSettings: PushNotificationSettingsModel(),
     );
   }
 }
@@ -36,22 +36,22 @@ class Settings{
 
 /// Settings related to the design:
 /// - Colorscheme: Dark, Light or System mode
-class DesignSettings extends SettingsInterface{
-  ColorSchemes? colorScheme;
+class DesignSettingsModel extends SettingsInterface{
+  ThemeMode? colorScheme;
 
-  DesignSettings({
-    this.colorScheme = ColorSchemes.system,
+  DesignSettingsModel({
+    this.colorScheme = ThemeMode.system,
   });
 
   Map toJSON() {
     return {
-      "colorScheme": colorScheme.toString()
+      "colorScheme":  colorScheme.toString()
     };
   }
 
   @override
   void setDefault() {
-    colorScheme = ColorSchemes.system;
+    colorScheme = ThemeMode.system;
   }
 }
 
@@ -61,11 +61,11 @@ class DesignSettings extends SettingsInterface{
 /// messages and if implemented a mail to the given contact person will be sent:
 /// - enabled (default: false)
 /// - until (default: 5 days)
-class VacationSettings extends SettingsInterface{
+class VacationSettingsModel extends SettingsInterface{
   bool? enabled;
   DateTime? duration; // Duration in days
 
-  VacationSettings({
+  VacationSettingsModel({
     this.enabled = false,
     duration = 5
   }){
@@ -92,11 +92,11 @@ class VacationSettings extends SettingsInterface{
 /// time and disable or enable notification:
 /// - enabled (default: true)
 /// - notificationTime (default: 9:00 am) -> Time when the user will be notified
-class PushNotificationSettings extends SettingsInterface{
+class PushNotificationSettingsModel extends SettingsInterface{
   bool? enabled;
   TimeOfDay? notificationTime;
 
-  PushNotificationSettings({
+  PushNotificationSettingsModel({
     this.enabled = true,
     this.notificationTime = const TimeOfDay(hour: 9, minute: 0),
   });
@@ -104,7 +104,7 @@ class PushNotificationSettings extends SettingsInterface{
   Map toJSON(){
     return {
       "enabled": enabled,
-      "duration": {
+      "notificationTime": {
         "hour": notificationTime?.hour,
         "minute": notificationTime?.minute,
       },
@@ -117,16 +117,6 @@ class PushNotificationSettings extends SettingsInterface{
     notificationTime = const TimeOfDay(hour: 9, minute: 0);
   }
 }
-
-
-
-/// Enum managing the different possibilities for the color schemes
-enum ColorSchemes{
-  system,
-  dark,
-  light
-}
-
 
 
 /// Abstract class defining the main structure for the setting objects
