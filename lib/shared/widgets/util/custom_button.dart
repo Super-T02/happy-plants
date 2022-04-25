@@ -6,6 +6,8 @@ class CustomButton extends StatelessWidget {
         Key? key,
         required this.onTap,
         required this.text,
+        this.iconData,
+        this.isListMode = false,
         this.isPrimary = false,
         this.isDanger = false,
       })
@@ -13,6 +15,8 @@ class CustomButton extends StatelessWidget {
 
   final String text;
   final Function() onTap;
+  final IconData? iconData;
+  final bool isListMode;
   final bool isPrimary;
   final bool isDanger;
 
@@ -27,7 +31,9 @@ class CustomButton extends StatelessWidget {
 
     Color? color = buttonColorScheme.secondary;
     Color? textColor = buttonColorScheme.onSecondary;
+    Widget innerChild;
 
+    // Choose the right color
     if(isDanger) {
       color = theme.errorColor;
       textColor = buttonColorScheme.onPrimary;
@@ -35,6 +41,61 @@ class CustomButton extends StatelessWidget {
     if(isPrimary) {
       color = buttonColorScheme.primary;
       textColor = buttonColorScheme.onPrimary;
+    }
+
+    // Choose icon or no icon
+    if(iconData != null) {
+
+      // Is list mode enabled
+      if(isListMode) {
+        innerChild = Row(
+          children: <Widget>[
+
+            Expanded(
+              flex: 4,
+              child: Icon(iconData, color: textColor),
+            ),
+
+            Expanded(
+              flex: 6,
+              child: Text(
+                  text,
+                  style: TextStyle(
+                    color: textColor,
+                  )
+              ),
+            ),
+          ],
+        );
+
+      } else {
+
+        innerChild = Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(iconData, color: textColor),
+            const SizedBox(width: 16.0),
+            Text(
+                text,
+                style: TextStyle(
+                  color: textColor,
+                )
+            ),
+          ],
+        );
+      }
+
+
+
+    } else {
+      innerChild = Center(
+        child: Text(
+            text,
+            style: TextStyle(
+              color: textColor,
+            )
+        ),
+      );
     }
 
       return InkWell(
@@ -52,14 +113,7 @@ class CustomButton extends StatelessWidget {
           decoration: BoxDecoration(
               color: color,
               borderRadius: const BorderRadius.all(Radius.circular(10))),
-          child: Center(
-            child: Text(
-                text,
-                style: TextStyle(
-                  color: textColor,
-                )
-            ),
-          ),
+          child: innerChild,
         ),
       );
     }

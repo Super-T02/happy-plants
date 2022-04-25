@@ -97,6 +97,8 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   onTap: () => _submit(),
                   text: 'Reset Password',
                   isPrimary: true,
+                  iconData: Icons.lock_reset,
+                  isListMode: true,
                 ),
 
                 const SizedBox(height: 16.0,),
@@ -104,6 +106,8 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                 CustomButton(
                   onTap: () => Navigator.of(context).pop(),
                   text: 'Abort',
+                  iconData: Icons.close_outlined,
+                  isListMode: true,
                 ),
               ],
             ),
