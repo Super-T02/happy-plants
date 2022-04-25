@@ -1,7 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:happy_plants/shared/widgets/forms/custom_dropdown.dart';
 import 'package:happy_plants/shared/widgets/util/custom_accordion.dart';
-import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/plant_size_picker.dart';
+import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/int_picker.dart';
 import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/type_picker.dart';
 import 'package:happy_plants/shared/utilities/sizes.dart';
 import 'package:happy_plants/shared/widgets/forms/custom_datepicker.dart';
@@ -43,6 +44,20 @@ class _NewPlantState extends State<NewPlant> {
   TextEditingController plantSizeBeginningController = TextEditingController();
   TextEditingController plantSizeEndController = TextEditingController();
 
+  TextEditingController wateringAmountController = TextEditingController();
+  TextEditingController wateringIntervalController = TextEditingController();
+  TextEditingController sprayingIntervalController = TextEditingController();
+  TextEditingController fertilizeAmountController = TextEditingController();
+  TextEditingController fertilizeIntervalController = TextEditingController();
+
+  //TODO maybe convert to DateTime? and check for usage
+  //variables for the pickers & their callback functions
+  DateTime wateringLastTime = DateTime.now();
+  DateTime sprayPlantsLastTime = DateTime.now();
+  DateTime fertilizeLastTime = DateTime.now();
+  DateTime repotLastTime = DateTime.now();
+  DateTime dustOffLastTime = DateTime.now();
+
   void pictureChanged(pageNumber, reason) {
     pictureName = Plant.allFiles[pageNumber];
   }
@@ -59,7 +74,10 @@ class _NewPlantState extends State<NewPlant> {
             gardenID: garden.id,
             type: plantTypeController.text,
             plantSize: PlantSize(begin: int.parse(plantSizeBeginningController.text), now: int.parse(plantSizeEndController.text)),
-            //todo: plant size isn't saved
+            watering: Watering(waterAmount: int.parse(wateringAmountController.text), interval: int.parse(wateringIntervalController.text), lastTime: wateringLastTime),
+            spray: IntervalDateTime(interval: int.parse(sprayingIntervalController.text), lastTime: sprayPlantsLastTime),
+            fertilize: Fertilize(amount: int.parse(fertilizeAmountController.text), interval: int.parse(fertilizeIntervalController.text), lastTime: fertilizeLastTime),
+            sunDemand:
           ), user);
 
       Navigator.pop(context);
@@ -121,22 +139,40 @@ class _NewPlantState extends State<NewPlant> {
 
                       //Plant size
                       CustomAccordion(heading: 'Plant Size', description: 'beginning, end', childrenWidgets: [
-                        PlantSizePicker(plantSizeController: plantSizeBeginningController, heading: 'Plant size beginning (cm)', hint: 'Please enter the size your plant had in the beginning'),
-                        PlantSizePicker(plantSizeController: plantSizeEndController, heading: 'Plant size end (cm)', hint: 'Please enter the size your plant has right now'),
+                        IntPicker(plantSizeController: plantSizeBeginningController, heading: 'Plant size beginning (cm)', hint: 'Enter old size of plant'),
+                        IntPicker(plantSizeController: plantSizeEndController, heading: 'Plant size now (cm)', hint: 'Enter recent size of plant'),
                         const SizedBox(height: 10)
                       ]),
                       //watering
-                      const CustomAccordion(heading: 'Watering', description: 'amount, interval, lastTime', childrenWidgets: [SizePicker(title: 'beginning')]),
+                      CustomAccordion(heading: 'Watering', description: 'amount, interval, lastTime', childrenWidgets: [
+                        IntPicker(plantSizeController: wateringAmountController, heading: 'Water amount needed', hint: 'Water needed by plant in ml / interval'),
+                        IntPicker(plantSizeController: wateringIntervalController, heading: 'Interval between watering', hint: 'Enter number of days that divide watering'),
+                        CustomDatePicker(description: 'Last time watered:', onSubmit: (newDate){wateringLastTime = newDate;})
+                      ]),
                       //spray
-                      const CustomAccordion(heading: 'Spray plants', description: 'interval, lastTime', childrenWidgets: [CustomDatePicker()]),
+                      CustomAccordion(heading: 'Spray plants', description: 'interval, lastTime', childrenWidgets: [
+                        IntPicker(plantSizeController: sprayingIntervalController, heading: 'Interval between spraying', hint: 'Enter number of days that divide spraying'),
+                        CustomDatePicker(description: 'Last time sprayed:', onSubmit: (newDate){sprayPlantsLastTime= newDate;}),
+                      ]),
                       //fertilize
-                      const CustomAccordion(heading: 'Fertilize', description: 'amount, interval, lastTime', childrenWidgets: [SizePicker(title: 'beginning')]),
+                      CustomAccordion(heading: 'Fertilize', description: 'amount, interval, lastTime', childrenWidgets: [
+                        IntPicker(plantSizeController: fertilizeAmountController, heading: 'Fertilize amount needed', hint: 'Amount of fertilizer needed in mg / interval'),
+                        IntPicker(plantSizeController: fertilizeIntervalController, heading: 'Interval between fertilizing', hint: 'Enter number of days that divide fertilizing'),
+                        CustomDatePicker(description: 'Last time fertilized:', onSubmit: (newDate){fertilizeLastTime= newDate;})
+                      ]),
                       //environment
-                      const CustomAccordion(heading: 'Environment', description: 'temperature, sun-need', childrenWidgets: [SizePicker(title: 'beginning')]),
+                      CustomAccordion(heading: 'Environment', description: 'temperature, sun-need', childrenWidgets: [
+                        IntPicker(plantSizeController: fertilizeAmountController, heading: 'Favourite temperature of plant', hint: 'Enter value of plants prefered temperature in °C'),
+                        CustomDropDown(menuItems: ['xs', ], title: title, onChange: onChange, hint: hint)
+                      ]),
                       //repot
-                      const CustomAccordion(heading: 'Reopt', description: 'interval, lastTime', childrenWidgets: [SizePicker(title: 'beginning')]),
+                      CustomAccordion(heading: 'Repot', description: 'interval, lastTime', childrenWidgets: [
+                        CustomDatePicker(description: 'Last time repoted:', onSubmit: (newDate){repotLastTime= newDate;})
+                      ]),
                       //dust off
-                      const CustomAccordion(heading: 'Dust off', description: 'interval, lastTime', childrenWidgets: [SizePicker(title: 'beginning')]),
+                      CustomAccordion(heading: 'Dust off', description: 'interval, lastTime', childrenWidgets: [
+                        CustomDatePicker(description: 'Last time dusted off:', onSubmit: (newDate){dustOffLastTime= newDate;})
+                      ]),
 
 
                       // Buttons

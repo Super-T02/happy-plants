@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:happy_plants/shared/utilities/custom_button.dart';
 
 class CustomDatePicker extends StatefulWidget {
-  const CustomDatePicker({Key? key}) : super(key: key);
+  const CustomDatePicker({Key? key, required this.description, required this.onSubmit}) : super(key: key);
+
+  final String description;
+  final Function(DateTime newDate) onSubmit;
 
   @override
   State<CustomDatePicker> createState() => _CustomDatePickerState();
@@ -15,7 +18,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate, // Refer step 1
-      firstDate: DateTime(2000),
+      firstDate: DateTime(2021),
       lastDate: DateTime(2025),
     );
     if (picked != null && picked != selectedDate) {
@@ -31,14 +34,11 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
     ThemeData theme = Theme.of(context);
 
     return Row(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
-          "Last time watered: ",
+          widget.description,
           style: textTheme.bodyText1,
-        ),
-        const SizedBox(
-          width: 20.0,
         ),
         ElevatedButton(
           onPressed: () => _selectDate(context), // Refer step 3

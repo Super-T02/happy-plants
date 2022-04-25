@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 
 import '../../../../../../shared/widgets/util/custom_form_field.dart';
 
-class PlantSizePicker extends StatefulWidget {
-  const PlantSizePicker({Key? key, required this.plantSizeController, required this.heading, required this.hint}) : super(key: key);
+class IntPicker extends StatefulWidget {
+  const IntPicker({Key? key, required this.plantSizeController, required this.heading, required this.hint}) : super(key: key);
 
   final TextEditingController plantSizeController;
   final String heading;
   final String hint;
 
   @override
-  State<PlantSizePicker> createState() => _PlantSizePickerState();
+  State<IntPicker> createState() => _IntPickerState();
 }
 
-class _PlantSizePickerState extends State<PlantSizePicker> {
+class _IntPickerState extends State<IntPicker> {
 
   // Form controllers
   TextEditingController plantNameController = TextEditingController();

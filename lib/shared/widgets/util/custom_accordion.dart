@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:happy_plants/shared/utilities/app_colors.dart';
 import 'package:happy_plants/shared/utilities/custom_text_styles.dart';
 
 class CustomAccordion extends StatefulWidget {
@@ -26,8 +27,8 @@ class _CustomAccordionState extends State<CustomAccordion> {
           title: Text(widget.heading, style: theme.textTheme.headline3),
           subtitle: Text(widget.description, style: theme.textTheme.subtitle2),
           tilePadding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-          children: widget.childrenWidgets
-
+          children: widget.childrenWidgets,
+          iconColor: AppColors.darkGrey,
         ),
       ],
     );

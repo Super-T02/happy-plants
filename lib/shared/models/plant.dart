@@ -53,15 +53,15 @@ class Plant{
 
 
 class IntervalDateTime{
-  IntervalDateTime({required this.interval, required this.lastTime});
+  IntervalDateTime({this.interval, this.lastTime});
 
-  int interval; // in days
-  DateTime lastTime;
+  int? interval; // in days
+  DateTime? lastTime;
 
   Map toJSON(){
     return {
       "interval":interval,
-      "lastTime":lastTime.toUtc(),
+      "lastTime":lastTime?.toUtc(),
     };
   }
 }
