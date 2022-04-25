@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_plants/services/user.dart';
 import 'package:happy_plants/shared/models/user.dart';
@@ -11,12 +10,11 @@ import '../../../../../shared/widgets/util/lists/custom_list_tile.dart';
 
 
 class AccountSettings extends StatelessWidget {
-  AccountSettings({Key? key, required this.user, required this.triggerReload}) : super(key: key);
+  AccountSettings({Key? key, required this.user}) : super(key: key);
   final DbUser user;
   final AuthService _auth = AuthService();
   final GlobalKey _key = GlobalKey();
   final userControl = TextEditingController();
-  final Function triggerReload;
 
   /// Opens the dialog for validating a logout
   void openLogoutDialog() {
@@ -38,10 +36,10 @@ class AccountSettings extends StatelessWidget {
           onSubmit: () async {
             DbUser newUser = user;
             newUser.name = userControl.text.trim();
-            await UserService.putNewDbUser(newUser).then((value) => triggerReload());
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Deleted')), // TODO: refresh
-            );
+            await UserService.putNewDbUser(newUser);
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   const SnackBar(content: Text('Deleted')), // TODO: refresh
+            // );
           },
           children: <Widget>[
             CustomFormField(

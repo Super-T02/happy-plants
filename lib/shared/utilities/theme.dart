@@ -41,6 +41,18 @@ class MyAppTheme {
       enableFeedback: true,
     ),
 
+
+    // Radio Button Theme
+    radioTheme: RadioThemeData(
+      fillColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
+        if (states.contains(MaterialState.selected) || states.contains(MaterialState.focused)) {
+          return AppColors.accent1;
+        } else {
+          return AppColors.darkGrey;
+        }
+      }),
+    ),
+
     // Input styles
     inputDecorationTheme: InputDecorationTheme(
       labelStyle: CTextStyles.textFieldHeadingLight,
@@ -106,6 +118,16 @@ class MyAppTheme {
       enableFeedback: true,
     ),
 
+    // Radio Button Theme
+    radioTheme: RadioThemeData(
+      fillColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
+        if (states.contains(MaterialState.selected) || states.contains(MaterialState.focused)) {
+          return AppColors.accent1;
+        } else {
+          return AppColors.grayShade;
+        }
+      }),
+    ),
 
     //Input theme
     inputDecorationTheme: InputDecorationTheme(

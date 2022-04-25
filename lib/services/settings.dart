@@ -1,55 +1,43 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:happy_plants/shared/models/user.dart';
+import 'package:flutter/material.dart';
 
-// class GardenService {
-//
-//   /// Adds a new garden
-//   static Future<void> addGarden(AddGarden newGarden, CustomUser user) {
-//     CollectionReference gardens = getGardenCollectionRef(user);
-//
-//     return gardens.add({
-//       'icon': newGarden.icon,
-//       'name': newGarden.name
-//     });
-//     // TODO: Error handling
-//   }
-//
-//   /// Updates a garden based on its gardenID
-//   static Future<void> patchGarden(String gardenID, String fieldName, dynamic updatedValue, CustomUser user) {
-//     DocumentReference garden = getGardenDocRef(gardenID, user);
-//
-//     return garden.update({
-//       fieldName: updatedValue
-//     });
-//     // TODO: Error handling
-//   }
-//
-//   /// Deletes a garden based on its gardenID
-//   static Future<void> deleteGarden(String gardenID, CustomUser user) {
-//     DocumentReference garden = getGardenDocRef(gardenID, user);
-//
-//     return garden.delete(); // TODO: Error handling
-//   }
-//
-//   /// Get the ref on a garden instance based on the user and garden id
-//   static DocumentReference getGardenDocRef(String gardenID, CustomUser user) {
-//     return FirebaseFirestore.instance
-//         .collection('users').doc(user.uid)
-//         .collection('gardens').doc(gardenID);
-//   }
-//
-//   /// Get the ref on the garden collection based on the user id
-//   static CollectionReference getGardenCollectionRef(CustomUser user) {
-//     return FirebaseFirestore.instance
-//         .collection('users').doc(user.uid)
-//         .collection('gardens');
-//   }
-//
-//   /// Generates a snapshot stream of the garden instances
-//   static Stream<QuerySnapshot> gardenStream(CustomUser user) {
-//     return FirebaseFirestore.instance
-//         .collection('users').doc(user.uid)
-//         .collection('gardens')
-//         .snapshots();
-//   }
-// }
+import '../config.dart';
+
+class SettingsService with ChangeNotifier {
+
+  static const String themeModeKey = 'settings_design_theme_mode';
+
+  /// Safe the theme mode locally at the device
+  static void setCurrentThemeMode(ThemeMode newMode) {
+    // set value
+    sharedPreferences!.setString(themeModeKey, newMode.toString());
+  }
+
+
+  /// Get the theme mode locally at the device
+  static ThemeMode getCurrentThemeMode() {
+    ThemeMode? mode = getThemeModeFromString(sharedPreferences!.getString(themeModeKey));
+
+    mode ??= ThemeMode.system;
+
+    return mode;
+  }
+
+  /// Maps the string for a theme mode to the fitting theme mode
+  /// Requires:
+  /// - String?: Theme mode as String
+  ///
+  /// Returns:
+  /// - ThemeMode object or null (if it doesn't exist)
+  static ThemeMode? getThemeModeFromString(String? stringThemeMode){
+    switch(stringThemeMode){
+      case 'ThemeMode.system':
+        return ThemeMode.system;
+      case 'ThemeMode.light':
+        return ThemeMode.light;
+      case 'ThemeMode.dark':
+        return ThemeMode.dark;
+      default:
+        return null;
+    }
+  }
+}

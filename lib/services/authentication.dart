@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:happy_plants/config.dart';
 import 'package:happy_plants/services/user.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/utilities/util.dart';
@@ -118,6 +119,7 @@ class AuthService{
       // TODO: Handle error
       return null;
     } finally {
+      modeInit = false;
       Util.endLoading();
     }
   }
