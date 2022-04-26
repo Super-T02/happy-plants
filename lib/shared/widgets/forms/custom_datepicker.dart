@@ -44,6 +44,12 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
         selectedDate = picked;
       });
     }
+    //TODO: catch case of nothing selected
+    else if (picked == null){
+      setState(() {
+        selectedDate = DateTime.now();
+      });
+    }
     widget.onSubmit(selectedDate);
   }
 

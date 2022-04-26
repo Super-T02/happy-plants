@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_plants/shared/widgets/forms/custom_dropdown.dart';
@@ -49,7 +51,7 @@ class _NewPlantState extends State<NewPlant> {
   TextEditingController fertilizeAmountController = TextEditingController();
   TextEditingController fertilizeIntervalController = TextEditingController();
   TextEditingController temperatureController = TextEditingController();
-  TextEditingController reportIntervalController = TextEditingController();
+  TextEditingController repotIntervalController = TextEditingController();
   TextEditingController dustOffIntervalController = TextEditingController();
 
   //variables for the pickers & their callback functions
@@ -63,33 +65,252 @@ class _NewPlantState extends State<NewPlant> {
 
   //marker for error info messages
   bool? plantSizeCorrect;
-  //TODO: für alle akk
+  bool? wateringCorrect;
+  bool? sprayPlantsCorrect;
+  bool? fertilizeCorrect;
+  bool? environmentCorrect;
+  bool? repotCorrect;
+  bool? dustOffCorrect;
 
   @override
   void initState() {
     plantSizeCorrect = true;
+    wateringCorrect = true;
+    sprayPlantsCorrect = true;
+    fertilizeCorrect = true;
+    environmentCorrect = true;
+    repotCorrect = true;
+    dustOffCorrect = true;
     super.initState();
   }
 
-  void plantSizeOnChanged(){
-    if(plantSizeBeginningController.text.isEmpty && plantSizeEndController.text.isEmpty && potSize != null){
-      setState(() {
-        plantSizeCorrect = false;
-        potSize = potSize;
-      });
-    }
-    //TODO: check all cases, also true case
+  //callback functions for ifs to set the correctness of the accordions (code reducing)
+  void plantSizeCorrectCallback(bool setValue){
+    setState(() {
+      plantSizeCorrect = setValue;
+    });
   }
-  //TODO for every accordion
+
+  void wateringCorrectCallback(bool setValue){
+    setState(() {
+      wateringCorrect = setValue;
+    });
+  }
+
+  void sprayPlantsCorrectCallback(bool setValue){
+    setState(() {
+      sprayPlantsCorrect = setValue;
+    });
+  }
+
+  void fertilizeCorrectCallback(bool setValue){
+    setState(() {
+      fertilizeCorrect = setValue;
+    });
+  }
+
+  void environmentCorrectCallback(bool setValue){
+    setState(() {
+      environmentCorrect = setValue;
+    });
+  }
+
+  void repotCorrectCallback(bool setValue){
+    setState(() {
+      repotCorrect = setValue;
+    });
+  }
+
+  void dustOffCorrectCallback(bool setValue){
+    setState(() {
+      dustOffCorrect = setValue;
+    });
+  }
+
+  ///check plant size accordion
+  void plantSizeOnChanged(){
+    if(plantSizeBeginningController.text.isEmpty && plantSizeEndController.text.isEmpty && potSize == null){
+      plantSizeCorrectCallback(true);
+    }
+    else if(plantSizeBeginningController.text.isNotEmpty && plantSizeEndController.text.isNotEmpty && potSize != null){
+      plantSizeCorrectCallback(true);
+    }
+    else if(plantSizeBeginningController.text.isEmpty && plantSizeEndController.text.isEmpty && potSize != null){
+      plantSizeCorrectCallback(false);
+    }
+    else if(plantSizeBeginningController.text.isEmpty && plantSizeEndController.text.isNotEmpty && potSize == null){
+      plantSizeCorrectCallback(false);
+    }
+    else if(plantSizeBeginningController.text.isNotEmpty && plantSizeEndController.text.isEmpty && potSize == null){
+      plantSizeCorrectCallback(false);
+    }
+    else if(plantSizeBeginningController.text.isEmpty && plantSizeEndController.text.isNotEmpty && potSize != null){
+      plantSizeCorrectCallback(false);
+    }
+    else if(plantSizeBeginningController.text.isNotEmpty && plantSizeEndController.text.isEmpty && potSize != null){
+      plantSizeCorrectCallback(false);
+    }
+    else if(plantSizeBeginningController.text.isNotEmpty && plantSizeEndController.text.isNotEmpty && potSize == null){
+      plantSizeCorrectCallback(false);
+    }
+  }
+
+  ///check watering accordion correctness
+  void wateringOnChanged(){
+    if(wateringAmountController.text.isEmpty && wateringIntervalController.text.isEmpty && wateringLastTime == null){
+      wateringCorrectCallback(true);
+    }
+    else if(wateringAmountController.text.isNotEmpty && wateringIntervalController.text.isNotEmpty && wateringLastTime != null){
+      wateringCorrectCallback(true);
+    }
+    else if(wateringAmountController.text.isEmpty && wateringIntervalController.text.isEmpty && wateringLastTime != null){
+      wateringCorrectCallback(false);
+    }
+    else if(wateringAmountController.text.isEmpty && wateringIntervalController.text.isNotEmpty && wateringLastTime == null){
+      wateringCorrectCallback(false);
+    }
+    else if(wateringAmountController.text.isNotEmpty && wateringIntervalController.text.isEmpty && wateringLastTime == null){
+      wateringCorrectCallback(false);
+    }
+    else if(wateringAmountController.text.isEmpty && wateringIntervalController.text.isNotEmpty && wateringLastTime != null){
+      wateringCorrectCallback(false);
+    }
+    else if(wateringAmountController.text.isNotEmpty && wateringIntervalController.text.isEmpty && wateringLastTime != null){
+      wateringCorrectCallback(false);
+    }
+    else if(wateringAmountController.text.isNotEmpty && wateringIntervalController.text.isNotEmpty && wateringLastTime == null){
+      wateringCorrectCallback(false);
+    }
+  }
+
+  ///check sprayPlants accordion correctness
+  void sprayPlantsOnChanged(){
+    if(sprayingIntervalController.text.isEmpty && sprayPlantsLastTime == null){
+      sprayPlantsCorrectCallback(true);
+    }
+    else if(sprayingIntervalController.text.isNotEmpty && sprayPlantsLastTime != null){
+      sprayPlantsCorrectCallback(true);
+    }
+    else if(sprayingIntervalController.text.isEmpty && sprayPlantsLastTime != null){
+      sprayPlantsCorrectCallback(false);
+    }
+    else if(sprayingIntervalController.text.isNotEmpty && sprayPlantsLastTime == null){
+      sprayPlantsCorrectCallback(false);
+    }
+  }
+
+  ///check fertilize accordion correctness
+  void fertilizeOnChanged(){
+    if(fertilizeAmountController.text.isEmpty && fertilizeIntervalController.text.isEmpty && fertilizeLastTime == null){
+      fertilizeCorrectCallback(true);
+    }
+    else if(fertilizeAmountController.text.isNotEmpty && fertilizeIntervalController.text.isNotEmpty && fertilizeLastTime != null){
+      fertilizeCorrectCallback(true);
+    }
+    else if(fertilizeAmountController.text.isEmpty && fertilizeIntervalController.text.isEmpty && fertilizeLastTime != null){
+      fertilizeCorrectCallback(false);
+    }
+    else if(fertilizeAmountController.text.isEmpty && fertilizeIntervalController.text.isNotEmpty && fertilizeLastTime == null){
+      fertilizeCorrectCallback(false);
+    }
+    else if(fertilizeAmountController.text.isNotEmpty && fertilizeIntervalController.text.isEmpty && fertilizeLastTime == null){
+      fertilizeCorrectCallback(false);
+    }
+    else if(fertilizeAmountController.text.isEmpty && fertilizeIntervalController.text.isNotEmpty && fertilizeLastTime != null){
+      fertilizeCorrectCallback(false);
+    }
+    else if(fertilizeAmountController.text.isNotEmpty && fertilizeIntervalController.text.isEmpty && fertilizeLastTime != null){
+      fertilizeCorrectCallback(false);
+    }
+    else if(fertilizeAmountController.text.isNotEmpty && fertilizeIntervalController.text.isNotEmpty && fertilizeLastTime == null){
+      fertilizeCorrectCallback(false);
+    }
+  }
+
+  ///check environment accordion correctness
+  void environmentOnChanged(){
+    if(temperatureController.text.isEmpty && sunNeed == null){
+      environmentCorrectCallback(true);
+    }
+    else if(temperatureController.text.isNotEmpty && sunNeed != null){
+      environmentCorrectCallback(true);
+    }
+    else if(temperatureController.text.isEmpty && sunNeed != null){
+      environmentCorrectCallback(false);
+    }
+    else if(temperatureController.text.isNotEmpty && sunNeed == null){
+      environmentCorrectCallback(false);
+    }
+  }
+
+  ///check repot accordion correctness
+  void repotOnChanged(){
+    if(repotIntervalController.text.isEmpty && repotLastTime == null){
+      repotCorrectCallback(true);
+    }
+    else if(repotIntervalController.text.isNotEmpty && repotLastTime != null){
+      repotCorrectCallback(true);
+    }
+    else if(repotIntervalController.text.isEmpty && repotLastTime != null){
+      repotCorrectCallback(false);
+    }
+    else if(repotIntervalController.text.isNotEmpty && repotLastTime == null){
+      repotCorrectCallback(false);
+    }
+  }
+
+  ///check dustOff accordion correctness
+  void dustOffOnChanged(){
+    if(dustOffIntervalController.text.isEmpty && dustOffLastTime == null){
+      dustOffCorrectCallback(true);
+    }
+    else if(dustOffIntervalController.text.isNotEmpty && dustOffLastTime != null){
+      dustOffCorrectCallback(true);
+    }
+    else if(dustOffIntervalController.text.isEmpty && dustOffLastTime != null){
+      dustOffCorrectCallback(false);
+    }
+    else if(dustOffIntervalController.text.isNotEmpty && dustOffLastTime == null){
+      dustOffCorrectCallback(false);
+    }
+  }
 
   void pictureChanged(pageNumber, reason) {
     pictureName = Plant.allFiles[pageNumber];
   }
 
+  String allAccordionsCorrect() {
+    if (plantSizeCorrect != null && plantSizeCorrect!
+        && wateringCorrect != null && wateringCorrect!
+        && sprayPlantsCorrect != null && sprayPlantsCorrect!
+        && fertilizeCorrect != null && fertilizeCorrect!
+        && environmentCorrect != null && environmentCorrect!
+        && repotCorrect != null && repotCorrect!
+        && dustOffCorrect != null && dustOffCorrect!
+    ) {
+      return "true";
+    }
+    else if (plantSizeCorrect != null && !plantSizeCorrect!) {
+      return "Plant Size";
+    } else if (wateringCorrect != null && !wateringCorrect!) {
+      return "Watering";
+    } else if (sprayPlantsCorrect != null && !sprayPlantsCorrect!) {
+      return "Spray Plants";
+    } else if (fertilizeCorrect != null && !fertilizeCorrect!) {
+      return "Fertilize";
+    } else if (environmentCorrect != null && !environmentCorrect!) {
+      return "Environment";
+    } else if (repotCorrect != null && !repotCorrect!) {
+      return "Repot";
+    } else if (dustOffCorrect != null && !dustOffCorrect!) {
+      return "Dust off";
+    } else {
+      return "error";
+    }
+  }
 
   void _onSubmitted(user, garden) async {
-    if (_formKey.currentState!.validate()) {
-
+    if (_formKey.currentState!.validate() && allAccordionsCorrect() == "true") {
       // add the plant
       await PlantService.addPlant(
           AddPlant(
@@ -103,12 +324,20 @@ class _NewPlantState extends State<NewPlant> {
             fertilize: Fertilize(amount: int.tryParse(fertilizeAmountController.text), interval: int.tryParse(fertilizeIntervalController.text), lastTime: fertilizeLastTime),
             sunDemand: SizeHelper.getSizeFromString(sunNeed),
             temperature: int.tryParse(temperatureController.text),
-            repot: IntervalDateTime(interval: int.tryParse(reportIntervalController.text), lastTime: repotLastTime),
+            repot: IntervalDateTime(interval: int.tryParse(repotIntervalController.text), lastTime: repotLastTime),
             dustOff: IntervalDateTime(interval: int.tryParse(dustOffIntervalController.text), lastTime: dustOffLastTime),
             potSize: SizeHelper.getSizeFromString(potSize),
           ), user);
 
       Navigator.pop(context);
+    } else if (!_formKey.currentState!.validate()){
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill out required fields!')),
+      );
+    } else if (allAccordionsCorrect() != "true"){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error in Category: ${allAccordionsCorrect()}')),
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fill the form correctly')),
@@ -124,15 +353,81 @@ class _NewPlantState extends State<NewPlant> {
     InputDecorationTheme inputDecorationTheme = Theme.of(context).inputDecorationTheme;
     ThemeData theme = Theme.of(context);
 
-    //TODO für alle akk
+    //default error string for incomplete accordion:
+    List<Widget> warningString = [
+      Text(
+        'Please fill out all values of category!',
+        style: textTheme.bodyText1?.copyWith(
+          color: Colors.red,
+        ),
+      ),
+      const SizedBox(height: 16)
+    ];
+
     List<Widget> plantSizeAccordionChildren = [];
     if(!plantSizeCorrect!){
-      plantSizeAccordionChildren = [const Text('hallloooo richtige eingabe!')];
+      plantSizeAccordionChildren = warningString;
     }
     plantSizeAccordionChildren.addAll([
       IntPicker(plantSizeController: plantSizeBeginningController, heading: 'Plant size beginning (cm)', hint: 'Enter old size of plant', onChange: (value) =>  plantSizeOnChanged()),
       IntPicker(plantSizeController: plantSizeEndController, heading: 'Plant size now (cm)', hint: 'Enter recent size of plant', onChange: (value) => plantSizeOnChanged()),
-      CustomDropDown(menuItems: ['xs', 's', 'm', 'l', 'xl'], title: 'Pot size', onChange: (_sunNeeded){potSize = _sunNeeded;plantSizeOnChanged();}, value: potSize, hint: 'Please choose an option for the pot size'),
+      CustomDropDown(menuItems: const ['xs', 's', 'm', 'l', 'xl'], title: 'Pot size', onChange: (_sunNeeded){potSize = _sunNeeded;plantSizeOnChanged();}, value: potSize, hint: 'Please choose an option for the pot size'),
+    ]);
+
+    List<Widget> wateringAccordionChildren = [];
+    if(!wateringCorrect!){
+      wateringAccordionChildren = warningString;
+    }
+    wateringAccordionChildren.addAll([
+      IntPicker(plantSizeController: wateringAmountController, heading: 'Water amount needed', hint: 'Water needed by plant in ml / interval', onChange: (value) =>  wateringOnChanged()),
+      IntPicker(plantSizeController: wateringIntervalController, heading: 'Interval between watering', hint: 'Enter number of days that divide watering', onChange: (value) =>  wateringOnChanged()),
+      CustomDatePicker(description: 'Last time watered:', onSubmit: (newDate){wateringLastTime = newDate;wateringOnChanged();})
+    ]);
+
+    List<Widget> sprayPlantsAccordionChildren = [];
+    if(!sprayPlantsCorrect!){
+      sprayPlantsAccordionChildren = warningString;
+    }
+    sprayPlantsAccordionChildren.addAll([
+      IntPicker(plantSizeController: sprayingIntervalController, heading: 'Interval between spraying', hint: 'Enter number of days that divide spraying', onChange: (value) =>  sprayPlantsOnChanged()),
+      CustomDatePicker(description: 'Last time sprayed:', onSubmit: (newDate){sprayPlantsLastTime= newDate;sprayPlantsOnChanged();}),
+    ]);
+
+    List<Widget> fertilizeAccordionChildren = [];
+    if(!fertilizeCorrect!){
+      fertilizeAccordionChildren = warningString;
+    }
+    fertilizeAccordionChildren.addAll([
+      IntPicker(plantSizeController: fertilizeAmountController, heading: 'Fertilize amount needed', hint: 'Amount of fertilizer needed in mg / interval', onChange: (value) =>  fertilizeOnChanged()),
+      IntPicker(plantSizeController: fertilizeIntervalController, heading: 'Interval between fertilizing', hint: 'Enter number of days that divide fertilizing', onChange: (value) =>  fertilizeOnChanged()),
+      CustomDatePicker(description: 'Last time fertilized:', onSubmit: (newDate){fertilizeLastTime= newDate;fertilizeOnChanged();})
+    ]);
+
+    List<Widget> environmentAccordionChildren = [];
+    if(!environmentCorrect!){
+      environmentAccordionChildren = warningString;
+    }
+    environmentAccordionChildren.addAll([
+      IntPicker(plantSizeController: temperatureController, heading: 'Favourite temperature of plant', hint: 'Enter value of plants preferred temperature in °C', onChange: (value) =>  environmentOnChanged()),
+      CustomDropDown(menuItems: const ['xs', 's', 'm', 'l', 'xl'], title: 'Sun amount preferred', onChange: (_sunNeeded){sunNeed = _sunNeeded;environmentOnChanged();}, value: sunNeed, hint: 'Please choose an option for the preferred sun amount')
+    ]);
+
+    List<Widget> repotAccordionChildren = [];
+    if(!repotCorrect!){
+      repotAccordionChildren = warningString;
+    }
+    repotAccordionChildren.addAll([
+      IntPicker(plantSizeController: repotIntervalController, heading: 'Interval between repoting', hint: 'Enter number of days that divide repoting', onChange: (value) =>  repotOnChanged()),
+      CustomDatePicker(description: 'Last time sprayed:', onSubmit: (newDate){repotLastTime= newDate;repotOnChanged();}),
+    ]);
+
+    List<Widget> dustOffAccordionChildren = [];
+    if(!dustOffCorrect!){
+      dustOffAccordionChildren = warningString;
+    }
+    dustOffAccordionChildren.addAll([
+      IntPicker(plantSizeController: dustOffIntervalController, heading: 'Interval between dusting off', hint: 'Enter number of days that divide dusting off', onChange: (value) =>  dustOffOnChanged()),
+      CustomDatePicker(description: 'Last time sprayed:', onSubmit: (newDate){dustOffLastTime= newDate;dustOffOnChanged();}),
     ]);
 
     return Scaffold(
@@ -175,43 +470,20 @@ class _NewPlantState extends State<NewPlant> {
                       //type
                       TypePicker(plantTypeController: plantTypeController),
                       const SizedBox(height: 10),
-
                       //Plant size
                       CustomAccordion(heading: 'Plant Size', description: 'beginning, end, pot size', childrenWidgets: plantSizeAccordionChildren),
                       //watering
-                      //TODO: onchange einfügen
-                      CustomAccordion(heading: 'Watering', description: 'amount, interval, lastTime', childrenWidgets: [
-                        IntPicker(plantSizeController: wateringAmountController, heading: 'Water amount needed', hint: 'Water needed by plant in ml / interval'),
-                        IntPicker(plantSizeController: wateringIntervalController, heading: 'Interval between watering', hint: 'Enter number of days that divide watering'),
-                        CustomDatePicker(description: 'Last time watered:', onSubmit: (newDate){wateringLastTime = newDate;})
-                      ]),
+                      CustomAccordion(heading: 'Watering', description: 'amount, interval, lastTime', childrenWidgets: wateringAccordionChildren),
                       //spray
-                      CustomAccordion(heading: 'Spray plants', description: 'interval, lastTime', childrenWidgets: [
-                        IntPicker(plantSizeController: sprayingIntervalController, heading: 'Interval between spraying', hint: 'Enter number of days that divide spraying'),
-                        CustomDatePicker(description: 'Last time sprayed:', onSubmit: (newDate){sprayPlantsLastTime= newDate;}),
-                      ]),
+                      CustomAccordion(heading: 'Spray plants', description: 'interval, lastTime', childrenWidgets: sprayPlantsAccordionChildren),
                       //fertilize
-                      CustomAccordion(heading: 'Fertilize', description: 'amount, interval, lastTime', childrenWidgets: [
-                        IntPicker(plantSizeController: fertilizeAmountController, heading: 'Fertilize amount needed', hint: 'Amount of fertilizer needed in mg / interval'),
-                        IntPicker(plantSizeController: fertilizeIntervalController, heading: 'Interval between fertilizing', hint: 'Enter number of days that divide fertilizing'),
-                        CustomDatePicker(description: 'Last time fertilized:', onSubmit: (newDate){fertilizeLastTime= newDate;})
-                      ]),
+                      CustomAccordion(heading: 'Fertilize', description: 'amount, interval, lastTime', childrenWidgets: fertilizeAccordionChildren),
                       //environment
-                      CustomAccordion(heading: 'Environment', description: 'temperature, sun-need', childrenWidgets: [
-                        IntPicker(plantSizeController: temperatureController, heading: 'Favourite temperature of plant', hint: 'Enter value of plants prefered temperature in °C'),
-                        CustomDropDown(menuItems: ['xs', 's', 'm', 'l', 'xl'], title: 'Sun amount prefered', onChange: (_sunNeeded){sunNeed = _sunNeeded;}, value: sunNeed, hint: 'Please choose an option for the prefered sun amount')
-                      ]),
+                      CustomAccordion(heading: 'Environment', description: 'temperature, sun-need', childrenWidgets: environmentAccordionChildren),
                       //repot
-                      CustomAccordion(heading: 'Repot', description: 'interval, lastTime', childrenWidgets: [
-                        IntPicker(plantSizeController: reportIntervalController, heading: 'Interval between repoting', hint: 'Enter number of days that divide repoting'),
-                        CustomDatePicker(description: 'Last time sprayed:', onSubmit: (newDate){repotLastTime= newDate;}),
-                      ]),
+                      CustomAccordion(heading: 'Repot', description: 'interval, lastTime', childrenWidgets: repotAccordionChildren),
                       //dust off
-                      CustomAccordion(heading: 'Dust off', description: 'interval, lastTime', childrenWidgets: [
-                        IntPicker(plantSizeController: dustOffIntervalController, heading: 'Interval between dusting off', hint: 'Enter number of days that divide dusting off'),
-                        CustomDatePicker(description: 'Last time sprayed:', onSubmit: (newDate){dustOffLastTime= newDate;}),
-                      ]),
-
+                      CustomAccordion(heading: 'Dust off', description: 'interval, lastTime', childrenWidgets: dustOffAccordionChildren),
 
                       // Buttons
                       Row(

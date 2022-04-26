@@ -28,7 +28,7 @@ class _CustomAccordionState extends State<CustomAccordion> {
           subtitle: Text(widget.description, style: theme.textTheme.subtitle2),
           tilePadding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
           children: widget.childrenWidgets,
-          iconColor: AppColors.darkGrey,
+          iconColor: theme.unselectedWidgetColor,
         ),
         const SizedBox(height: 10)
       ],
