@@ -63,7 +63,7 @@ class _ListOfPlantsState extends State<ListOfPlants> {
             children: [
               // FAB 1
               SpeedDialChild(
-                  child: Icon(Icons.add_circle_outline_outlined),
+                  child: const Icon(Icons.add_circle_outline_outlined),
                   backgroundColor: Theme.of(context).primaryColor,
                   onTap: () {
                     Navigator.push(
@@ -76,7 +76,7 @@ class _ListOfPlantsState extends State<ListOfPlants> {
               ),
               // FAB 2
               SpeedDialChild(
-                  child: Icon(Icons.library_books_outlined), //todo right icon
+                  child: const Icon(Icons.library_books_outlined), //todo right icon
                   backgroundColor: Theme.of(context).primaryColor,
                   onTap: () {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -94,7 +94,4 @@ class _ListOfPlantsState extends State<ListOfPlants> {
 
 
   }
-}
-
-class CostumUser {
 }

@@ -13,17 +13,18 @@ import '../../../../../shared/models/user.dart';
 import '../../../../../shared/widgets/util/image_card.dart';
 import 'gardenForm/name_picker.dart';
 
-class NewPlant extends StatefulWidget {
-  const NewPlant({Key? key, required this.user, required this.garden}) : super(key: key);
+class EditPlant extends StatefulWidget {
+  const EditPlant({Key? key, required this.user, required this.garden, required this.plant}) : super(key: key);
 
   final CustomUser user;
   final Garden garden;
+  final Plant plant;
 
   @override
-  State<NewPlant> createState() => _NewPlantState();
+  State<EditPlant> createState() => _EditPlantState();
 }
 
-class _NewPlantState extends State<NewPlant> {
+class _EditPlantState extends State<EditPlant> {
   final _formKey= GlobalKey<FormState>();
   final List<ImageCard> images = Plant.allFiles.map(
           (image) => ImageCard(
@@ -404,9 +405,9 @@ class _NewPlantState extends State<NewPlant> {
                           )
                       ),
                       // Name
-                      NamePicker(plantNameController: plantNameController),
+                      NamePicker(plantNameController: plantNameController, defaultValue: widget.plant.name),
                       //type
-                      TypePicker(plantTypeController: plantTypeController),
+                      TypePicker(plantTypeController: plantTypeController, defaultValue: widget.plant.type),
                       const SizedBox(height: 10),
                       //Plant size
                       CustomAccordion(heading: 'Plant Size', description: 'beginning, end, pot size', childrenWidgets: plantSizeAccordionChildren),
