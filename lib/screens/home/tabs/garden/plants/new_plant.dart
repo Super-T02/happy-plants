@@ -135,22 +135,7 @@ class _NewPlantState extends State<NewPlant> {
     else if(plantSizeBeginningController.text.isNotEmpty && plantSizeEndController.text.isNotEmpty && potSize != null){
       plantSizeCorrectCallback(true);
     }
-    else if(plantSizeBeginningController.text.isEmpty && plantSizeEndController.text.isEmpty && potSize != null){
-      plantSizeCorrectCallback(false);
-    }
-    else if(plantSizeBeginningController.text.isEmpty && plantSizeEndController.text.isNotEmpty && potSize == null){
-      plantSizeCorrectCallback(false);
-    }
-    else if(plantSizeBeginningController.text.isNotEmpty && plantSizeEndController.text.isEmpty && potSize == null){
-      plantSizeCorrectCallback(false);
-    }
-    else if(plantSizeBeginningController.text.isEmpty && plantSizeEndController.text.isNotEmpty && potSize != null){
-      plantSizeCorrectCallback(false);
-    }
-    else if(plantSizeBeginningController.text.isNotEmpty && plantSizeEndController.text.isEmpty && potSize != null){
-      plantSizeCorrectCallback(false);
-    }
-    else if(plantSizeBeginningController.text.isNotEmpty && plantSizeEndController.text.isNotEmpty && potSize == null){
+    else{
       plantSizeCorrectCallback(false);
     }
   }
@@ -163,22 +148,7 @@ class _NewPlantState extends State<NewPlant> {
     else if(wateringAmountController.text.isNotEmpty && wateringIntervalController.text.isNotEmpty && wateringLastTime != null){
       wateringCorrectCallback(true);
     }
-    else if(wateringAmountController.text.isEmpty && wateringIntervalController.text.isEmpty && wateringLastTime != null){
-      wateringCorrectCallback(false);
-    }
-    else if(wateringAmountController.text.isEmpty && wateringIntervalController.text.isNotEmpty && wateringLastTime == null){
-      wateringCorrectCallback(false);
-    }
-    else if(wateringAmountController.text.isNotEmpty && wateringIntervalController.text.isEmpty && wateringLastTime == null){
-      wateringCorrectCallback(false);
-    }
-    else if(wateringAmountController.text.isEmpty && wateringIntervalController.text.isNotEmpty && wateringLastTime != null){
-      wateringCorrectCallback(false);
-    }
-    else if(wateringAmountController.text.isNotEmpty && wateringIntervalController.text.isEmpty && wateringLastTime != null){
-      wateringCorrectCallback(false);
-    }
-    else if(wateringAmountController.text.isNotEmpty && wateringIntervalController.text.isNotEmpty && wateringLastTime == null){
+    else{
       wateringCorrectCallback(false);
     }
   }
@@ -191,10 +161,7 @@ class _NewPlantState extends State<NewPlant> {
     else if(sprayingIntervalController.text.isNotEmpty && sprayPlantsLastTime != null){
       sprayPlantsCorrectCallback(true);
     }
-    else if(sprayingIntervalController.text.isEmpty && sprayPlantsLastTime != null){
-      sprayPlantsCorrectCallback(false);
-    }
-    else if(sprayingIntervalController.text.isNotEmpty && sprayPlantsLastTime == null){
+    else{
       sprayPlantsCorrectCallback(false);
     }
   }
@@ -207,22 +174,7 @@ class _NewPlantState extends State<NewPlant> {
     else if(fertilizeAmountController.text.isNotEmpty && fertilizeIntervalController.text.isNotEmpty && fertilizeLastTime != null){
       fertilizeCorrectCallback(true);
     }
-    else if(fertilizeAmountController.text.isEmpty && fertilizeIntervalController.text.isEmpty && fertilizeLastTime != null){
-      fertilizeCorrectCallback(false);
-    }
-    else if(fertilizeAmountController.text.isEmpty && fertilizeIntervalController.text.isNotEmpty && fertilizeLastTime == null){
-      fertilizeCorrectCallback(false);
-    }
-    else if(fertilizeAmountController.text.isNotEmpty && fertilizeIntervalController.text.isEmpty && fertilizeLastTime == null){
-      fertilizeCorrectCallback(false);
-    }
-    else if(fertilizeAmountController.text.isEmpty && fertilizeIntervalController.text.isNotEmpty && fertilizeLastTime != null){
-      fertilizeCorrectCallback(false);
-    }
-    else if(fertilizeAmountController.text.isNotEmpty && fertilizeIntervalController.text.isEmpty && fertilizeLastTime != null){
-      fertilizeCorrectCallback(false);
-    }
-    else if(fertilizeAmountController.text.isNotEmpty && fertilizeIntervalController.text.isNotEmpty && fertilizeLastTime == null){
+    else{
       fertilizeCorrectCallback(false);
     }
   }
@@ -235,10 +187,7 @@ class _NewPlantState extends State<NewPlant> {
     else if(temperatureController.text.isNotEmpty && sunNeed != null){
       environmentCorrectCallback(true);
     }
-    else if(temperatureController.text.isEmpty && sunNeed != null){
-      environmentCorrectCallback(false);
-    }
-    else if(temperatureController.text.isNotEmpty && sunNeed == null){
+    else{
       environmentCorrectCallback(false);
     }
   }
@@ -251,10 +200,7 @@ class _NewPlantState extends State<NewPlant> {
     else if(repotIntervalController.text.isNotEmpty && repotLastTime != null){
       repotCorrectCallback(true);
     }
-    else if(repotIntervalController.text.isEmpty && repotLastTime != null){
-      repotCorrectCallback(false);
-    }
-    else if(repotIntervalController.text.isNotEmpty && repotLastTime == null){
+    else{
       repotCorrectCallback(false);
     }
   }
@@ -267,10 +213,7 @@ class _NewPlantState extends State<NewPlant> {
     else if(dustOffIntervalController.text.isNotEmpty && dustOffLastTime != null){
       dustOffCorrectCallback(true);
     }
-    else if(dustOffIntervalController.text.isEmpty && dustOffLastTime != null){
-      dustOffCorrectCallback(false);
-    }
-    else if(dustOffIntervalController.text.isNotEmpty && dustOffLastTime == null){
+    else{
       dustOffCorrectCallback(false);
     }
   }
