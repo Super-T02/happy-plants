@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:happy_plants/shared/widgets/forms/custom_dropdown.dart';
 import 'package:happy_plants/shared/widgets/util/custom_accordion.dart';
 import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/int_picker.dart';
-import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/type_picker.dart';
 import 'package:happy_plants/shared/utilities/sizes.dart';
 import 'package:happy_plants/shared/widgets/forms/custom_datepicker.dart';
 import '../../../../../services/plant.dart';
@@ -11,7 +10,7 @@ import '../../../../../shared/models/garden.dart';
 import '../../../../../shared/models/plant.dart';
 import '../../../../../shared/models/user.dart';
 import '../../../../../shared/widgets/util/image_card.dart';
-import 'gardenForm/name_picker.dart';
+import 'gardenForm/string_picker.dart';
 
 class NewPlant extends StatefulWidget {
   const NewPlant({Key? key, required this.user, required this.garden}) : super(key: key);
@@ -32,7 +31,7 @@ class _NewPlantState extends State<NewPlant> {
       )
   ).toList();
 
-  String pictureName = "one";
+  String pictureName = "bonsai";
 
   // Form controllers
   TextEditingController plantNameController = TextEditingController();
@@ -394,6 +393,9 @@ class _NewPlantState extends State<NewPlant> {
                           carouselController: imageCarouselController,
                           items: images,
                           options: CarouselOptions(
+                            initialPage: images.indexWhere(
+                                    (pic) => pic.name == pictureName
+                            ),
                             height: 180.0,
                             enlargeCenterPage: true,
                             aspectRatio: 16 / 9,
@@ -404,9 +406,9 @@ class _NewPlantState extends State<NewPlant> {
                           )
                       ),
                       // Name
-                      NamePicker(plantNameController: plantNameController),
+                      StringPicker(plantNameController: plantNameController, heading: 'Plant Name *', hint: 'Please enter a plant name'),
                       //type
-                      TypePicker(plantTypeController: plantTypeController),
+                      StringPicker(plantNameController: plantTypeController, heading: 'Plant Type *', hint: 'Please enter a plant type'),
                       const SizedBox(height: 10),
                       //Plant size
                       CustomAccordion(heading: 'Plant Size', description: 'beginning, end, pot size', childrenWidgets: plantSizeAccordionChildren),

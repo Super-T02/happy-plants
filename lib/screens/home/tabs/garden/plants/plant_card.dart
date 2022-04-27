@@ -45,7 +45,7 @@ class _PlantSingleState extends State<PlantSingle> {
     final ThemeData theme = Theme.of(context);
 
     widget.plant.icon ??= 'grass_outlined';
-    String stringOfImageName = 'assets/images/garden_backgrounds/one.jpg';
+    String stringOfImageName = 'assets/images/plant_backgrounds/bonsai.jpg';
     AssetImage imageAsWidget = AssetImage(stringOfImageName);
 
     //check if string of filename is known, if yes paste it in path

@@ -9,7 +9,6 @@ class IntPicker extends StatefulWidget {
     required this.hint,
     this.validator,
     this.onChange,
-    this.defaultValue,
   }) : super(key: key);
 
   final TextEditingController plantSizeController;

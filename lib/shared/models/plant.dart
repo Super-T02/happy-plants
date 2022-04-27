@@ -9,6 +9,7 @@ class Plant{
     required this.gardenID,
     required this.id,
     required this.name,
+    required this.type,
     this.watering,
     this.plantSize,
     this.fertilize,
@@ -18,14 +19,14 @@ class Plant{
     this.repot,
     this.spray,
     this.sunDemand,
-    this.temperature,
-    this.type
+    this.temperature
   });
 
   // Required
   String id;
   String gardenID;
   String name;
+  String type;
 
   // Not required
   IntervalDateTime? dustOff;
@@ -37,7 +38,6 @@ class Plant{
   Sizes? potSize;
   Sizes? sunDemand;
   int? temperature;
-  String? type;
   Watering? watering;
 
   static checkItemName(iconName){

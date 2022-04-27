@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:happy_plants/shared/widgets/forms/custom_dropdown.dart';
 import 'package:happy_plants/shared/widgets/util/custom_accordion.dart';
 import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/int_picker.dart';
-import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/type_picker.dart';
 import 'package:happy_plants/shared/utilities/sizes.dart';
 import 'package:happy_plants/shared/widgets/forms/custom_datepicker.dart';
 import '../../../../../services/plant.dart';
@@ -11,7 +10,7 @@ import '../../../../../shared/models/garden.dart';
 import '../../../../../shared/models/plant.dart';
 import '../../../../../shared/models/user.dart';
 import '../../../../../shared/widgets/util/image_card.dart';
-import 'gardenForm/name_picker.dart';
+import 'gardenForm/string_picker.dart';
 
 class EditPlant extends StatefulWidget {
   const EditPlant({Key? key, required this.user, required this.garden, required this.plant}) : super(key: key);
@@ -32,32 +31,6 @@ class _EditPlantState extends State<EditPlant> {
         name: image,
       )
   ).toList();
-
-  String pictureName = "one";
-
-  // Form controllers
-  TextEditingController plantNameController = TextEditingController();
-  TextEditingController plantTypeController = TextEditingController();
-  TextEditingController plantSizeBeginningController = TextEditingController();
-  TextEditingController plantSizeEndController = TextEditingController();
-
-  TextEditingController wateringAmountController = TextEditingController();
-  TextEditingController wateringIntervalController = TextEditingController();
-  TextEditingController sprayingIntervalController = TextEditingController();
-  TextEditingController fertilizeAmountController = TextEditingController();
-  TextEditingController fertilizeIntervalController = TextEditingController();
-  TextEditingController temperatureController = TextEditingController();
-  TextEditingController repotIntervalController = TextEditingController();
-  TextEditingController dustOffIntervalController = TextEditingController();
-
-  //variables for the pickers & their callback functions
-  DateTime? wateringLastTime;
-  DateTime? sprayPlantsLastTime;
-  DateTime? fertilizeLastTime;
-  DateTime? repotLastTime;
-  DateTime? dustOffLastTime;
-  String? potSize;
-  String? sunNeed;
 
   //marker for error info messages
   bool? plantSizeCorrect;
@@ -123,169 +96,219 @@ class _EditPlantState extends State<EditPlant> {
     });
   }
 
-  ///check plant size accordion
-  void plantSizeOnChanged(){
-    if(plantSizeBeginningController.text.isEmpty && plantSizeEndController.text.isEmpty && potSize == null){
-      plantSizeCorrectCallback(true);
-    }
-    else if(plantSizeBeginningController.text.isNotEmpty && plantSizeEndController.text.isNotEmpty && potSize != null){
-      plantSizeCorrectCallback(true);
-    }
-    else{
-      plantSizeCorrectCallback(false);
-    }
-  }
-
-  ///check watering accordion correctness
-  void wateringOnChanged(){
-    if(wateringAmountController.text.isEmpty && wateringIntervalController.text.isEmpty && wateringLastTime == null){
-      wateringCorrectCallback(true);
-    }
-    else if(wateringAmountController.text.isNotEmpty && wateringIntervalController.text.isNotEmpty && wateringLastTime != null){
-      wateringCorrectCallback(true);
-    }
-    else{
-      wateringCorrectCallback(false);
-    }
-  }
-
-  ///check sprayPlants accordion correctness
-  void sprayPlantsOnChanged(){
-    if(sprayingIntervalController.text.isEmpty && sprayPlantsLastTime == null){
-      sprayPlantsCorrectCallback(true);
-    }
-    else if(sprayingIntervalController.text.isNotEmpty && sprayPlantsLastTime != null){
-      sprayPlantsCorrectCallback(true);
-    }
-    else{
-      sprayPlantsCorrectCallback(false);
-    }
-  }
-
-  ///check fertilize accordion correctness
-  void fertilizeOnChanged(){
-    if(fertilizeAmountController.text.isEmpty && fertilizeIntervalController.text.isEmpty && fertilizeLastTime == null){
-      fertilizeCorrectCallback(true);
-    }
-    else if(fertilizeAmountController.text.isNotEmpty && fertilizeIntervalController.text.isNotEmpty && fertilizeLastTime != null){
-      fertilizeCorrectCallback(true);
-    }
-    else{
-      fertilizeCorrectCallback(false);
-    }
-  }
-
-  ///check environment accordion correctness
-  void environmentOnChanged(){
-    if(temperatureController.text.isEmpty && sunNeed == null){
-      environmentCorrectCallback(true);
-    }
-    else if(temperatureController.text.isNotEmpty && sunNeed != null){
-      environmentCorrectCallback(true);
-    }
-    else{
-      environmentCorrectCallback(false);
-    }
-  }
-
-  ///check repot accordion correctness
-  void repotOnChanged(){
-    if(repotIntervalController.text.isEmpty && repotLastTime == null){
-      repotCorrectCallback(true);
-    }
-    else if(repotIntervalController.text.isNotEmpty && repotLastTime != null){
-      repotCorrectCallback(true);
-    }
-    else{
-      repotCorrectCallback(false);
-    }
-  }
-
-  ///check dustOff accordion correctness
-  void dustOffOnChanged(){
-    if(dustOffIntervalController.text.isEmpty && dustOffLastTime == null){
-      dustOffCorrectCallback(true);
-    }
-    else if(dustOffIntervalController.text.isNotEmpty && dustOffLastTime != null){
-      dustOffCorrectCallback(true);
-    }
-    else{
-      dustOffCorrectCallback(false);
-    }
-  }
-
-  void pictureChanged(pageNumber, reason) {
-    pictureName = Plant.allFiles[pageNumber];
-  }
-
-  String allAccordionsCorrect() {
-    if (plantSizeCorrect != null && plantSizeCorrect!
-        && wateringCorrect != null && wateringCorrect!
-        && sprayPlantsCorrect != null && sprayPlantsCorrect!
-        && fertilizeCorrect != null && fertilizeCorrect!
-        && environmentCorrect != null && environmentCorrect!
-        && repotCorrect != null && repotCorrect!
-        && dustOffCorrect != null && dustOffCorrect!
-    ) {
-      return "true";
-    }
-    else if (plantSizeCorrect != null && !plantSizeCorrect!) {
-      return "Plant Size";
-    } else if (wateringCorrect != null && !wateringCorrect!) {
-      return "Watering";
-    } else if (sprayPlantsCorrect != null && !sprayPlantsCorrect!) {
-      return "Spray Plants";
-    } else if (fertilizeCorrect != null && !fertilizeCorrect!) {
-      return "Fertilize";
-    } else if (environmentCorrect != null && !environmentCorrect!) {
-      return "Environment";
-    } else if (repotCorrect != null && !repotCorrect!) {
-      return "Repot";
-    } else if (dustOffCorrect != null && !dustOffCorrect!) {
-      return "Dust off";
-    } else {
-      return "error";
-    }
-  }
-
-  void _onSubmitted(user, garden) async {
-    if (_formKey.currentState!.validate() && allAccordionsCorrect() == "true") {
-      // add the plant
-      await PlantService.addPlant(
-          AddPlant(
-            name: plantNameController.text,
-            icon: pictureName.toLowerCase(),
-            gardenID: garden.id,
-            type: plantTypeController.text,
-            plantSize: PlantSize(begin: int.tryParse(plantSizeBeginningController.text), now: int.tryParse(plantSizeEndController.text)),
-            watering: Watering(waterAmount: int.tryParse(wateringAmountController.text), interval: int.tryParse(wateringIntervalController.text), lastTime: wateringLastTime),
-            spray: IntervalDateTime(interval: int.tryParse(sprayingIntervalController.text), lastTime: sprayPlantsLastTime),
-            fertilize: Fertilize(amount: int.tryParse(fertilizeAmountController.text), interval: int.tryParse(fertilizeIntervalController.text), lastTime: fertilizeLastTime),
-            sunDemand: SizeHelper.getSizeFromString(sunNeed),
-            temperature: int.tryParse(temperatureController.text),
-            repot: IntervalDateTime(interval: int.tryParse(repotIntervalController.text), lastTime: repotLastTime),
-            dustOff: IntervalDateTime(interval: int.tryParse(dustOffIntervalController.text), lastTime: dustOffLastTime),
-            potSize: SizeHelper.getSizeFromString(potSize),
-          ), user);
-
-      Navigator.pop(context);
-    } else if (!_formKey.currentState!.validate()){
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill out required fields!')),
-      );
-    } else if (allAccordionsCorrect() != "true"){
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error in Category: ${allAccordionsCorrect()}')),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill the form correctly')),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    String pictureName = "";
+    if(widget.plant.icon != null){
+      pictureName = widget.plant.icon!;
+    }
+    else{
+      pictureName = "eve";
+    }
+
+    // Form controllers
+    TextEditingController plantNameController = TextEditingController(text: widget.plant.name);
+    TextEditingController plantTypeController = TextEditingController(text: widget.plant.type);
+    TextEditingController plantSizeBeginningController = TextEditingController(text: widget.plant.plantSize?.begin.toString());
+    TextEditingController plantSizeEndController = TextEditingController(text: widget.plant.plantSize?.now.toString());
+
+    TextEditingController wateringAmountController = TextEditingController(text: widget.plant.watering?.waterAmount.toString());
+    TextEditingController wateringIntervalController = TextEditingController(text: widget.plant.watering?.interval.toString());
+
+    TextEditingController sprayingIntervalController = TextEditingController(text: widget.plant.spray?.interval.toString());
+
+    TextEditingController fertilizeAmountController = TextEditingController(text: widget.plant.fertilize?.amount.toString());
+    TextEditingController fertilizeIntervalController = TextEditingController(text: widget.plant.fertilize?.interval.toString());
+
+    TextEditingController temperatureController = TextEditingController(text: widget.plant.temperature?.toString());
+
+    TextEditingController repotIntervalController = TextEditingController(text: widget.plant.repot?.toString());
+
+    TextEditingController dustOffIntervalController = TextEditingController(text: widget.plant.dustOff?.interval.toString());
+
+    //variables for the pickers & their callback functions
+    DateTime? wateringLastTime = widget.plant.watering?.lastTime;
+    DateTime? sprayPlantsLastTime = widget.plant.spray?.lastTime;
+    DateTime? fertilizeLastTime = widget.plant.fertilize?.lastTime;
+    DateTime? repotLastTime = widget.plant.repot?.lastTime;
+    DateTime? dustOffLastTime = widget.plant.dustOff?.lastTime;
+    String? potSize;
+    String? sunNeed;
+    if(widget.plant.potSize != null){
+      potSize = SizeHelper.getStringFromSize(widget.plant.potSize);
+    } else {
+      potSize = null;
+    }
+    if(widget.plant.sunDemand != null){
+      sunNeed = SizeHelper.getStringFromSize(widget.plant.sunDemand);
+    } else {
+      sunNeed = null;
+    }
+
+
+    ///check plant size accordion
+    void plantSizeOnChanged(){
+      if(plantSizeBeginningController.text.isEmpty && plantSizeEndController.text.isEmpty && potSize == null){
+        plantSizeCorrectCallback(true);
+      }
+      else if(plantSizeBeginningController.text.isNotEmpty && plantSizeEndController.text.isNotEmpty && potSize != null){
+        plantSizeCorrectCallback(true);
+      }
+      else{
+        plantSizeCorrectCallback(false);
+      }
+    }
+
+    ///check watering accordion correctness
+    void wateringOnChanged(){
+      if(wateringAmountController.text.isEmpty && wateringIntervalController.text.isEmpty && wateringLastTime == null){
+        wateringCorrectCallback(true);
+      }
+      else if(wateringAmountController.text.isNotEmpty && wateringIntervalController.text.isNotEmpty && wateringLastTime != null){
+        wateringCorrectCallback(true);
+      }
+      else{
+        wateringCorrectCallback(false);
+      }
+    }
+
+    ///check sprayPlants accordion correctness
+    void sprayPlantsOnChanged(){
+      if(sprayingIntervalController.text.isEmpty && sprayPlantsLastTime == null){
+        sprayPlantsCorrectCallback(true);
+      }
+      else if(sprayingIntervalController.text.isNotEmpty && sprayPlantsLastTime != null){
+        sprayPlantsCorrectCallback(true);
+      }
+      else{
+        sprayPlantsCorrectCallback(false);
+      }
+    }
+
+    ///check fertilize accordion correctness
+    void fertilizeOnChanged(){
+      if(fertilizeAmountController.text.isEmpty && fertilizeIntervalController.text.isEmpty && fertilizeLastTime == null){
+        fertilizeCorrectCallback(true);
+      }
+      else if(fertilizeAmountController.text.isNotEmpty && fertilizeIntervalController.text.isNotEmpty && fertilizeLastTime != null){
+        fertilizeCorrectCallback(true);
+      }
+      else{
+        fertilizeCorrectCallback(false);
+      }
+    }
+
+    ///check environment accordion correctness
+    void environmentOnChanged(){
+      if(temperatureController.text.isEmpty && sunNeed == null){
+        environmentCorrectCallback(true);
+      }
+      else if(temperatureController.text.isNotEmpty && sunNeed != null){
+        environmentCorrectCallback(true);
+      }
+      else{
+        environmentCorrectCallback(false);
+      }
+    }
+
+    ///check repot accordion correctness
+    void repotOnChanged(){
+      if(repotIntervalController.text.isEmpty && repotLastTime == null){
+        repotCorrectCallback(true);
+      }
+      else if(repotIntervalController.text.isNotEmpty && repotLastTime != null){
+        repotCorrectCallback(true);
+      }
+      else{
+        repotCorrectCallback(false);
+      }
+    }
+
+    ///check dustOff accordion correctness
+    void dustOffOnChanged(){
+      if(dustOffIntervalController.text.isEmpty && dustOffLastTime == null){
+        dustOffCorrectCallback(true);
+      }
+      else if(dustOffIntervalController.text.isNotEmpty && dustOffLastTime != null){
+        dustOffCorrectCallback(true);
+      }
+      else{
+        dustOffCorrectCallback(false);
+      }
+    }
+
+    void pictureChanged(pageNumber, reason) {
+      pictureName = Plant.allFiles[pageNumber];
+    }
+
+    String allAccordionsCorrect() {
+      if (plantSizeCorrect != null && plantSizeCorrect!
+          && wateringCorrect != null && wateringCorrect!
+          && sprayPlantsCorrect != null && sprayPlantsCorrect!
+          && fertilizeCorrect != null && fertilizeCorrect!
+          && environmentCorrect != null && environmentCorrect!
+          && repotCorrect != null && repotCorrect!
+          && dustOffCorrect != null && dustOffCorrect!
+      ) {
+        return "true";
+      }
+      else if (plantSizeCorrect != null && !plantSizeCorrect!) {
+        return "Plant Size";
+      } else if (wateringCorrect != null && !wateringCorrect!) {
+        return "Watering";
+      } else if (sprayPlantsCorrect != null && !sprayPlantsCorrect!) {
+        return "Spray Plants";
+      } else if (fertilizeCorrect != null && !fertilizeCorrect!) {
+        return "Fertilize";
+      } else if (environmentCorrect != null && !environmentCorrect!) {
+        return "Environment";
+      } else if (repotCorrect != null && !repotCorrect!) {
+        return "Repot";
+      } else if (dustOffCorrect != null && !dustOffCorrect!) {
+        return "Dust off";
+      } else {
+        return "error";
+      }
+    }
+
+    void _onSubmitted(user, garden) async {
+      if (_formKey.currentState!.validate() && allAccordionsCorrect() == "true") {
+        // add the plant
+        await PlantService.putPlant(
+            Plant(
+              id: widget.plant.id,
+              name: plantNameController.text,
+              icon: pictureName.toLowerCase(),
+              gardenID: garden.id,
+              type: plantTypeController.text,
+              plantSize: PlantSize(begin: int.tryParse(plantSizeBeginningController.text), now: int.tryParse(plantSizeEndController.text)),
+              watering: Watering(waterAmount: int.tryParse(wateringAmountController.text), interval: int.tryParse(wateringIntervalController.text), lastTime: wateringLastTime),
+              spray: IntervalDateTime(interval: int.tryParse(sprayingIntervalController.text), lastTime: sprayPlantsLastTime),
+              fertilize: Fertilize(amount: int.tryParse(fertilizeAmountController.text), interval: int.tryParse(fertilizeIntervalController.text), lastTime: fertilizeLastTime),
+              sunDemand: SizeHelper.getSizeFromString(sunNeed),
+              temperature: int.tryParse(temperatureController.text),
+              repot: IntervalDateTime(interval: int.tryParse(repotIntervalController.text), lastTime: repotLastTime),
+              dustOff: IntervalDateTime(interval: int.tryParse(dustOffIntervalController.text), lastTime: dustOffLastTime),
+              potSize: SizeHelper.getSizeFromString(potSize),
+            ), user);
+
+        Navigator.pop(context);
+      } else if (!_formKey.currentState!.validate()){
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please fill out required fields!')),
+        );
+      } else if (allAccordionsCorrect() != "true"){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error in Category: ${allAccordionsCorrect()}')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please fill the form correctly')),
+        );
+      }
+    }
+
+
     //final user = Provider.of<CustomUser?>(context);
     CarouselController imageCarouselController = CarouselController();
     TextTheme textTheme = Theme.of(context).textTheme;
@@ -395,6 +418,9 @@ class _EditPlantState extends State<EditPlant> {
                           carouselController: imageCarouselController,
                           items: images,
                           options: CarouselOptions(
+                            initialPage: images.indexWhere(
+                                    (pic) => pic.name == widget.plant.icon
+                            ),
                             height: 180.0,
                             enlargeCenterPage: true,
                             aspectRatio: 16 / 9,
@@ -405,9 +431,9 @@ class _EditPlantState extends State<EditPlant> {
                           )
                       ),
                       // Name
-                      NamePicker(plantNameController: plantNameController, defaultValue: widget.plant.name),
+                      StringPicker(plantNameController: plantNameController, heading: 'Plant Name *', hint: 'Please enter a plant name',),
                       //type
-                      TypePicker(plantTypeController: plantTypeController, defaultValue: widget.plant.type),
+                      StringPicker(plantNameController: plantTypeController, heading: 'Plant Type *', hint: 'Please enter a plant type'),
                       const SizedBox(height: 10),
                       //Plant size
                       CustomAccordion(heading: 'Plant Size', description: 'beginning, end, pot size', childrenWidgets: plantSizeAccordionChildren),
