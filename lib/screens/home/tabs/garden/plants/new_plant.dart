@@ -309,7 +309,7 @@ class _NewPlantState extends State<NewPlant> {
 
     List<Widget> plantSizeAccordionChildren = [];
     if(!plantSizeCorrect!){
-      plantSizeAccordionChildren = warningString;
+      plantSizeAccordionChildren.addAll(warningString);
     }
     plantSizeAccordionChildren.addAll([
       IntPicker(plantSizeController: plantSizeBeginningController, heading: 'Plant size beginning (cm)', hint: 'Enter old size of plant', onChange: (value) =>  plantSizeOnChanged()),
@@ -319,7 +319,7 @@ class _NewPlantState extends State<NewPlant> {
 
     List<Widget> wateringAccordionChildren = [];
     if(!wateringCorrect!){
-      wateringAccordionChildren = warningString;
+      wateringAccordionChildren.addAll(warningString);
     }
     wateringAccordionChildren.addAll([
       IntPicker(plantSizeController: wateringAmountController, heading: 'Water amount needed', hint: 'Water needed by plant in ml / interval', onChange: (value) =>  wateringOnChanged()),
@@ -329,7 +329,7 @@ class _NewPlantState extends State<NewPlant> {
 
     List<Widget> sprayPlantsAccordionChildren = [];
     if(!sprayPlantsCorrect!){
-      sprayPlantsAccordionChildren = warningString;
+      sprayPlantsAccordionChildren.addAll(warningString);
     }
     sprayPlantsAccordionChildren.addAll([
       IntPicker(plantSizeController: sprayingIntervalController, heading: 'Interval between spraying', hint: 'Enter number of days that divide spraying', onChange: (value) =>  sprayPlantsOnChanged()),
@@ -338,7 +338,7 @@ class _NewPlantState extends State<NewPlant> {
 
     List<Widget> fertilizeAccordionChildren = [];
     if(!fertilizeCorrect!){
-      fertilizeAccordionChildren = warningString;
+      fertilizeAccordionChildren.addAll(warningString);
     }
     fertilizeAccordionChildren.addAll([
       IntPicker(plantSizeController: fertilizeAmountController, heading: 'Fertilize amount needed', hint: 'Amount of fertilizer needed in mg / interval', onChange: (value) =>  fertilizeOnChanged()),
@@ -348,7 +348,7 @@ class _NewPlantState extends State<NewPlant> {
 
     List<Widget> environmentAccordionChildren = [];
     if(!environmentCorrect!){
-      environmentAccordionChildren = warningString;
+      environmentAccordionChildren.addAll(warningString);
     }
     environmentAccordionChildren.addAll([
       IntPicker(plantSizeController: temperatureController, heading: 'Favourite temperature of plant', hint: 'Enter value of plants preferred temperature in °C', onChange: (value) =>  environmentOnChanged()),
@@ -357,7 +357,7 @@ class _NewPlantState extends State<NewPlant> {
 
     List<Widget> repotAccordionChildren = [];
     if(!repotCorrect!){
-      repotAccordionChildren = warningString;
+      repotAccordionChildren.addAll(warningString);
     }
     repotAccordionChildren.addAll([
       IntPicker(plantSizeController: repotIntervalController, heading: 'Interval between repoting', hint: 'Enter number of days that divide repoting', onChange: (value) =>  repotOnChanged()),
@@ -366,7 +366,7 @@ class _NewPlantState extends State<NewPlant> {
 
     List<Widget> dustOffAccordionChildren = [];
     if(!dustOffCorrect!){
-      dustOffAccordionChildren = warningString;
+      dustOffAccordionChildren.addAll(warningString);
     }
     dustOffAccordionChildren.addAll([
       IntPicker(plantSizeController: dustOffIntervalController, heading: 'Interval between dusting off', hint: 'Enter number of days that divide dusting off', onChange: (value) =>  dustOffOnChanged()),
