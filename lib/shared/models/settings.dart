@@ -75,7 +75,7 @@ class VacationSettingsModel extends SettingsInterface{
   Map toJSON(){
     return {
       "enabled": enabled,
-      "duration": duration?.toUtc(),
+      "duration": duration,
     };
   }
 

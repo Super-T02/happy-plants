@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
-class PotSizePicker extends StatefulWidget {
-  const PotSizePicker({Key? key}) : super(key: key);
+class SizePicker extends StatefulWidget {
+  const SizePicker({Key? key, required this.title}) : super(key: key);
+
+  final String title;
 
   @override
-  State<PotSizePicker> createState() => _PotSizePickerState();
+  State<SizePicker> createState() => _SizePickerState();
 }
 
-class _PotSizePickerState extends State<PotSizePicker> {
+class _SizePickerState extends State<SizePicker> {
 
   //dropdown buttons choices
   String? _buttonPotSizeSelected;
@@ -34,7 +36,7 @@ class _PotSizePickerState extends State<PotSizePicker> {
     ).toList();
 
     return ListTile(
-      title: Text('Pot Size:', style: textTheme.bodyText1),
+      title: Text(widget.title, style: textTheme.bodyText1),
       trailing: DropdownButton(
         value: _buttonPotSizeSelected,
         hint: const Text('Size'),

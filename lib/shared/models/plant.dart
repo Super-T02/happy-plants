@@ -53,31 +53,63 @@ class Plant{
 
 
 class IntervalDateTime{
-  IntervalDateTime({required this.interval, required this.lastTime});
+  IntervalDateTime({this.interval, this.lastTime});
 
-  int interval; // in days
-  DateTime lastTime;
+  int? interval; // in days
+  DateTime? lastTime;
+
+  Map toJSON(){
+    return {
+      "interval":interval,
+      "lastTime":lastTime,
+    };
+  }
 }
 
 class Fertilize extends IntervalDateTime{
-  Fertilize({required interval, required lastTime, required this.amount})
+  Fertilize({interval, lastTime, this.amount})
       : super(interval: interval, lastTime: lastTime);
 
-  int amount; // in
+  int? amount; // in
+
+  @override
+  Map toJSON(){
+    return {
+      "amount": amount,
+      "interval":interval,
+      "lastTime":lastTime,
+    };
+  }
 }
 
 class Watering extends IntervalDateTime{
-  Watering({required int interval, required DateTime lastTime, required this.waterAmount})
+  Watering({interval, lastTime, this.waterAmount})
       : super(interval: interval, lastTime: lastTime);
 
-  int waterAmount; // in ml
+  int? waterAmount; // in ml
+
+  @override
+  Map toJSON(){
+    return {
+      "waterAmount":waterAmount,
+      "interval":interval,
+      "lastTime":lastTime,
+    };
+  }
 }
 
 class PlantSize{
-  PlantSize({required this.begin, required this.now});
+  PlantSize({this.begin, this.now});
 
-  int begin;
-  int now;
+  int? begin;
+  int? now;
+
+  Map toJSON(){
+    return {
+      "begin": begin,
+      "now": now,
+    };
+  }
 }
 
 class AddPlant{
@@ -85,6 +117,7 @@ class AddPlant{
   AddPlant({
     required this.gardenID,
     required this.name,
+    required this.type,
     this.watering,
     this.plantSize,
     this.fertilize,
@@ -95,12 +128,12 @@ class AddPlant{
     this.spray,
     this.sunDemand,
     this.temperature,
-    this.type
   });
 
   // Required
   String gardenID;
   String name;
+  String type;
 
   // Not required
   IntervalDateTime? dustOff;
@@ -112,6 +145,5 @@ class AddPlant{
   Sizes? potSize;
   Sizes? sunDemand;
   int? temperature;
-  String? type;
   Watering? watering;
 }
