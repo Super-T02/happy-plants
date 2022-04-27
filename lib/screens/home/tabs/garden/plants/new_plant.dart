@@ -2,7 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_plants/shared/widgets/forms/custom_dropdown.dart';
 import 'package:happy_plants/shared/widgets/util/custom_accordion.dart';
-import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/int_picker.dart';
+import 'package:happy_plants/shared/widgets/forms/int_picker.dart';
+import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/type_picker.dart';
 import 'package:happy_plants/shared/utilities/sizes.dart';
 import 'package:happy_plants/shared/widgets/forms/custom_datepicker.dart';
 import '../../../../../services/plant.dart';
@@ -216,7 +217,8 @@ class _NewPlantState extends State<NewPlant> {
     pictureName = Plant.allFiles[pageNumber];
   }
 
-  String allAccordionsCorrect() {
+  ///checks all categories of form for correctness, returns null if everything is fine
+  String? getAccordionsErrors() {
     if (plantSizeCorrect != null && plantSizeCorrect!
         && wateringCorrect != null && wateringCorrect!
         && sprayPlantsCorrect != null && sprayPlantsCorrect!
@@ -225,7 +227,7 @@ class _NewPlantState extends State<NewPlant> {
         && repotCorrect != null && repotCorrect!
         && dustOffCorrect != null && dustOffCorrect!
     ) {
-      return "true";
+      return null;
     }
     else if (plantSizeCorrect != null && !plantSizeCorrect!) {
       return "Plant Size";
@@ -242,12 +244,12 @@ class _NewPlantState extends State<NewPlant> {
     } else if (dustOffCorrect != null && !dustOffCorrect!) {
       return "Dust off";
     } else {
-      return "error";
+      throw Error();
     }
   }
 
   void _onSubmitted(user, garden) async {
-    if (_formKey.currentState!.validate() && allAccordionsCorrect() == "true") {
+    if (_formKey.currentState!.validate() && getAccordionsErrors() == null) {
       // add the plant
       await PlantService.addPlant(
           AddPlant(
@@ -271,9 +273,9 @@ class _NewPlantState extends State<NewPlant> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fill out required fields!')),
       );
-    } else if (allAccordionsCorrect() != "true"){
+    } else if (getAccordionsErrors() != null){
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error in Category: ${allAccordionsCorrect()}')),
+        SnackBar(content: Text('Error in Category: ${getAccordionsErrors()}')),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -301,9 +303,10 @@ class _NewPlantState extends State<NewPlant> {
       const SizedBox(height: 16)
     ];
 
+    //widgets for the children of accordions predefined to be able to add or remove the error message of an incomplete widget
     List<Widget> plantSizeAccordionChildren = [];
     if(!plantSizeCorrect!){
-      plantSizeAccordionChildren = warningString;
+      plantSizeAccordionChildren.addAll(warningString);
     }
     plantSizeAccordionChildren.addAll([
       IntPicker(plantSizeController: plantSizeBeginningController, heading: 'Plant size beginning (cm)', hint: 'Enter old size of plant', onChange: (value) =>  plantSizeOnChanged()),
@@ -313,7 +316,7 @@ class _NewPlantState extends State<NewPlant> {
 
     List<Widget> wateringAccordionChildren = [];
     if(!wateringCorrect!){
-      wateringAccordionChildren = warningString;
+      wateringAccordionChildren.addAll(warningString);
     }
     wateringAccordionChildren.addAll([
       IntPicker(plantSizeController: wateringAmountController, heading: 'Water amount needed', hint: 'Water needed by plant in ml / interval', onChange: (value) =>  wateringOnChanged()),
@@ -323,7 +326,7 @@ class _NewPlantState extends State<NewPlant> {
 
     List<Widget> sprayPlantsAccordionChildren = [];
     if(!sprayPlantsCorrect!){
-      sprayPlantsAccordionChildren = warningString;
+      sprayPlantsAccordionChildren.addAll(warningString);
     }
     sprayPlantsAccordionChildren.addAll([
       IntPicker(plantSizeController: sprayingIntervalController, heading: 'Interval between spraying', hint: 'Enter number of days that divide spraying', onChange: (value) =>  sprayPlantsOnChanged()),
@@ -332,7 +335,7 @@ class _NewPlantState extends State<NewPlant> {
 
     List<Widget> fertilizeAccordionChildren = [];
     if(!fertilizeCorrect!){
-      fertilizeAccordionChildren = warningString;
+      fertilizeAccordionChildren.addAll(warningString);
     }
     fertilizeAccordionChildren.addAll([
       IntPicker(plantSizeController: fertilizeAmountController, heading: 'Fertilize amount needed', hint: 'Amount of fertilizer needed in mg / interval', onChange: (value) =>  fertilizeOnChanged()),
@@ -342,7 +345,7 @@ class _NewPlantState extends State<NewPlant> {
 
     List<Widget> environmentAccordionChildren = [];
     if(!environmentCorrect!){
-      environmentAccordionChildren = warningString;
+      environmentAccordionChildren.addAll(warningString);
     }
     environmentAccordionChildren.addAll([
       IntPicker(plantSizeController: temperatureController, heading: 'Favourite temperature of plant', hint: 'Enter value of plants preferred temperature in °C', onChange: (value) =>  environmentOnChanged()),
@@ -351,7 +354,7 @@ class _NewPlantState extends State<NewPlant> {
 
     List<Widget> repotAccordionChildren = [];
     if(!repotCorrect!){
-      repotAccordionChildren = warningString;
+      repotAccordionChildren.addAll(warningString);
     }
     repotAccordionChildren.addAll([
       IntPicker(plantSizeController: repotIntervalController, heading: 'Interval between repoting', hint: 'Enter number of days that divide repoting', onChange: (value) =>  repotOnChanged()),
@@ -360,7 +363,7 @@ class _NewPlantState extends State<NewPlant> {
 
     List<Widget> dustOffAccordionChildren = [];
     if(!dustOffCorrect!){
-      dustOffAccordionChildren = warningString;
+      dustOffAccordionChildren.addAll(warningString);
     }
     dustOffAccordionChildren.addAll([
       IntPicker(plantSizeController: dustOffIntervalController, heading: 'Interval between dusting off', hint: 'Enter number of days that divide dusting off', onChange: (value) =>  dustOffOnChanged()),

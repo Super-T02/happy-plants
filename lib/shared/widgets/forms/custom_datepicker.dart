@@ -44,7 +44,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
         selectedDate = picked;
       });
     }
-    //TODO: catch case of nothing selected
+    //TODO: provide case to select nothing
     else if (picked == null){
       setState(() {
         selectedDate = DateTime.now();
@@ -70,8 +70,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
           style: CustomButtonStyle.buttonStyle,
           child: Text(
             "${selectedDate.toLocal()}".split(' ')[0],
-            style:
-            textTheme.bodyText1,
+            style: textTheme.bodyText1,
           ),
         ),
       ],
