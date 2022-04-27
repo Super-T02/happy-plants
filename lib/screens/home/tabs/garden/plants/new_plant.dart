@@ -4,7 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_plants/shared/widgets/forms/custom_dropdown.dart';
 import 'package:happy_plants/shared/widgets/util/custom_accordion.dart';
-import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/int_picker.dart';
+import 'package:happy_plants/shared/widgets/forms/int_picker.dart';
 import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/type_picker.dart';
 import 'package:happy_plants/shared/utilities/sizes.dart';
 import 'package:happy_plants/shared/widgets/forms/custom_datepicker.dart';
@@ -222,7 +222,8 @@ class _NewPlantState extends State<NewPlant> {
     pictureName = Plant.allFiles[pageNumber];
   }
 
-  String allAccordionsCorrect() {
+  ///checks all categories of form for correctness, returns null if everything is fine
+  String? getAccordionsErrors() {
     if (plantSizeCorrect != null && plantSizeCorrect!
         && wateringCorrect != null && wateringCorrect!
         && sprayPlantsCorrect != null && sprayPlantsCorrect!
@@ -231,7 +232,7 @@ class _NewPlantState extends State<NewPlant> {
         && repotCorrect != null && repotCorrect!
         && dustOffCorrect != null && dustOffCorrect!
     ) {
-      return "true";
+      return null;
     }
     else if (plantSizeCorrect != null && !plantSizeCorrect!) {
       return "Plant Size";
@@ -248,12 +249,12 @@ class _NewPlantState extends State<NewPlant> {
     } else if (dustOffCorrect != null && !dustOffCorrect!) {
       return "Dust off";
     } else {
-      return "error";
+      throw Error();
     }
   }
 
   void _onSubmitted(user, garden) async {
-    if (_formKey.currentState!.validate() && allAccordionsCorrect() == "true") {
+    if (_formKey.currentState!.validate() && getAccordionsErrors() == null) {
       // add the plant
       await PlantService.addPlant(
           AddPlant(
@@ -277,9 +278,9 @@ class _NewPlantState extends State<NewPlant> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fill out required fields!')),
       );
-    } else if (allAccordionsCorrect() != "true"){
+    } else if (getAccordionsErrors() != null){
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error in Category: ${allAccordionsCorrect()}')),
+        SnackBar(content: Text('Error in Category: ${getAccordionsErrors()}')),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -307,6 +308,7 @@ class _NewPlantState extends State<NewPlant> {
       const SizedBox(height: 16)
     ];
 
+    //widgets for the children of accordions predefined to be able to add or remove the error message of an incomplete widget
     List<Widget> plantSizeAccordionChildren = [];
     if(!plantSizeCorrect!){
       plantSizeAccordionChildren.addAll(warningString);
