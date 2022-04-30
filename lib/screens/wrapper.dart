@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:happy_plants/screens/authenticate/sign_in.dart';
 import 'package:happy_plants/screens/home/home.dart';
 import 'package:happy_plants/services/user.dart';
@@ -21,11 +22,12 @@ class Wrapper extends StatelessWidget {
     if(user == null){
       return const SignIn(title: 'Happy Plants');
     } else {
-      notification.scheduledNotification(
+      notification.scheduledNotificationRepeat(
           ScheduledNotificationModel(
               title: 'Test schedule run',
               body: 'Test',
-              periodDays: 1
+              periodDays: 1,
+              dateTimeComponent: DateTimeComponents.dayOfWeekAndTime,
           )
       ); // TODO: needs to be deleted
       return StreamProvider<DbUser?>.value(

@@ -29,7 +29,7 @@ class NotificationService {
 
 
   /// Schedules a notification for a defined period of time
-  Future<void> scheduledNotification(ScheduledNotificationModel notification) async {
+  Future<void> scheduledNotificationRepeat(ScheduledNotificationModel notification) async {
 
     if(SharedPreferencesController.getNotificationTimeStatus()){
 
@@ -50,13 +50,15 @@ class NotificationService {
             ),
           ),
 
-          androidAllowWhileIdle: true,
+          androidAllowWhileIdle: false,
           uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-          matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime
+          matchDateTimeComponents: notification.dateTimeComponent,
       );
 
     }
   }
+
+
 
 
   /// Cancels all notifications
