@@ -5,7 +5,6 @@ import 'package:happy_plants/services/plant.dart';
 import 'package:happy_plants/services/shared_preferences_controller.dart';
 import 'package:happy_plants/shared/models/events.dart';
 import 'package:happy_plants/shared/models/notification.dart';
-import 'package:happy_plants/shared/models/plant.dart';
 import 'package:timezone/timezone.dart';
 import '../config.dart';
 import '../main.dart';
@@ -89,11 +88,10 @@ class NotificationService {
   }
 
 
-
-
   /// Cancels all notifications
   Future<void> cancelAllNotifications() async {
     await flutterLocalNotificationsPlugin.cancelAll();
+    SharedPreferencesController.setNotificationNextId(0);
   }
 
 

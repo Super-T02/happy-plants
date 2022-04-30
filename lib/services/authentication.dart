@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:happy_plants/config.dart';
+import 'package:happy_plants/services/notification.dart';
+import 'package:happy_plants/services/shared_preferences_controller.dart';
 import 'package:happy_plants/services/user.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/utilities/util.dart';
@@ -11,6 +13,7 @@ class AuthService{
 
   // Initialize firebase_auth
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final NotificationService notificationService = NotificationService();
 
   /// Build our custom user
   CustomUser? _userFromFirebaseUser(User? user) {
@@ -112,6 +115,10 @@ class AuthService{
   Future signOut() async {
     try{
       Util.startLoading();
+
+      // Delete all notifications
+      await notificationService.cancelAllNotifications();
+
 
       await GoogleSignIn().signOut();
       return await _auth.signOut();
