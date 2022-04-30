@@ -73,6 +73,27 @@ class EventService {
     return result; // TODO: Error handling
   }
 
+  /// Schedules all events for the given user
+  static Future<void> scheduleAllNotifications(CustomUser? user) async{
+    if(user != null) {
+      CollectionReference events = EventService.getEventsCollectionRef(user);
+
+      events.get().then((QuerySnapshot querySnapshot) async {
+        for (DocumentSnapshot event in querySnapshot.docs) {
+
+          // Get the mapped model
+          EventsModel newEvent = EventsModel.mapFirebaseDocToEvent(user.uid, event);
+
+          // Get notification
+          ScheduledNotificationModel notification = await notificationService.getScheduledNotificationFromEvent(newEvent);
+
+          // Schedule notification
+          notificationService.scheduledNotificationRepeat(notification);
+        }
+      });
+    }
+  }
+
   /// Get the ref on a event instance based on the user and event id
   static DocumentReference getEventDocRef(String eventId, CustomUser user) {
     return FirebaseFirestore.instance

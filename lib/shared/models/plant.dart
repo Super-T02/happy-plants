@@ -91,7 +91,7 @@ class IntervalDateTime extends JSON{
 }
 
 class Fertilize extends IntervalDateTime{
-  Fertilize({interval, startDate, this.amount})
+  Fertilize({Periods? interval,DateTime? startDate, this.amount})
       : super(interval: interval, startDate: startDate);
 
   int? amount; // in
@@ -107,7 +107,7 @@ class Fertilize extends IntervalDateTime{
 }
 
 class Watering extends IntervalDateTime{
-  Watering({interval, startDate, this.waterAmount})
+  Watering({Periods? interval,DateTime? startDate, this.waterAmount})
       : super(interval: interval, startDate: startDate);
 
   int? waterAmount; // in ml

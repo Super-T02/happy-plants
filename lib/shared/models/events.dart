@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:happy_plants/shared/models/plant.dart';
 
@@ -71,6 +72,69 @@ class EventsModel<T extends JSON> {
       case EventTypes.dustOff: return '$name cannot breath!';
       default: return null;
     }
+  }
+
+  /// Maps a fire base doc reference of a event to a event model
+  static EventsModel mapFirebaseDocToEvent(String userId, DocumentSnapshot documentSnapshot){
+    Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
+
+    EventTypes type = EventTypes.values[data['type']];
+    Periods period = Periods.values[data['period']];
+
+    EventsModel newEvent;
+
+    switch(type){
+      case EventTypes.watering:
+        newEvent = EventsModel(
+            userId: userId,
+            plantId: data['plantId'],
+            gardenId: data['gardenId'],
+            type: type,
+            period: period,
+            data: Watering(
+                interval: period,
+                startDate: data['data']['startDate'].toDate(),
+                waterAmount: data['data']['waterAmount'],
+            ),
+            startDate: data['startDate'].toDate()
+        );
+        break;
+      case EventTypes.dustOff:
+      case EventTypes.repot:
+      case EventTypes.spray:
+        newEvent = EventsModel(
+            userId: userId,
+            plantId: data['plantId'],
+            gardenId: data['gardenId'],
+            type: type,
+            period: period,
+            data: IntervalDateTime(
+              interval: period,
+              startDate: data['data']['startDate'].toDate(),
+            ),
+            startDate: data['startDate'].toDate()
+        );
+        break;
+      case EventTypes.fertilize:
+        newEvent = EventsModel(
+            userId: userId,
+            plantId: data['plantId'],
+            gardenId: data['gardenId'],
+            type: type,
+            period: period,
+            data: Fertilize(
+              interval: period,
+              startDate: data['data']['startDate'].toDate(),
+              amount: data['data']['amount'],
+            ),
+            startDate: data['startDate'].toDate()
+        );
+        break;
+      default:
+        throw Exception('No valid Events loaded');
+    }
+
+    return newEvent;
   }
 }
 

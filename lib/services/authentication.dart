@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:happy_plants/config.dart';
+import 'package:happy_plants/services/event.dart';
 import 'package:happy_plants/services/notification.dart';
-import 'package:happy_plants/services/shared_preferences_controller.dart';
 import 'package:happy_plants/services/user.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/utilities/util.dart';
@@ -41,8 +41,12 @@ class AuthService{
           password: password
       );
 
-      return _userFromFirebaseUser(result.user);
+      CustomUser? user =  _userFromFirebaseUser(result.user);
 
+      // Generate all notifications
+      await EventService.scheduleAllNotifications(user);
+
+      return user;
     } on FirebaseAuthException catch(e){
       if(e.code == 'user-not-found') {
         // TODO: Alert for false email
@@ -75,6 +79,7 @@ class AuthService{
 
     // generate user in the Firestore
     await UserService.generateUser(user, false);
+    await EventService.scheduleAllNotifications(user);
 
     Util.endLoading();
 
