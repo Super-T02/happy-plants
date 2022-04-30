@@ -16,6 +16,15 @@ class _TypePickerState extends State<TypePicker> {
   // Form controllers
   TextEditingController plantNameController = TextEditingController();
 
+  /// Validator for the plant name
+  String? nameValidator(String? value) {
+    if(value == null || value.isEmpty){
+      return 'Please enter a name';
+    } else {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomFormField(
@@ -27,7 +36,7 @@ class _TypePickerState extends State<TypePicker> {
         textInputAction: TextInputAction.done,
         controller: widget.plantTypeController,
         maxLines: 1,
-        validator: (String? value) { return null; },
+        validator: nameValidator,
     );
   }
 }
