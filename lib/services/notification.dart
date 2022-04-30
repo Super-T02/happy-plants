@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:happy_plants/services/shared_preferences_controller.dart';
 import 'package:happy_plants/shared/models/notification.dart';
 import 'package:timezone/data/latest_all.dart';
 import 'package:timezone/timezone.dart';
@@ -29,27 +31,32 @@ class NotificationService {
 
   /// Schedules a notification for a defined period of time
   Future<void> _scheduledNotification(ScheduledNotificationModel notification) async {
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-        0,
-        notification.title,
-        notification.body,
-        _nextInstanceNotificationTime(notification.periodDays, notification.lastTimeStamp),
 
-        // Setting the notification details
-        NotificationDetails(
-          android: AndroidNotificationDetails(
+    if(SharedPreferencesController.getNotificationTimeStatus()){
+
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+          0,
+          notification.title,
+          notification.body,
+          _nextInstanceNotificationTime(notification.periodDays, notification.lastTimeStamp),
+
+          // Setting the notification details
+          NotificationDetails(
+            android: AndroidNotificationDetails(
               scheduledChanelId,
               scheduledChanelName,
               importance: Importance.high,
               priority: Priority.high,
               channelDescription: scheduledChanelDescription,
+            ),
           ),
-        ),
 
-        androidAllowWhileIdle: true,
-        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-        matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime
-    );
+          androidAllowWhileIdle: true,
+          uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+          matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime
+      );
+
+    }
   }
 
 
@@ -61,8 +68,8 @@ class NotificationService {
   /// Returns:
   ///   - TZDateTime for the next schedule
   TZDateTime _nextInstanceNotificationTime(int periodDays, DateTime? lastTimeStamp) {
-    TZDateTime planned;
-
+        TZDateTime planned;
+    TimeOfDay defaultTime = SharedPreferencesController.getCurrentNotificationTime();
 
     // Select the last time stamp
     if(lastTimeStamp != null) {
@@ -73,7 +80,14 @@ class NotificationService {
     }
 
     // Get the next scheduled date
-    TZDateTime scheduledDate = TZDateTime(local, planned.year, planned.month, planned.day, 10);
+    TZDateTime scheduledDate = TZDateTime(
+        local,
+        planned.year,
+        planned.month,
+        planned.day,
+        defaultTime.hour,
+        defaultTime.minute
+    );
 
     // Add the period until the next date is in the future
     do{

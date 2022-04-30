@@ -13,7 +13,7 @@ class SharedPreferencesController{
   }
 
   /// Get the default notification time from the phone settings
-  static TimeOfDay getCurrentThemeMode() {
+  static TimeOfDay getCurrentNotificationTime() {
 
     int? hour = sharedPreferences!.getInt(notificationTimeHourKey);
     int? minute = sharedPreferences!.getInt(notificationTimeMinuteKey);
