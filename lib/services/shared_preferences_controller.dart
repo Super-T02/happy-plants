@@ -4,6 +4,7 @@ import '../config.dart';
 class SharedPreferencesController{
   static const String notificationTimeHourKey = 'settings_notification_time_hour';
   static const String notificationTimeMinuteKey = 'settings_notification_time_minute';
+  static const String notificationIsEnabled = 'settings_notification_time_isEnabled';
 
   /// Set the current notification time to the given time in the phone settings
   static void setCurrentNotificationTime(TimeOfDay time){
@@ -23,6 +24,21 @@ class SharedPreferencesController{
     TimeOfDay time = TimeOfDay(hour: hour, minute: minute);
 
     return time;
+  }
+
+  /// Set the isEnabled flag for the notifications
+  static void setNotificationTimeStatus(bool isEnabled){
+    sharedPreferences!.setBool(notificationIsEnabled, isEnabled);
+  }
+
+  /// Get the isEnabled flag for the notifications
+  static bool getNotificationTimeStatus() {
+
+    bool? isEnabled = sharedPreferences!.getBool(notificationIsEnabled);
+
+    isEnabled ??= true;
+
+    return isEnabled;
   }
 
 }
