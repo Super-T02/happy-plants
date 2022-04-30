@@ -57,8 +57,10 @@ class PlantService {
   }
 
   /// Updates a plant based on its plant id
-  static Future<void> putPlant(Plant updatedPlant, CustomUser user) {
+  static Future<void> putPlant(Plant updatedPlant, CustomUser user) async {
     DocumentReference plant = getPlantDocRef(updatedPlant.id, updatedPlant.gardenID, user.uid);
+
+    notificationService.cancelAllNotifications();
 
     dynamic dustOff, fertilize, plantSize, repot, spray, watering;
 
@@ -81,7 +83,7 @@ class PlantService {
       watering = updatedPlant.watering;
     }
 
-    return plant.set({
+    await plant.set({
       'dustOff': dustOff,
       'fertilize': fertilize,
       'icon': updatedPlant.icon,
@@ -95,10 +97,30 @@ class PlantService {
       'type': updatedPlant.type,
       'watering': watering,
     });
+
+    AddPlant newPlant = AddPlant(
+      gardenID: updatedPlant.gardenID,
+      name: updatedPlant.name,
+      type: updatedPlant.type!,
+      icon: updatedPlant.icon,
+      dustOff: updatedPlant.dustOff,
+      fertilize: updatedPlant.fertilize,
+      plantSize: updatedPlant.plantSize,
+      potSize: updatedPlant.potSize,
+      repot: updatedPlant.repot,
+      spray: updatedPlant.spray,
+      sunDemand: updatedPlant.sunDemand,
+      temperature: updatedPlant.temperature,
+      watering: updatedPlant.watering,
+    );
+
+    await _addEventsAll(newPlant, user, updatedPlant.id);
+
     // TODO: Error handling
   }
 
   /// Updates a plant based on its gardenID and plantId
+  /// WARNING: PATCH PLANT DOES NOT UPDATE THE NOTIFICATIONS!!!!!
   static Future<void> patchPlant(String gardenID, String plantId, String fieldName, dynamic updatedValue, CustomUser user) {
     dynamic result;
 
