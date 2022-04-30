@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:happy_plants/services/shared_preferences_controller.dart';
 import 'package:happy_plants/shared/models/notification.dart';
-import 'package:timezone/data/latest_all.dart';
 import 'package:timezone/timezone.dart';
 import '../main.dart';
 
@@ -30,7 +29,7 @@ class NotificationService {
 
 
   /// Schedules a notification for a defined period of time
-  Future<void> _scheduledNotification(ScheduledNotificationModel notification) async {
+  Future<void> scheduledNotification(ScheduledNotificationModel notification) async {
 
     if(SharedPreferencesController.getNotificationTimeStatus()){
 
