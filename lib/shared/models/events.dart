@@ -4,11 +4,13 @@ import 'package:happy_plants/shared/models/plant.dart';
 ///
 /// Params:
 ///   - String? id: Id of the event set after generation in the backend
+///   - String userId: The id of the user the event is related to
+///   - String plantId: The id of the plant the event is related to
 ///   - EventTypes type: Type of the event
 ///   - Periods period: Time Period for the event
 ///   - Plant plant: Plant related to the event
-///   - DateTime nextDate: Next time for the event
-///   - DateTime? startDate: (optional) Start date of the event
+///   - T Data: The data for the event
+///   - DateTime startDate:  Start date of the event | For the single type it is the next date
 class EventsModel<T extends JSON> {
   String? id;
   String userId;

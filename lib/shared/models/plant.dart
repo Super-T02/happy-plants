@@ -20,7 +20,8 @@ class Plant extends JSON{
     this.spray,
     this.sunDemand,
     this.temperature,
-    this.type
+    this.type,
+    this.eventIds
   });
 
   // Required
@@ -40,7 +41,7 @@ class Plant extends JSON{
   int? temperature;
   String? type;
   Watering? watering;
-  List<String>? eventIds;
+  List<dynamic>? eventIds;
 
   static checkItemName(iconName){
     if(allFiles.contains(iconName)){

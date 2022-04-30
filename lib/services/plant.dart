@@ -120,10 +120,18 @@ class PlantService {
   //TODO: ladebalken einfuegen
 
   /// Deletes a plants based on its plantId
-  static Future<void> deletePlant(String plantId, String gardenID, CustomUser user) {
-    DocumentReference plant = getPlantDocRef(plantId, gardenID, user);
+  static Future<void> deletePlant(Plant plant, String gardenID, CustomUser user) async {
+    DocumentReference plantDoc = getPlantDocRef(plant.id, gardenID, user);
 
-    return plant.delete(); // TODO: Error handling
+    debugPrint(plant.eventIds.toString());
+
+    if(plant.eventIds != null) {
+      for (String eventId in plant.eventIds!) {
+        EventService.deleteEvent(eventId, user);
+      }
+    }
+
+    return plantDoc.delete(); // TODO: Error handling
   }
 
   /// Get the ref on a garden instance based on the user, gardenId and plantId
