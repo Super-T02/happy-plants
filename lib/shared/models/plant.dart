@@ -49,6 +49,25 @@ class Plant{
     }
   }
 
+  Map toJSON() {
+    return {
+      'gardenId': gardenID,
+      'id': id,
+      'dustOff': dustOff?.toJSON(),
+      'fertilize': fertilize?.toJSON(),
+      'icon': icon,
+      'name': name,
+      'plantSize': plantSize?.toJSON(),
+      'potSize': SizeHelper.getStringFromSize(potSize),
+      'repot': repot?.toJSON(),
+      'spray': spray?.toJSON(),
+      'sunDemand': SizeHelper.getStringFromSize(sunDemand),
+      'temperature': temperature,
+      'type': type,
+      'watering': watering?.toJSON(),
+    };
+  }
+
 }
 
 
@@ -146,4 +165,22 @@ class AddPlant{
   Sizes? sunDemand;
   int? temperature;
   Watering? watering;
+
+  Map toJSON() {
+    return {
+      'gardenId': gardenID,
+      'dustOff': dustOff?.toJSON(),
+      'fertilize': fertilize?.toJSON(),
+      'icon': icon,
+      'name': name,
+      'plantSize': plantSize?.toJSON(),
+      'potSize': SizeHelper.getStringFromSize(potSize),
+      'repot': repot?.toJSON(),
+      'spray': spray?.toJSON(),
+      'sunDemand': SizeHelper.getStringFromSize(sunDemand),
+      'temperature': temperature,
+      'type': type,
+      'watering': watering?.toJSON(),
+    };
+  }
 }
