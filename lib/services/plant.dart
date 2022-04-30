@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:happy_plants/config.dart';
 import 'package:happy_plants/screens/home/tabs/garden/plants/new_plant.dart';
 import 'package:happy_plants/services/event.dart';
+import 'package:happy_plants/services/notification.dart';
 import 'package:happy_plants/shared/models/events.dart';
 import 'package:happy_plants/shared/models/plant.dart';
 import 'package:happy_plants/shared/models/user.dart';
@@ -13,6 +15,7 @@ class PlantService {
   /// Adds a new plant
   static Future<void> addPlant( AddPlant newPlant, CustomUser user) async {
     CollectionReference plants = getPlantsCollectionRef(user, newPlant.gardenID);
+
 
     dynamic dustOff, fertilize, plantSize, repot, spray, watering;
 
@@ -126,9 +129,13 @@ class PlantService {
     debugPrint(plant.eventIds.toString());
 
     if(plant.eventIds != null) {
+
       for (String eventId in plant.eventIds!) {
-        EventService.deleteEvent(eventId, user);
+        await EventService.deleteEvent(eventId, user);
       }
+
+      await notificationService.cancelAllNotifications();
+      await EventService.scheduleAllNotifications(user);
     }
 
     return plantDoc.delete(); // TODO: Error handling
