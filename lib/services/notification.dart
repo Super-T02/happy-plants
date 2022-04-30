@@ -10,7 +10,7 @@ class NotificationService {
   final scheduledChanelName = 'Scheduled Notifications';
   final scheduledChanelDescription = 'Notifications scheduled for a period of time';
 
-  // Shows a normal notification
+  /// Shows a normal notification
   Future<void> showNotification() async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
       AndroidNotificationDetails('your channel id', 'your channel name',
@@ -94,5 +94,10 @@ class NotificationService {
     } while (scheduledDate.isBefore(planned));
 
     return scheduledDate;
+  }
+
+  /// Cancels all notifications
+  Future<void> cancelAllNotifications() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
   }
 }
