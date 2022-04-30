@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:happy_plants/config.dart';
+import 'package:happy_plants/services/event.dart';
 import 'package:happy_plants/services/shared_preferences_controller.dart';
+import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/widgets/util/lists/custom_list_group_switch.dart';
+import 'package:provider/provider.dart';
 import '../../../../../services/authentication.dart';
 import '../../../../../services/notification.dart';
 import '../../../../../shared/widgets/util/lists/custom_list_tile.dart';
@@ -24,26 +28,52 @@ class _PushNotificationSettingsState extends State<PushNotificationSettings> {
     super.initState();
   }
 
+  /// Enables or disables the notifications for this app
+  void onSwitchChange(bool isEnabledNew, user) {
+    SharedPreferencesController.setNotificationTimeStatus(isEnabledNew);
+
+    if(!isEnabledNew) {
+      notificationService.cancelAllNotifications();
+    } else {
+      EventService.scheduleAllNotifications(user);
+    }
+
+    setState(() {
+      isEnabled = SharedPreferencesController.getNotificationTimeStatus();
+      time = SharedPreferencesController.getCurrentNotificationTime();
+    });
+  }
+
+  Future<void> onChangeNotificationTime(context, CustomUser user) async {
+    TimeOfDay? result = await showTimePicker(context: context, initialTime: time!);
+
+    if(result != null) {
+      SharedPreferencesController.setCurrentNotificationTime(result);
+
+      notificationService.cancelAllNotifications();
+      EventService.scheduleAllNotifications(user);
+      
+      setState(() {
+        isEnabled = SharedPreferencesController.getNotificationTimeStatus();
+        time = SharedPreferencesController.getCurrentNotificationTime();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    CustomUser? user = Provider.of<CustomUser?>(context);
+
     return CustomListGroupSwitch(
         title: 'Push Notifications',
         isEnabled: isEnabled!,
-        onSwitchChange: (bool value) {
-          SharedPreferencesController.setNotificationTimeStatus(value);
-          setState(() {
-            isEnabled = SharedPreferencesController.getNotificationTimeStatus();
-            time = SharedPreferencesController.getCurrentNotificationTime();
-          });
-        },
+        onSwitchChange: (value) => onSwitchChange(value, user),
         children: <Widget>[
           CustomListTile(
             title: 'Change Notification Time',
             subtitle: _displayCurrentTime(time!),
             leading: Icons.access_time,
-            onTap: () async {
-              // TODO
-            },
+            onTap: () => onChangeNotificationTime(context, user!),
           ),
           CustomListTile(
             title: 'Go to System settings',
