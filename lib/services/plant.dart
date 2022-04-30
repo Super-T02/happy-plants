@@ -1,12 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:happy_plants/screens/home/tabs/garden/plants/new_plant.dart';
+import 'package:happy_plants/services/event.dart';
+import 'package:happy_plants/shared/models/events.dart';
 import 'package:happy_plants/shared/models/plant.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import '../shared/utilities/sizes.dart';
+import '../shared/utilities/util.dart';
 
 class PlantService {
 
   /// Adds a new plant
-  static Future<void> addPlant( AddPlant newPlant, CustomUser user) {
+  static Future<void> addPlant( AddPlant newPlant, CustomUser user) async {
     CollectionReference plants = getPlantsCollectionRef(user, newPlant.gardenID);
 
     dynamic dustOff, fertilize, plantSize, repot, spray, watering;
@@ -30,7 +35,7 @@ class PlantService {
       watering = newPlant.watering;
     }
 
-    return plants.add({
+    DocumentReference addedPlant = await plants.add({
       'dustOff': dustOff.toJSON(),
       'fertilize': fertilize.toJSON(),
       'icon': newPlant.icon,
@@ -44,6 +49,8 @@ class PlantService {
       'type': newPlant.type,
       'watering': watering.toJSON(),
     });
+
+    await _addEventsAll(newPlant, user, addedPlant.id);
 
     // TODO: Error handling
   }
@@ -90,6 +97,26 @@ class PlantService {
     // TODO: Error handling
   }
 
+  /// Updates a plant based on its gardenID and plantId
+  static Future<void> patchPlant(String gardenID, String plantId, String fieldName, dynamic updatedValue, CustomUser user) {
+    dynamic result;
+
+    try{
+      Util.startLoading();
+
+      DocumentReference plant = getPlantDocRef(plantId, gardenID, user);
+      result = plant.update({
+        fieldName: updatedValue
+      });
+
+    } finally {
+      Util.endLoading();
+    }
+
+    return result;
+    // TODO: Error handling
+  }
+
   //TODO: ladebalken einfuegen
 
   /// Deletes a plants based on its plantId
@@ -122,5 +149,125 @@ class PlantService {
         .collection('gardens').doc(gardenId)
         .collection('plants')
         .snapshots();
+  }
+
+  /// Adds all events of a plant which aren't null
+  static _addEventsAll(AddPlant plant, CustomUser user, plantId) async {
+    List<String> eventIds = [];
+
+
+    // Watering
+    if(plant.watering != null){
+      Watering watering = plant.watering!;
+
+      if(watering.startDate != null && watering.interval != null) {
+        debugPrint(watering.startDate.toString());
+        DocumentReference event = await EventService.addEvent(
+            EventsModel<Watering>(
+              userId: user.uid,
+              plantId: plantId,
+              gardenId: plant.gardenID,
+              type: EventTypes.watering,
+              period: watering.interval!,
+              data: watering,
+              startDate: watering.startDate!,
+            ),
+            user
+        );
+
+        eventIds.add(event.id);
+      }
+    }
+
+    // Spray
+    if(plant.spray != null){
+      IntervalDateTime spray = plant.spray!;
+
+      if(spray.startDate != null && spray.interval != null) {
+        DocumentReference event = await EventService.addEvent(
+            EventsModel<IntervalDateTime>(
+              userId: user.uid,
+              plantId: plantId,
+              gardenId: plant.gardenID,
+              type: EventTypes.spray,
+              period: spray.interval!,
+              data: spray,
+              startDate: spray.startDate!,
+            ),
+            user
+        );
+
+
+        eventIds.add(event.id);
+      }
+    }
+
+    // Fertilize
+    if(plant.fertilize != null){
+      Fertilize fertilize = plant.fertilize!;
+
+      if(fertilize.startDate != null && fertilize.interval != null) {
+        DocumentReference event = await EventService.addEvent(
+            EventsModel<Fertilize>(
+              userId: user.uid,
+              plantId: plantId,
+              gardenId: plant.gardenID,
+              type: EventTypes.fertilize,
+              period: fertilize.interval!,
+              data: fertilize,
+              startDate: fertilize.startDate!,
+            ),
+            user
+        );
+
+        eventIds.add(event.id);
+      }
+    }
+
+    // Repot
+    if(plant.repot != null){
+      IntervalDateTime repot = plant.repot!;
+
+      if(repot.startDate != null && repot.interval != null) {
+        DocumentReference event = await EventService.addEvent(
+            EventsModel<IntervalDateTime>(
+              userId: user.uid,
+              plantId: plantId,
+              gardenId: plant.gardenID,
+              type: EventTypes.repot,
+              period: repot.interval!,
+              data: repot,
+              startDate: repot.startDate!,
+            ),
+            user
+        );
+
+        eventIds.add(event.id);
+      }
+    }
+
+    // DustOff
+    if(plant.dustOff != null){
+      IntervalDateTime dustOff = plant.dustOff!;
+
+      if(dustOff.startDate != null && dustOff.interval != null) {
+        DocumentReference event = await EventService.addEvent(
+            EventsModel<IntervalDateTime>(
+              userId: user.uid,
+              plantId: plantId,
+              gardenId: plant.gardenID,
+              type: EventTypes.dustOff,
+              period: dustOff.interval!,
+              data: dustOff,
+              startDate: dustOff.startDate!,
+            ),
+            user
+        );
+
+        eventIds.add(event.id);
+      }
+    }
+
+    patchPlant(plant.gardenID, plantId, 'events', eventIds, user);
   }
 }

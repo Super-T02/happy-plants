@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:happy_plants/shared/models/events.dart';
 import 'package:happy_plants/shared/widgets/forms/custom_dropdown.dart';
 import 'package:happy_plants/shared/widgets/util/custom_accordion.dart';
 import 'package:happy_plants/shared/widgets/forms/int_picker.dart';
@@ -46,13 +47,8 @@ class _NewPlantState extends State<NewPlant> {
   TextEditingController plantSizeEndController = TextEditingController();
 
   TextEditingController wateringAmountController = TextEditingController();
-  TextEditingController wateringIntervalController = TextEditingController();
-  TextEditingController sprayingIntervalController = TextEditingController();
   TextEditingController fertilizeAmountController = TextEditingController();
-  TextEditingController fertilizeIntervalController = TextEditingController();
   TextEditingController temperatureController = TextEditingController();
-  TextEditingController repotIntervalController = TextEditingController();
-  TextEditingController dustOffIntervalController = TextEditingController();
 
   //variables for the pickers & their callback functions
   DateTime? wateringLastTime;
@@ -61,6 +57,11 @@ class _NewPlantState extends State<NewPlant> {
   DateTime? repotLastTime;
   DateTime? dustOffLastTime;
   String? potSize;
+  String? wateringInterval;
+  String? sprayInterval;
+  String? fertilizeInterval;
+  String? repotInterval;
+  String? dustOffInterval;
   String? sunNeed;
 
   //marker for error info messages
@@ -142,10 +143,10 @@ class _NewPlantState extends State<NewPlant> {
 
   ///check watering accordion correctness
   void wateringOnChanged(){
-    if(wateringAmountController.text.isEmpty && wateringIntervalController.text.isEmpty && wateringLastTime == null){
+    if(wateringAmountController.text.isEmpty && wateringInterval == null && wateringLastTime == null){
       wateringCorrectCallback(true);
     }
-    else if(wateringAmountController.text.isNotEmpty && wateringIntervalController.text.isNotEmpty && wateringLastTime != null){
+    else if(wateringAmountController.text.isNotEmpty && wateringInterval != null && wateringLastTime != null){
       wateringCorrectCallback(true);
     }
     else{
@@ -155,10 +156,10 @@ class _NewPlantState extends State<NewPlant> {
 
   ///check sprayPlants accordion correctness
   void sprayPlantsOnChanged(){
-    if(sprayingIntervalController.text.isEmpty && sprayPlantsLastTime == null){
+    if(sprayInterval == null && sprayPlantsLastTime == null){
       sprayPlantsCorrectCallback(true);
     }
-    else if(sprayingIntervalController.text.isNotEmpty && sprayPlantsLastTime != null){
+    else if(sprayInterval != null && sprayPlantsLastTime != null){
       sprayPlantsCorrectCallback(true);
     }
     else{
@@ -168,10 +169,10 @@ class _NewPlantState extends State<NewPlant> {
 
   ///check fertilize accordion correctness
   void fertilizeOnChanged(){
-    if(fertilizeAmountController.text.isEmpty && fertilizeIntervalController.text.isEmpty && fertilizeLastTime == null){
+    if(fertilizeAmountController.text.isEmpty && fertilizeInterval == null && fertilizeLastTime == null){
       fertilizeCorrectCallback(true);
     }
-    else if(fertilizeAmountController.text.isNotEmpty && fertilizeIntervalController.text.isNotEmpty && fertilizeLastTime != null){
+    else if(fertilizeAmountController.text.isNotEmpty && fertilizeInterval != null && fertilizeLastTime != null){
       fertilizeCorrectCallback(true);
     }
     else{
@@ -194,10 +195,10 @@ class _NewPlantState extends State<NewPlant> {
 
   ///check repot accordion correctness
   void repotOnChanged(){
-    if(repotIntervalController.text.isEmpty && repotLastTime == null){
+    if(repotInterval == null && repotLastTime == null){
       repotCorrectCallback(true);
     }
-    else if(repotIntervalController.text.isNotEmpty && repotLastTime != null){
+    else if(repotInterval != null && repotLastTime != null){
       repotCorrectCallback(true);
     }
     else{
@@ -207,10 +208,10 @@ class _NewPlantState extends State<NewPlant> {
 
   ///check dustOff accordion correctness
   void dustOffOnChanged(){
-    if(dustOffIntervalController.text.isEmpty && dustOffLastTime == null){
+    if(dustOffInterval == null && dustOffLastTime == null){
       dustOffCorrectCallback(true);
     }
-    else if(dustOffIntervalController.text.isNotEmpty && dustOffLastTime != null){
+    else if(dustOffInterval != null && dustOffLastTime != null){
       dustOffCorrectCallback(true);
     }
     else{
@@ -263,13 +264,13 @@ class _NewPlantState extends State<NewPlant> {
             gardenID: garden.id,
             type: plantTypeController.text,
             plantSize: PlantSize(begin: int.tryParse(plantSizeBeginningController.text), now: int.tryParse(plantSizeEndController.text)),
-            watering: Watering(waterAmount: int.tryParse(wateringAmountController.text), interval: int.tryParse(wateringIntervalController.text), lastTime: wateringLastTime),
-            spray: IntervalDateTime(interval: int.tryParse(sprayingIntervalController.text), lastTime: sprayPlantsLastTime),
-            fertilize: Fertilize(amount: int.tryParse(fertilizeAmountController.text), interval: int.tryParse(fertilizeIntervalController.text), lastTime: fertilizeLastTime),
+            watering: Watering(waterAmount: int.tryParse(wateringAmountController.text), interval: PeriodsHelper.getPeriodsFromString(wateringInterval), startDate: wateringLastTime),
+            spray: IntervalDateTime(interval: PeriodsHelper.getPeriodsFromString(sprayInterval), startDate: sprayPlantsLastTime),
+            fertilize: Fertilize(amount: int.tryParse(fertilizeAmountController.text), interval: PeriodsHelper.getPeriodsFromString(fertilizeInterval), startDate: fertilizeLastTime),
             sunDemand: SizeHelper.getSizeFromString(sunNeed),
             temperature: int.tryParse(temperatureController.text),
-            repot: IntervalDateTime(interval: int.tryParse(repotIntervalController.text), lastTime: repotLastTime),
-            dustOff: IntervalDateTime(interval: int.tryParse(dustOffIntervalController.text), lastTime: dustOffLastTime),
+            repot: IntervalDateTime(interval: PeriodsHelper.getPeriodsFromString(repotInterval), startDate: repotLastTime),
+            dustOff: IntervalDateTime(interval: PeriodsHelper.getPeriodsFromString(dustOffInterval), startDate: dustOffLastTime),
             potSize: SizeHelper.getSizeFromString(potSize),
           ), user);
 
@@ -325,7 +326,7 @@ class _NewPlantState extends State<NewPlant> {
     }
     wateringAccordionChildren.addAll([
       IntPicker(plantSizeController: wateringAmountController, heading: 'Water amount needed', hint: 'Water needed by plant in ml / interval', onChange: (value) =>  wateringOnChanged()),
-      IntPicker(plantSizeController: wateringIntervalController, heading: 'Interval between watering', hint: 'Enter number of days that divide watering', onChange: (value) =>  wateringOnChanged()),
+      CustomDropDown(menuItems: PeriodsHelper.periodsMenuItems, title: 'Interval between watering', hint: 'Choose an Option', onChange: (_interval) {wateringInterval = _interval; wateringOnChanged();}),
       CustomDatePicker(description: 'Last time watered:', onSubmit: (newDate){wateringLastTime = newDate;wateringOnChanged();})
     ]);
 
@@ -334,7 +335,7 @@ class _NewPlantState extends State<NewPlant> {
       sprayPlantsAccordionChildren.addAll(warningString);
     }
     sprayPlantsAccordionChildren.addAll([
-      IntPicker(plantSizeController: sprayingIntervalController, heading: 'Interval between spraying', hint: 'Enter number of days that divide spraying', onChange: (value) =>  sprayPlantsOnChanged()),
+      CustomDropDown(menuItems: PeriodsHelper.periodsMenuItems, title: 'Interval between spraying', hint: 'Choose an Option', onChange: (_interval) {sprayInterval = _interval; sprayPlantsOnChanged();}),
       CustomDatePicker(description: 'Last time sprayed:', onSubmit: (newDate){sprayPlantsLastTime= newDate;sprayPlantsOnChanged();}),
     ]);
 
@@ -344,7 +345,7 @@ class _NewPlantState extends State<NewPlant> {
     }
     fertilizeAccordionChildren.addAll([
       IntPicker(plantSizeController: fertilizeAmountController, heading: 'Fertilize amount needed', hint: 'Amount of fertilizer needed in mg / interval', onChange: (value) =>  fertilizeOnChanged()),
-      IntPicker(plantSizeController: fertilizeIntervalController, heading: 'Interval between fertilizing', hint: 'Enter number of days that divide fertilizing', onChange: (value) =>  fertilizeOnChanged()),
+      CustomDropDown(menuItems: PeriodsHelper.periodsMenuItems, title: 'Interval between fertilizing', hint: 'Choose an Option', onChange: (_interval) {fertilizeInterval = _interval; fertilizeOnChanged();}),
       CustomDatePicker(description: 'Last time fertilized:', onSubmit: (newDate){fertilizeLastTime= newDate;fertilizeOnChanged();})
     ]);
 
@@ -362,7 +363,7 @@ class _NewPlantState extends State<NewPlant> {
       repotAccordionChildren.addAll(warningString);
     }
     repotAccordionChildren.addAll([
-      IntPicker(plantSizeController: repotIntervalController, heading: 'Interval between repoting', hint: 'Enter number of days that divide repoting', onChange: (value) =>  repotOnChanged()),
+      CustomDropDown(menuItems: PeriodsHelper.periodsMenuItems, title: 'Interval between repot', hint: 'Choose an Option', onChange: (_interval) {repotInterval = _interval; repotOnChanged();}),
       CustomDatePicker(description: 'Last time sprayed:', onSubmit: (newDate){repotLastTime= newDate;repotOnChanged();}),
     ]);
 
@@ -371,7 +372,7 @@ class _NewPlantState extends State<NewPlant> {
       dustOffAccordionChildren.addAll(warningString);
     }
     dustOffAccordionChildren.addAll([
-      IntPicker(plantSizeController: dustOffIntervalController, heading: 'Interval between dusting off', hint: 'Enter number of days that divide dusting off', onChange: (value) =>  dustOffOnChanged()),
+      CustomDropDown(menuItems: PeriodsHelper.periodsMenuItems, title: 'Interval between dusting off', hint: 'Choose an Option', onChange: (_interval) {dustOffInterval = _interval; dustOffOnChanged();}),
       CustomDatePicker(description: 'Last time sprayed:', onSubmit: (newDate){dustOffLastTime= newDate;dustOffOnChanged();}),
     ]);
 

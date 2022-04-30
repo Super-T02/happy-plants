@@ -6,14 +6,14 @@ import 'package:happy_plants/shared/utilities/util.dart';
 class EventService {
 
   /// Adds a new event
-  static Future<void> addEvent(EventsModel newEvent, CustomUser user) {
-    dynamic result;
+  static Future<DocumentReference> addEvent(EventsModel newEvent, CustomUser user) async {
+    DocumentReference result;
 
     try{
       Util.startLoading();
 
       CollectionReference events = getEventsCollectionRef(user);
-      result = events.add(newEvent.toJSON());
+      result = await events.add(newEvent.toJSON());
 
     } finally {
       Util.endLoading();
