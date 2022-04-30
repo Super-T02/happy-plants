@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_plants/config.dart';
-import 'package:happy_plants/screens/home/tabs/garden/plants/new_plant.dart';
 import 'package:happy_plants/services/event.dart';
-import 'package:happy_plants/services/notification.dart';
 import 'package:happy_plants/shared/models/events.dart';
 import 'package:happy_plants/shared/models/plant.dart';
 import 'package:happy_plants/shared/models/user.dart';
