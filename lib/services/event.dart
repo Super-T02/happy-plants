@@ -1,9 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:happy_plants/main.dart';
+import 'package:happy_plants/services/notification.dart';
 import 'package:happy_plants/shared/models/events.dart';
+import 'package:happy_plants/shared/models/notification.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/utilities/util.dart';
 
 class EventService {
+  static final NotificationService notificationService = NotificationService();
+
 
   /// Adds a new event
   static Future<DocumentReference> addEvent(EventsModel newEvent, CustomUser user) async {
@@ -15,13 +21,19 @@ class EventService {
       CollectionReference events = getEventsCollectionRef(user);
       result = await events.add(newEvent.toJSON());
 
+      // Get notification
+      ScheduledNotificationModel notification = await notificationService.getScheduledNotificationFromEvent(newEvent);
+
+      // Schedule notification
+      notificationService.scheduledNotificationRepeat(notification);
+    } catch (e){
+      debugPrint('error');
+      throw Exception(e);
     } finally {
       Util.endLoading();
     }
 
     return result;
-
-
     // TODO: Error handling
   }
 

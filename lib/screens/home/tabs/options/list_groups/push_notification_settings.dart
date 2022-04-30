@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:happy_plants/services/shared_preferences_controller.dart';
 import 'package:happy_plants/shared/widgets/util/lists/custom_list_group_switch.dart';
 import '../../../../../services/authentication.dart';
+import '../../../../../services/notification.dart';
 import '../../../../../shared/widgets/util/lists/custom_list_tile.dart';
 
 class PushNotificationSettings extends StatefulWidget {
@@ -48,7 +49,8 @@ class _PushNotificationSettingsState extends State<PushNotificationSettings> {
             title: 'Go to System settings',
             leading: Icons.settings_outlined,
             onTap: () async {
-              // TODO
+              final notification = NotificationService();
+              notification.checkPendingNotificationRequests(context);
             },
           ),
         ]

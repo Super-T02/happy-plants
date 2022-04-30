@@ -57,7 +57,7 @@ class PlantService {
 
   /// Updates a plant based on its plant id
   static Future<void> putPlant(Plant updatedPlant, CustomUser user) {
-    DocumentReference plant = getPlantDocRef(updatedPlant.id, updatedPlant.gardenID, user);
+    DocumentReference plant = getPlantDocRef(updatedPlant.id, updatedPlant.gardenID, user.uid);
 
     dynamic dustOff, fertilize, plantSize, repot, spray, watering;
 
@@ -104,7 +104,7 @@ class PlantService {
     try{
       Util.startLoading();
 
-      DocumentReference plant = getPlantDocRef(plantId, gardenID, user);
+      DocumentReference plant = getPlantDocRef(plantId, gardenID, user.uid);
       result = plant.update({
         fieldName: updatedValue
       });
@@ -121,7 +121,7 @@ class PlantService {
 
   /// Deletes a plants based on its plantId
   static Future<void> deletePlant(Plant plant, String gardenID, CustomUser user) async {
-    DocumentReference plantDoc = getPlantDocRef(plant.id, gardenID, user);
+    DocumentReference plantDoc = getPlantDocRef(plant.id, gardenID, user.uid);
 
     debugPrint(plant.eventIds.toString());
 
@@ -135,9 +135,9 @@ class PlantService {
   }
 
   /// Get the ref on a garden instance based on the user, gardenId and plantId
-  static DocumentReference getPlantDocRef(String plantId, String gardenID, CustomUser user) {
+  static DocumentReference getPlantDocRef(String plantId, String gardenID, String userId) {
     return FirebaseFirestore.instance
-        .collection('users').doc(user.uid)
+        .collection('users').doc(userId)
         .collection('gardens').doc(gardenID)
         .collection('plants').doc(plantId);
   }
@@ -277,5 +277,9 @@ class PlantService {
     }
 
     patchPlant(plant.gardenID, plantId, 'events', eventIds, user);
+  }
+
+  static Future<DocumentSnapshot> getPlantSnapshot(String plantId,String gardenID, String userId) {
+    return getPlantDocRef(plantId, gardenID, userId).get();
   }
 }

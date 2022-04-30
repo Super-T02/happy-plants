@@ -72,7 +72,6 @@ class Plant extends JSON{
       'eventIds': eventIds,
     };
   }
-
 }
 
 /// IntervalDateTime for a given interval and Date

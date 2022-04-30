@@ -26,7 +26,6 @@ class Wrapper extends StatelessWidget {
           ScheduledNotificationModel(
               title: 'Test schedule run',
               body: 'Test',
-              periodDays: 1,
               dateTimeComponent: DateTimeComponents.dayOfWeekAndTime,
           )
       ); // TODO: needs to be deleted

@@ -10,6 +10,7 @@ import 'package:happy_plants/screens/authenticate/sign_up_form.dart';
 import 'package:happy_plants/screens/home/tabs/garden/new_garden.dart';
 import 'package:happy_plants/screens/wrapper.dart';
 import 'package:happy_plants/services/authentication.dart';
+import 'package:happy_plants/services/shared_preferences_controller.dart';
 import 'package:happy_plants/shared/models/received_notification.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:provider/provider.dart';
@@ -48,7 +49,8 @@ Future<void> main() async {
   /// INIT SHARED PREFS
   sharedPreferences = await SharedPreferences.getInstance();
 
-
+  /// INIT notificationNextId
+  notificationNextId = SharedPreferencesController.getNotificationNextId();
 
   /// INIT NOTIFICATIONS
   await _configureLocalTimeZone();

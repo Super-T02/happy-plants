@@ -1,3 +1,4 @@
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:happy_plants/shared/models/plant.dart';
 
 /// Events model for saved events
@@ -41,6 +42,36 @@ class EventsModel<T extends JSON> {
       'startDate': startDate,
     };
   }
+
+  /// Returns the body string for the event type
+  /// Params:
+  ///  - name: Name of the plant
+  ///  - number: is required for watering or fertilize
+  String? getNotificationBodyPartFromType(String name, int? number) {
+    switch(type) {
+      case EventTypes.watering: return '$name need $number! ml to drink!';
+      case EventTypes.spray: return 'Spray $name to make the plant happy!';
+      case EventTypes.fertilize: return 'Give $name $number mg fertilizer to make the plant strong!';
+      case EventTypes.repot: return 'Please give the plant a new pot';
+      case EventTypes.dustOff: return 'Please dust the plant off';
+      default: return null;
+    }
+  }
+
+
+  /// Returns the title string for the event type
+  /// Params:
+  ///  - name: Name of the plant
+  String? getNotificationTitlePartFromType(String name) {
+    switch(type) {
+      case EventTypes.watering: return '$name is thirsty!';
+      case EventTypes.spray: return '$name is dry!';
+      case EventTypes.fertilize: return '$name needs some power!';
+      case EventTypes.repot: return '$name has no space!';
+      case EventTypes.dustOff: return '$name cannot breath!';
+      default: return null;
+    }
+  }
 }
 
 /// Event Types
@@ -82,6 +113,16 @@ class PeriodsHelper {
       case Periods.monthly: return 'monthly';
       case Periods.weekly: return 'weekly';
       case Periods.yearly: return 'yearly';
+      default: return null;
+    }
+  }
+
+  static DateTimeComponents? getDateTimeComponentsFromPeriod(Periods? period){
+    switch(period) {
+      case Periods.daily: return DateTimeComponents.time;
+      case Periods.monthly: return DateTimeComponents.dayOfMonthAndTime;
+      case Periods.weekly: return DateTimeComponents.dayOfWeekAndTime;
+      case Periods.yearly: return DateTimeComponents.dateAndTime;
       default: return null;
     }
   }

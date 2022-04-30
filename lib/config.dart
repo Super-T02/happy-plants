@@ -14,3 +14,5 @@ SharedPreferences? sharedPreferences;
 
 /// Marks, whether the user data are already loaded or not
 bool modeInit = false;
+
+int notificationNextId = 0;

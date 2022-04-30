@@ -1,8 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:happy_plants/services/plant.dart';
 import 'package:happy_plants/services/shared_preferences_controller.dart';
+import 'package:happy_plants/shared/models/events.dart';
 import 'package:happy_plants/shared/models/notification.dart';
+import 'package:happy_plants/shared/models/plant.dart';
 import 'package:timezone/timezone.dart';
+import '../config.dart';
 import '../main.dart';
 
 class NotificationService {
@@ -27,6 +32,29 @@ class NotificationService {
         payload: 'item x');
   }
 
+  // TODO: needs to be removed in porduction
+  Future<void> checkPendingNotificationRequests(context) async {
+    final List<PendingNotificationRequest> pendingNotificationRequests =
+    await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        content:
+        Text('${pendingNotificationRequests.length} pending notification '
+            'requests'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+
 
   /// Schedules a notification for a defined period of time
   Future<void> scheduledNotificationRepeat(ScheduledNotificationModel notification) async {
@@ -34,10 +62,10 @@ class NotificationService {
     if(SharedPreferencesController.getNotificationTimeStatus()){
 
       await flutterLocalNotificationsPlugin.zonedSchedule(
-          0,
+          notificationNextId,
           notification.title,
           notification.body,
-          _nextInstanceNotificationTime(notification.periodDays, notification.lastTimeStamp),
+          _nextInstanceNotificationTime(notification.startTimeStamp),
 
           // Setting the notification details
           NotificationDetails(
@@ -55,6 +83,8 @@ class NotificationService {
           matchDateTimeComponents: notification.dateTimeComponent,
       );
 
+      notificationNextId ++;
+      SharedPreferencesController.setNotificationNextId(notificationNextId);
     }
   }
 
@@ -69,13 +99,12 @@ class NotificationService {
 
   /// Returns the next notification time base on the periodDay, and the option lastTime Stamp
   /// Needs:
-  ///   - int periodDays:           Period of time until the next event should be triggered
   ///   - DateTime? lastTimeStamp:  (Optional) DateTime when the last event was triggered, if null it will be the current timestamp
   ///
   /// Returns:
   ///   - TZDateTime for the next schedule
-  TZDateTime _nextInstanceNotificationTime(int periodDays, DateTime? lastTimeStamp) {
-        TZDateTime planned;
+  TZDateTime _nextInstanceNotificationTime(DateTime? lastTimeStamp) {
+    TZDateTime planned;
     TimeOfDay defaultTime = SharedPreferencesController.getCurrentNotificationTime();
 
     // Select the last time stamp
@@ -96,11 +125,41 @@ class NotificationService {
         defaultTime.minute
     );
 
-    // Add the period until the next date is in the future
-    do{
-      scheduledDate = scheduledDate.add(Duration(days: periodDays));
-    } while (scheduledDate.isBefore(planned));
-
     return scheduledDate;
+  }
+
+  Future<ScheduledNotificationModel> getScheduledNotificationFromEvent(EventsModel event) async {
+
+    // Receive document data
+    DocumentSnapshot snapshot = await PlantService.getPlantSnapshot(
+        event.plantId,
+        event.gardenId,
+        event.userId
+    );
+    Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+
+    String name = data['name'];
+    int? amount;
+
+    // add amount
+    if(event.type == EventTypes.watering) {
+
+      amount = data['watering']['waterAmount'];
+
+    } else if (event.type == EventTypes.fertilize) {
+
+      amount = data['fertilize']['amount'];
+
+    }
+
+    // generate notification
+    ScheduledNotificationModel notification = ScheduledNotificationModel(
+        title: event.getNotificationTitlePartFromType(name)!,
+        body: event.getNotificationBodyPartFromType(name, amount)!,
+        dateTimeComponent: PeriodsHelper.getDateTimeComponentsFromPeriod(event.period),
+        startTimeStamp: event.startDate
+    );
+
+    return notification;
   }
 }
