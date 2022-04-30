@@ -59,6 +59,12 @@ class NotificationService {
   }
 
 
+  /// Cancels all notifications
+  Future<void> cancelAllNotifications() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
+  }
+
+
   /// Returns the next notification time base on the periodDay, and the option lastTime Stamp
   /// Needs:
   ///   - int periodDays:           Period of time until the next event should be triggered
@@ -94,10 +100,5 @@ class NotificationService {
     } while (scheduledDate.isBefore(planned));
 
     return scheduledDate;
-  }
-
-  /// Cancels all notifications
-  Future<void> cancelAllNotifications() async {
-    await flutterLocalNotificationsPlugin.cancelAll();
   }
 }
