@@ -24,6 +24,7 @@ class EventsModel<T extends JSON> {
   DateTime startDate;
 
   EventsModel({
+     this.id,
      required this.userId,
      required this.plantId,
      required this.gardenId,
@@ -86,48 +87,51 @@ class EventsModel<T extends JSON> {
     switch(type){
       case EventTypes.watering:
         newEvent = EventsModel(
-            userId: userId,
-            plantId: data['plantId'],
-            gardenId: data['gardenId'],
-            type: type,
-            period: period,
-            data: Watering(
-                interval: period,
-                startDate: data['data']['startDate'].toDate(),
-                waterAmount: data['data']['waterAmount'],
-            ),
-            startDate: data['startDate'].toDate()
+          id: documentSnapshot.id,
+          userId: userId,
+          plantId: data['plantId'],
+          gardenId: data['gardenId'],
+          type: type,
+          period: period,
+          data: Watering(
+              interval: period,
+              startDate: data['data']['startDate'].toDate(),
+              waterAmount: data['data']['waterAmount'],
+          ),
+          startDate: data['startDate'].toDate()
         );
         break;
       case EventTypes.dustOff:
       case EventTypes.repot:
       case EventTypes.spray:
         newEvent = EventsModel(
-            userId: userId,
-            plantId: data['plantId'],
-            gardenId: data['gardenId'],
-            type: type,
-            period: period,
-            data: IntervalDateTime(
-              interval: period,
-              startDate: data['data']['startDate'].toDate(),
-            ),
-            startDate: data['startDate'].toDate()
+          id: documentSnapshot.id,
+          userId: userId,
+          plantId: data['plantId'],
+          gardenId: data['gardenId'],
+          type: type,
+          period: period,
+          data: IntervalDateTime(
+            interval: period,
+            startDate: data['data']['startDate'].toDate(),
+          ),
+          startDate: data['startDate'].toDate()
         );
         break;
       case EventTypes.fertilize:
         newEvent = EventsModel(
-            userId: userId,
-            plantId: data['plantId'],
-            gardenId: data['gardenId'],
-            type: type,
-            period: period,
-            data: Fertilize(
-              interval: period,
-              startDate: data['data']['startDate'].toDate(),
-              amount: data['data']['amount'],
-            ),
-            startDate: data['startDate'].toDate()
+          id: documentSnapshot.id,
+          userId: userId,
+          plantId: data['plantId'],
+          gardenId: data['gardenId'],
+          type: type,
+          period: period,
+          data: Fertilize(
+            interval: period,
+            startDate: data['data']['startDate'].toDate(),
+            amount: data['data']['amount'],
+          ),
+          startDate: data['startDate'].toDate()
         );
         break;
       default:

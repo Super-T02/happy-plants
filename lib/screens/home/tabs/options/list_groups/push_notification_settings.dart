@@ -8,7 +8,6 @@ import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/widgets/util/lists/custom_list_group_switch.dart';
 import 'package:provider/provider.dart';
 import 'package:system_settings/system_settings.dart';
-import '../../../../../services/authentication.dart';
 import '../../../../../services/notification.dart';
 import '../../../../../shared/utilities/app_colors.dart';
 import '../../../../../shared/widgets/util/lists/custom_list_tile.dart';

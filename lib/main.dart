@@ -1,6 +1,4 @@
-// Firebase
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -21,11 +19,9 @@ import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-
-
-// Flutter
 import 'package:flutter/material.dart';
 import 'package:happy_plants/shared/utilities/theme.dart';
+import 'screens/notifications/notification.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -58,13 +54,6 @@ Future<void> main() async {
   final NotificationAppLaunchDetails? notificationAppLaunchDetails = !kIsWeb && Platform.isLinux
       ? null : await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
-  String initialRoute = MyApp.routeName;
-
-  if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
-    selectedNotificationPayload = notificationAppLaunchDetails!.payload;
-    initialRoute = '/message';
-  }
-
   const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('ic_launcher');
 
   const InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
@@ -89,12 +78,24 @@ Future<void> main() async {
 
   /// START APP
   runApp(
-    MaterialApp(
-      initialRoute: initialRoute,
-      routes: <String, WidgetBuilder>{
-        MyApp.routeName: (_) => MyApp(notificationAppLaunchDetails: notificationAppLaunchDetails),
-        Notification.routeName: (_) => Notification(payload: selectedNotificationPayload)
-      },
+    StreamProvider<CustomUser?>.value(
+      value: AuthService().user,
+      initialData: null,
+      child: MaterialApp(
+        title: 'Happy Plants',
+        themeMode: currentTheme.currentMode,
+        theme: MyAppTheme.lightTheme,
+        darkTheme: MyAppTheme.darkTheme,
+        navigatorKey: navigatorKey,
+        initialRoute: MyApp.routeName,
+        routes: {
+          MyApp.routeName: (_) => MyApp(notificationAppLaunchDetails: notificationAppLaunchDetails),
+          NotificationScreen.routeName: (_) => NotificationScreen(eventId: selectedNotificationPayload,),
+          '/newGarden': (context) => const NewGarden(),
+          '/forgetPassword': (context) => const ForgetPassword(),
+          '/signUp': (context) => const SignUpForm(),
+        },
+      ),
     ),
   );
 }
@@ -132,10 +133,11 @@ class _MyAppState extends State<MyApp> {
       setState(() {});
     });
 
-    // Notification stuff
+    // NotificationScreen stuff
     _requestPermissions();
     _configureDidReceiveLocalNotificationSubject();
     _configureSelectNotificationSubject();
+
   }
 
   /// Request notification permissions
@@ -180,7 +182,7 @@ class _MyAppState extends State<MyApp> {
                   context,
                   MaterialPageRoute<void>(
                     builder: (BuildContext context) =>
-                        Notification(payload: receivedNotification.payload),
+                        NotificationScreen(eventId: receivedNotification.payload),
                   ),
                 );
               },
@@ -195,7 +197,7 @@ class _MyAppState extends State<MyApp> {
   /// Select Notification
   void _configureSelectNotificationSubject() {
     selectNotificationSubject.stream.listen((String? payload) async {
-      await Navigator.pushNamed(context, Notification.routeName);
+      await Navigator.pushNamed(context, NotificationScreen.routeName);
     });
   }
 
@@ -209,42 +211,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<CustomUser?>.value(
-      value: AuthService().user,
-      initialData: null,
-      child: MaterialApp(
-        title: 'Happy Plants',
-        themeMode: currentTheme.currentMode,
-        theme: MyAppTheme.lightTheme,
-        darkTheme: MyAppTheme.darkTheme,
-        navigatorKey: navigatorKey,
-        initialRoute: '/',
-        routes: {
-          '/': (context) => const Wrapper(),
-          '/newGarden': (context) => const NewGarden(),
-          '/forgetPassword': (context) => const ForgetPassword(),
-          '/signUp': (context) => const SignUpForm(),
-        },
-      ),
-    );
-  }
-}
-
-
-class Notification extends StatefulWidget {
-  const Notification({Key? key, this.payload}) : super(key: key);
-
-  static const String routeName = '/notification';
-  final String? payload;
-
-  @override
-  State<Notification> createState() => _NotificationState();
-}
-
-class _NotificationState extends State<Notification> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
+    return const Wrapper();
   }
 }
 

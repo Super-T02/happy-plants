@@ -8,6 +8,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 ///   - DateTimeComponents? dateTimeComponent: (Optional) Repeat when fitting schema
 ///   - DateTime? startTimeStamp: (Optional) DateTime when the last event was triggered, if null it will be the current timestamp
 class ScheduledNotificationModel{
+  String? eventId;
   String title;
   String body;
   DateTimeComponents? dateTimeComponent;
@@ -16,6 +17,7 @@ class ScheduledNotificationModel{
   ScheduledNotificationModel({
     required this.title,
     required this.body,
+    this.eventId,
     this.dateTimeComponent,
     this.startTimeStamp
   });

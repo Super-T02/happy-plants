@@ -77,9 +77,10 @@ class NotificationService {
             ),
           ),
 
-          androidAllowWhileIdle: false,
+          androidAllowWhileIdle: true,
           uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
           matchDateTimeComponents: notification.dateTimeComponent,
+          payload: notification.eventId,
       );
 
       notificationNextId ++;
@@ -152,6 +153,7 @@ class NotificationService {
 
     // generate notification
     ScheduledNotificationModel notification = ScheduledNotificationModel(
+        eventId: event.id,
         title: event.getNotificationTitlePartFromType(name)!,
         body: event.getNotificationBodyPartFromType(name, amount)!,
         dateTimeComponent: PeriodsHelper.getDateTimeComponentsFromPeriod(event.period),
