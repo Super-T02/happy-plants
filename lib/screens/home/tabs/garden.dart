@@ -15,6 +15,8 @@ class _GardenState extends State<Garden> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: const <Widget>[
           ListOfGardens(),
         ],
