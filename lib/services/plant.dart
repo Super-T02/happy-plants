@@ -74,18 +74,18 @@ class PlantService {
     }
 
     return plant.set({
-      'dustOff': dustOff,
-      'fertilize': fertilize,
+      'dustOff': dustOff.toJSON(),
+      'fertilize': fertilize.toJSON(),
       'icon': updatedPlant.icon,
       'name': updatedPlant.name,
       'plantSize': plantSize.toJSON(),
-      'potSize': updatedPlant.potSize,
-      'repot': repot,
-      'spray': spray,
-      'sunDemand': updatedPlant.sunDemand,
+      'potSize': SizeHelper.getStringFromSize(updatedPlant.potSize),
+      'repot': repot.toJSON(),
+      'spray': spray.toJSON(),
+      'sunDemand': SizeHelper.getStringFromSize(updatedPlant.sunDemand),
       'temperature': updatedPlant.temperature,
       'type': updatedPlant.type,
-      'watering': watering,
+      'watering': watering.toJSON(),
     });
     // TODO: Error handling
   }
