@@ -23,6 +23,8 @@ class _ListOfGardensState extends State<ListOfGardens> {
     // Get the current data stream for the authenticated user
     final Stream<QuerySnapshot> _gardenStream = GardenService.gardenStream(user);
 
+    List<Widget> children;
+
 
     // Build the stream
     return StreamBuilder<QuerySnapshot>(
@@ -38,6 +40,17 @@ class _ListOfGardensState extends State<ListOfGardens> {
           return const Text("Document does not exist");
         }
 
+        if(snapshot.data!.docs.isEmpty){
+          children = [
+            // TODO
+          ];
+        } else {
+          children = snapshot.data!.docs.map((DocumentSnapshot document) {
+            Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+            return GardenSingle(garden: Garden(name: data['name'], icon: data['icon'], id: document.id));
+          }).toList();
+        }
+
         // Widget to be returned if the request was successful
         return Expanded(
             child: ListView(
@@ -45,10 +58,7 @@ class _ListOfGardensState extends State<ListOfGardens> {
               scrollDirection: Axis.vertical,
               padding: const EdgeInsets.all(15), //padding from screen to widget
               addAutomaticKeepAlives: true,
-              children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                return GardenSingle(garden: Garden(name: data['name'], icon: data['icon'], id: document.id));
-              }).toList(),
+              children: children,
             )
         );
       },
