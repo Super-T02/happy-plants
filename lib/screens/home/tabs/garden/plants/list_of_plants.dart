@@ -4,6 +4,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:happy_plants/screens/home/tabs/garden/plants/plant_card.dart';
 import 'package:happy_plants/shared/models/plant.dart';
+import 'package:happy_plants/shared/utilities/sizes.dart';
+import 'package:provider/provider.dart';
 import '../../../../../services/plant.dart';
 import '../../../../../shared/models/garden.dart';
 import '../../../../../shared/models/user.dart';
@@ -81,18 +83,17 @@ class _ListOfPlantsState extends State<ListOfPlants> {
           );
 
         } else {
-          returnedWidget = Expanded(
-              child: GridView.count(
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                padding: const EdgeInsets.all(15), //padding from screen to widget
-                addAutomaticKeepAlives: true,
-                crossAxisCount: 2,
-                children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                  Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                  return PlantSingle(plant: Plant(name: data['name'], icon: data['icon'], type: data['type'], eventIds: data['events'] as List<dynamic>,  id: document.id, gardenID: widget.garden.id), garden: widget.garden);
-                }).toList(),
-              ),
+          returnedWidget = GridView.count(
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            padding: const EdgeInsets.all(15), //padding from screen to widget
+            addAutomaticKeepAlives: true,
+            crossAxisCount: 2,
+            children: snapshot.data!.docs.map((DocumentSnapshot document) {
+              return PlantSingle(
+                  plant: Plant.mapFirebaseDocToPlant(document, widget.garden.id),
+                  garden: widget.garden);
+            }).toList(),
           );
         }
 
@@ -146,7 +147,4 @@ class _ListOfPlantsState extends State<ListOfPlants> {
 
 
   }
-}
-
-class CostumUser {
 }

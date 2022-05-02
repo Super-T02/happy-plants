@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../../screens/home/tabs/garden/plants/plant_card.dart';
 import '../utilities/sizes.dart';
 import 'events.dart';
 
@@ -10,6 +13,7 @@ class Plant extends JSON{
     required this.gardenID,
     required this.id,
     required this.name,
+    required this.type,
     this.watering,
     this.plantSize,
     this.fertilize,
@@ -20,7 +24,6 @@ class Plant extends JSON{
     this.spray,
     this.sunDemand,
     this.temperature,
-    this.type,
     this.eventIds
   });
 
@@ -28,6 +31,7 @@ class Plant extends JSON{
   String id;
   String gardenID;
   String name;
+  String type;
 
   // Not required
   IntervalDateTime? dustOff;
@@ -39,7 +43,6 @@ class Plant extends JSON{
   Sizes? potSize;
   Sizes? sunDemand;
   int? temperature;
-  String? type;
   Watering? watering;
   List<dynamic>? eventIds;
 
@@ -50,6 +53,74 @@ class Plant extends JSON{
     else{
       return false;
     }
+  }
+
+  static Plant mapFirebaseDocToPlant(DocumentSnapshot snapshot, String gardenID){
+    Map<String, dynamic> data = snapshot.data()! as Map<String, dynamic>;
+
+    PlantSize plantSize = PlantSize();
+    Watering watering = Watering();
+    IntervalDateTime spray = IntervalDateTime();
+    Fertilize fertilize = Fertilize();
+    IntervalDateTime repot = IntervalDateTime();
+    IntervalDateTime dustOff = IntervalDateTime();
+    List events = [];
+
+
+    if(data['plantSize'] != null ){
+      plantSize.now = data['plantSize']['now'];
+      plantSize.begin = data['plantSize']['begin'];
+    }
+
+    if(data['watering'] != null && data['fertilize']['interval'] != null){
+      watering.waterAmount = data['watering']['waterAmount'];
+      watering.interval = Periods.values[data['watering']['interval']];
+      watering.startDate = data['watering']['lastTime']?.toDate();
+    }
+
+    if(data['spray'] != null && data['fertilize']['interval'] != null){
+      spray.interval = Periods.values[data['spray']['interval']];
+      spray.startDate = data['spray']['lastTime']?.toDate();
+    }
+
+    if(data['fertilize'] != null && data['fertilize']['interval'] != null){
+      fertilize.amount = data['fertilize']['amount'];
+      fertilize.interval = Periods.values[data['fertilize']['interval']];
+      fertilize.startDate = data['fertilize']['lastTime']?.toDate();
+    }
+
+    if(data['repot'] != null && data['repot']['interval'] != null){
+      repot.interval = Periods.values[data['repot']['interval']];
+      repot.startDate = data['repot']['lastTime']?.toDate();
+    }
+
+    if(data['dustOff'] != null && data['dustOff']['interval'] != null){
+      dustOff.interval = Periods.values[data['dustOff']['interval']];
+      dustOff.startDate = data['dustOff']['lastTime']?.toDate();
+    }
+
+    if(data['events'] != null){
+      events = data['events'] as List<dynamic>;
+    }
+
+
+    Plant plant = Plant(name: data['name'],
+        icon: data['icon'],
+        id: snapshot.id,
+        type: data['type'],
+        plantSize: plantSize,
+        potSize: SizeHelper.getSizeFromString(data['potSize']),
+        watering: watering,
+        spray: spray,
+        fertilize: fertilize,
+        temperature: data['temperature'],
+        sunDemand: SizeHelper.getSizeFromString(data['sunDemand']),
+        repot: repot,
+        dustOff: dustOff,
+        eventIds: events,
+        gardenID: gardenID);
+
+    return plant;
   }
 
   @override

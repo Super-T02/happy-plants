@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import '../../../../../../shared/widgets/util/custom_form_field.dart';
 
-class NamePicker extends StatefulWidget {
-  const NamePicker({Key? key, required this.plantNameController}) : super(key: key);
+class StringPicker extends StatefulWidget {
+  const StringPicker({Key? key, required this.plantNameController, required this.heading, required this.hint}) : super(key: key);
 
   final TextEditingController plantNameController;
+  final String heading;
+  final String hint;
 
   @override
-  State<NamePicker> createState() => _NamePickerState();
+  State<StringPicker> createState() => _StringPickerState();
 }
 
-class _NamePickerState extends State<NamePicker> {
-
-  // Form controllers
-  TextEditingController plantNameController = TextEditingController();
+class _StringPickerState extends State<StringPicker> {
 
   /// Validator for the plant name
   String? nameValidator(String? value) {
@@ -27,8 +26,8 @@ class _NamePickerState extends State<NamePicker> {
   @override
   Widget build(BuildContext context) {
     return CustomFormField(
-        headingText: "Plant Name *",
-        hintText: "Please enter a plant name",
+        headingText: widget.heading,
+        hintText: widget.hint,
         obscureText: false,
         suffixIcon: null,
         textInputType: TextInputType.name,

@@ -84,24 +84,24 @@ class PlantService {
     }
 
     await plant.set({
-      'dustOff': dustOff,
-      'fertilize': fertilize,
+      'dustOff': dustOff.toJSON(),
+      'fertilize': fertilize.toJSON(),
       'icon': updatedPlant.icon,
       'name': updatedPlant.name,
       'plantSize': plantSize.toJSON(),
-      'potSize': updatedPlant.potSize,
-      'repot': repot,
-      'spray': spray,
-      'sunDemand': updatedPlant.sunDemand,
+      'potSize': SizeHelper.getStringFromSize(updatedPlant.potSize),
+      'repot': repot.toJSON(),
+      'spray': spray.toJSON(),
+      'sunDemand': SizeHelper.getStringFromSize(updatedPlant.sunDemand),
       'temperature': updatedPlant.temperature,
       'type': updatedPlant.type,
-      'watering': watering,
+      'watering': watering.toJSON(),
     });
 
     AddPlant newPlant = AddPlant(
       gardenID: updatedPlant.gardenID,
       name: updatedPlant.name,
-      type: updatedPlant.type!,
+      type: updatedPlant.type,
       icon: updatedPlant.icon,
       dustOff: updatedPlant.dustOff,
       fertilize: updatedPlant.fertilize,
@@ -146,7 +146,6 @@ class PlantService {
   static Future<void> deletePlant(Plant plant, String gardenID, CustomUser user) async {
     DocumentReference plantDoc = getPlantDocRef(plant.id, gardenID, user.uid);
 
-    debugPrint(plant.eventIds.toString());
 
     if(plant.eventIds != null) {
 
@@ -196,7 +195,6 @@ class PlantService {
       Watering watering = plant.watering!;
 
       if(watering.startDate != null && watering.interval != null) {
-        debugPrint(watering.startDate.toString());
         DocumentReference event = await EventService.addEvent(
             EventsModel<Watering>(
               userId: user.uid,
