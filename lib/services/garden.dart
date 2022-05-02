@@ -1,7 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:happy_plants/services/event.dart';
 import 'package:happy_plants/shared/models/garden.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/utilities/util.dart';
+
+import '../config.dart';
+import '../shared/models/events.dart';
+import '../shared/models/notification.dart';
 
 class GardenService {
 
@@ -54,6 +59,18 @@ class GardenService {
 
     try{
       Util.startLoading();
+
+      CollectionReference events = EventService.getEventsCollectionRef(user);
+
+      // Delete all events
+      events.where('gardenId', isEqualTo: gardenID).get().then((QuerySnapshot querySnapshot) async {
+        for (DocumentSnapshot event in querySnapshot.docs) {
+          await EventService.deleteEvent(event.id, user);
+        }
+
+        await notificationService.cancelAllNotifications();
+        await EventService.scheduleAllNotifications(user);
+      });
 
       DocumentReference garden = getGardenDocRef(gardenID, user);
       result = garden.delete();

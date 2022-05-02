@@ -55,6 +55,10 @@ dependencies:
   flutter_speed_dial: ^3.0.5
   fluttericon: ^2.0.0
   shared_preferences: ^2.0.13
+  flutter_local_notifications: ^9.4.1
+  rxdart: ^0.27.3
+  flutter_native_timezone: ^2.0.0
+  system_settings: ^2.1.0
 
 dev_dependencies:
   flutter_test:

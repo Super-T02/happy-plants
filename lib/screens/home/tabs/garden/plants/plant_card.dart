@@ -30,9 +30,9 @@ class _PlantSingleState extends State<PlantSingle> {
   }
 
   /// Delete the garden
-  void deletePlant(String plantId, String gardenID, CustomUser user) async {
+  void deletePlant(Plant plant, String gardenID, CustomUser user) async {
     Navigator.of(context).pop();
-    await PlantService.deletePlant(plantId, gardenID, user);
+    await PlantService.deletePlant(plant, gardenID, user);
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Deleted')),
@@ -147,7 +147,7 @@ class _PlantSingleState extends State<PlantSingle> {
           color: theme.errorColor,
           icon: Icons.delete_outlined,
           onPressed: (){
-            deletePlant(widget.plant.id, widget.garden.id, user!);
+            deletePlant(widget.plant, widget.garden.id, user!);
           }
         ),
       ],

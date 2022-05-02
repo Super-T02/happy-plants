@@ -1,9 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:happy_plants/config.dart';
+import 'package:happy_plants/services/event.dart';
+import 'package:happy_plants/services/notification.dart';
+import 'package:happy_plants/services/settings.dart';
+import 'package:happy_plants/services/shared_preferences_controller.dart';
 import 'package:happy_plants/services/user.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/utilities/util.dart';
+
+import '../shared/models/settings.dart';
 
 /// Authentication service, handing all necessary functions for managing the
 /// registration and authentication of users
@@ -11,6 +17,7 @@ class AuthService{
 
   // Initialize firebase_auth
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final NotificationService notificationService = NotificationService();
 
   /// Build our custom user
   CustomUser? _userFromFirebaseUser(User? user) {
@@ -38,8 +45,15 @@ class AuthService{
           password: password
       );
 
-      return _userFromFirebaseUser(result.user);
+      CustomUser? user =  _userFromFirebaseUser(result.user);
 
+      // Load settings in system storage
+      user != null? SettingsService.loadSettingsFromCloud(user.uid) : null;
+
+      // Generate all notifications
+      await EventService.scheduleAllNotifications(user);
+
+      return user;
     } on FirebaseAuthException catch(e){
       if(e.code == 'user-not-found') {
         // TODO: Alert for false email
@@ -70,8 +84,12 @@ class AuthService{
 
     CustomUser? user = _userFromFirebaseUser(result.user);
 
+    // Load settings in system storage
+    user != null? SettingsService.loadSettingsFromCloud(user.uid) : null;
+
     // generate user in the Firestore
     await UserService.generateUser(user, false);
+    await EventService.scheduleAllNotifications(user);
 
     Util.endLoading();
 
@@ -112,6 +130,9 @@ class AuthService{
   Future signOut() async {
     try{
       Util.startLoading();
+
+      // Delete all notifications
+      await notificationService.cancelAllNotifications();
 
       await GoogleSignIn().signOut();
       return await _auth.signOut();
