@@ -6,6 +6,7 @@ import '../../../../../shared/models/plant.dart';
 import '../../../../../shared/models/user.dart';
 import '../../../../../shared/widgets/util/custom_cupertino_context_menu.dart';
 import '../../../../../shared/widgets/util/image_card.dart';
+import 'edit_plant.dart';
 
 class PlantSingle extends StatefulWidget {
   const PlantSingle({Key? key, required this.plant, required this.garden}) : super(key: key);
@@ -44,7 +45,7 @@ class _PlantSingleState extends State<PlantSingle> {
     final ThemeData theme = Theme.of(context);
 
     widget.plant.icon ??= 'grass_outlined';
-    String stringOfImageName = 'assets/images/garden_backgrounds/one.jpg';
+    String stringOfImageName = 'assets/images/plant_backgrounds/bonsai.jpg';
     AssetImage imageAsWidget = AssetImage(stringOfImageName);
 
     //check if string of filename is known, if yes paste it in path
@@ -135,8 +136,10 @@ class _PlantSingleState extends State<PlantSingle> {
           color: Colors.black,
           icon: Icons.edit_outlined,
           onPressed: (){
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(widget.plant.name + ' was popup Modified!')));
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => EditPlant(user: user!, garden: widget.garden, plant: widget.plant))
+            );
           },
         ),
         CustomCupertinoContextMenuAction(

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_plants/screens/home/tabs/garden/plants/plant_card.dart';
 import 'package:happy_plants/shared/models/plant.dart';
+import 'package:happy_plants/shared/utilities/sizes.dart';
 import 'package:provider/provider.dart';
 import '../../../../../services/plant.dart';
 import '../../../../../shared/models/garden.dart';
@@ -49,8 +50,9 @@ class _ListOfPlantsState extends State<ListOfPlants> {
               addAutomaticKeepAlives: true,
               crossAxisCount: 2,
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                return PlantSingle(plant: Plant(name: data['name'], icon: data['icon'], type: data['type'], eventIds: data['events'] as List<dynamic>,  id: document.id, gardenID: widget.garden.id), garden: widget.garden);
+                return PlantSingle(
+                    plant: Plant.mapFirebaseDocToPlant(document, widget.garden.id),
+                    garden: widget.garden);
               }).toList(),
             ),
           floatingActionButton: SpeedDial(
@@ -63,7 +65,7 @@ class _ListOfPlantsState extends State<ListOfPlants> {
             children: [
               // FAB 1
               SpeedDialChild(
-                  child: Icon(Icons.add_circle_outline_outlined),
+                  child: const Icon(Icons.add_circle_outline_outlined),
                   backgroundColor: Theme.of(context).primaryColor,
                   onTap: () {
                     Navigator.push(
@@ -76,7 +78,7 @@ class _ListOfPlantsState extends State<ListOfPlants> {
               ),
               // FAB 2
               SpeedDialChild(
-                  child: Icon(Icons.library_books_outlined), //todo right icon
+                  child: const Icon(Icons.library_books_outlined), //todo right icon
                   backgroundColor: Theme.of(context).primaryColor,
                   onTap: () {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -94,7 +96,4 @@ class _ListOfPlantsState extends State<ListOfPlants> {
 
 
   }
-}
-
-class CostumUser {
 }

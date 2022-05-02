@@ -1,29 +1,26 @@
-import 'dart:ffi';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_plants/shared/models/events.dart';
 import 'package:happy_plants/shared/widgets/forms/custom_dropdown.dart';
 import 'package:happy_plants/shared/widgets/util/custom_accordion.dart';
 import 'package:happy_plants/shared/widgets/forms/int_picker.dart';
-import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/type_picker.dart';
 import 'package:happy_plants/shared/utilities/sizes.dart';
 import 'package:happy_plants/shared/widgets/forms/custom_datepicker.dart';
 import '../../../../../services/plant.dart';
 import '../../../../../shared/models/garden.dart';
 import '../../../../../shared/models/plant.dart';
 import '../../../../../shared/models/user.dart';
-import '../../../../../shared/utilities/util.dart';
-import '../../../../../shared/widgets/util/custom_form_field.dart';
 import '../../../../../shared/widgets/util/image_card.dart';
-import 'gardenForm/name_picker.dart';
-import 'gardenForm/size_picker.dart';
+import 'gardenForm/string_picker.dart';
 
+
+///if plant is given function is edit plant
 class NewPlant extends StatefulWidget {
-  const NewPlant({Key? key, required this.user, required this.garden}) : super(key: key);
+  const NewPlant({Key? key, required this.user, required this.garden, this.plant}) : super(key: key);
 
   final CustomUser user;
   final Garden garden;
+  final Plant? plant;
 
   @override
   State<NewPlant> createState() => _NewPlantState();
@@ -38,7 +35,7 @@ class _NewPlantState extends State<NewPlant> {
       )
   ).toList();
 
-  String pictureName = "one";
+  String pictureName = "bonsai";
 
   // Form controllers
   TextEditingController plantNameController = TextEditingController();
@@ -49,6 +46,7 @@ class _NewPlantState extends State<NewPlant> {
   TextEditingController wateringAmountController = TextEditingController();
   TextEditingController fertilizeAmountController = TextEditingController();
   TextEditingController temperatureController = TextEditingController();
+
 
   //variables for the pickers & their callback functions
   DateTime? wateringLastTime;
@@ -255,9 +253,45 @@ class _NewPlantState extends State<NewPlant> {
   }
 
   void _onSubmitted(user, garden) async {
-    if (_formKey.currentState!.validate() && getAccordionsErrors() == null) {
-      // add the plant
-      await PlantService.addPlant(
+    if(widget.plant != null) {
+      if (_formKey.currentState!.validate() && getAccordionsErrors() == null) {
+        // add the plant
+        await PlantService.putPlant(
+            Plant(
+              id: widget.plant!.id,
+              name: plantNameController.text,
+              icon: pictureName.toLowerCase(),
+              gardenID: garden.id,
+              type: plantTypeController.text,
+              plantSize: PlantSize(begin: int.tryParse(plantSizeBeginningController.text), now: int.tryParse(plantSizeEndController.text)),
+              watering: Watering(waterAmount: int.tryParse(wateringAmountController.text), interval: PeriodsHelper.getPeriodsFromString(wateringInterval), startDate: wateringLastTime),
+              spray: IntervalDateTime(interval: PeriodsHelper.getPeriodsFromString(sprayInterval), startDate: sprayPlantsLastTime),
+              fertilize: Fertilize(amount: int.tryParse(fertilizeAmountController.text), interval: PeriodsHelper.getPeriodsFromString(fertilizeInterval), startDate: fertilizeLastTime),
+              sunDemand: SizeHelper.getSizeFromString(sunNeed),
+              temperature: int.tryParse(temperatureController.text),
+              repot: IntervalDateTime(interval: PeriodsHelper.getPeriodsFromString(repotInterval), startDate: repotLastTime),
+              dustOff: IntervalDateTime(interval: PeriodsHelper.getPeriodsFromString(dustOffInterval), startDate: dustOffLastTime),
+              potSize: SizeHelper.getSizeFromString(potSize),
+            ), user);
+
+        Navigator.pop(context);
+      } else if (!_formKey.currentState!.validate()){
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please fill out required fields!')),
+        );
+      } else if (getAccordionsErrors() != null){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error in Category: ${getAccordionsErrors()}')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please fill the form correctly')),
+        );
+      }
+    }
+    else {
+      if (_formKey.currentState!.validate() && getAccordionsErrors() == null) {
+        await PlantService.addPlant(
           AddPlant(
             name: plantNameController.text,
             icon: pictureName.toLowerCase(),
@@ -272,26 +306,91 @@ class _NewPlantState extends State<NewPlant> {
             repot: IntervalDateTime(interval: PeriodsHelper.getPeriodsFromString(repotInterval), startDate: repotLastTime),
             dustOff: IntervalDateTime(interval: PeriodsHelper.getPeriodsFromString(dustOffInterval), startDate: dustOffLastTime),
             potSize: SizeHelper.getSizeFromString(potSize),
-          ), user);
+          ), user
+        );
 
-      Navigator.pop(context);
-    } else if (!_formKey.currentState!.validate()){
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill out required fields!')),
-      );
-    } else if (getAccordionsErrors() != null){
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error in Category: ${getAccordionsErrors()}')),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill the form correctly')),
-      );
+        Navigator.pop(context);
+      } else if (!_formKey.currentState!.validate()){
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please fill out required fields!')),
+        );
+      } else if (getAccordionsErrors() != null){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error in Category: ${getAccordionsErrors()}')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please fill the form correctly')),
+        );
+      }
+      // add the plant
     }
   }
-
   @override
   Widget build(BuildContext context) {
+    if(widget.plant != null){
+      debugPrint('Pflanze gefunden');
+      plantNameController.text = widget.plant!.name;
+      plantTypeController.text = widget.plant!.type;
+      //if data exists:
+      if(widget.plant?.plantSize?.now != null && widget.plant?.plantSize?.begin != null){
+        debugPrint('Pflanze size gefunden');
+        plantSizeBeginningController.text = widget.plant!.plantSize!.begin.toString();
+        plantSizeEndController.text = widget.plant!.plantSize!.now.toString();
+      }
+
+      if(widget.plant?.watering?.waterAmount != null && widget.plant!.watering?.startDate != null && widget.plant!.watering?.interval != null){
+        wateringAmountController.text = widget.plant!.watering!.waterAmount.toString();
+        wateringInterval = widget.plant!.watering!.interval.toString();
+        wateringLastTime = widget.plant!.watering!.startDate;
+      }
+
+      if(widget.plant!.spray?.interval != null && widget.plant!.spray?.startDate != null){
+        sprayInterval = widget.plant!.spray!.interval.toString();
+        sprayPlantsLastTime = widget.plant!.spray?.startDate;
+      }
+
+      if(widget.plant!.fertilize?.amount != null && widget.plant!.fertilize?.interval != null && widget.plant!.fertilize?.startDate != null){
+        fertilizeAmountController.text = widget.plant!.fertilize!.amount.toString();
+        fertilizeInterval = widget.plant!.fertilize!.interval.toString();
+        fertilizeLastTime = widget.plant!.fertilize?.startDate;
+      }
+
+      if(widget.plant!.temperature != null){
+        temperatureController.text = widget.plant!.temperature!.toString();
+      }
+
+      if(widget.plant!.repot?.startDate != null && widget.plant!.repot?.interval != null){
+        repotInterval = widget.plant!.repot!.interval.toString();
+        repotLastTime = widget.plant!.repot?.startDate;
+      }
+
+      if(widget.plant!.dustOff?.interval != null && widget.plant!.dustOff?.startDate != null){
+        dustOffInterval = widget.plant!.dustOff!.interval.toString();
+        dustOffLastTime = widget.plant!.dustOff?.startDate;
+      }
+
+      //variables for the pickers & their callback functions
+      if(widget.plant!.potSize != null){
+        potSize = SizeHelper.getStringFromSize(widget.plant!.potSize);
+      } else {
+        potSize = null;
+      }
+      if(widget.plant!.sunDemand != null){
+        sunNeed = SizeHelper.getStringFromSize(widget.plant!.sunDemand);
+      } else {
+        sunNeed = null;
+      }
+
+      if(widget.plant!.icon != null){
+        pictureName = widget.plant!.icon!;
+      }
+    }
+    else{
+      debugPrint('keine Pflanze gefunden');
+    }
+
+
     //final user = Provider.of<CustomUser?>(context);
     CarouselController imageCarouselController = CarouselController();
     TextTheme textTheme = Theme.of(context).textTheme;
@@ -375,11 +474,18 @@ class _NewPlantState extends State<NewPlant> {
       CustomDropDown(menuItems: PeriodsHelper.periodsMenuItems, title: 'Interval between dusting off', hint: 'Choose an Option', onChange: (_interval) {dustOffInterval = _interval; dustOffOnChanged();}),
       CustomDatePicker(description: 'Last time sprayed:', onSubmit: (newDate){dustOffLastTime= newDate;dustOffOnChanged();}),
     ]);
+    Text titleOfPage;
+    if(widget.plant != null){
+      titleOfPage = Text('Edit Plant ${widget.plant!.name}');
+    }
+    else{
+      titleOfPage = Text('New plant');
+    }
 
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('New plant'),
+        title: titleOfPage,
         backgroundColor: Theme.of(context).bottomAppBarColor,
         foregroundColor: Theme.of(context).unselectedWidgetColor,
       ),
@@ -402,6 +508,9 @@ class _NewPlantState extends State<NewPlant> {
                           carouselController: imageCarouselController,
                           items: images,
                           options: CarouselOptions(
+                            initialPage: images.indexWhere(
+                                    (pic) => pic.name == pictureName
+                            ),
                             height: 180.0,
                             enlargeCenterPage: true,
                             aspectRatio: 16 / 9,
@@ -412,9 +521,9 @@ class _NewPlantState extends State<NewPlant> {
                           )
                       ),
                       // Name
-                      NamePicker(plantNameController: plantNameController),
+                      StringPicker(plantNameController: plantNameController, heading: 'Plant Name *', hint: 'Please enter a plant name'),
                       //type
-                      TypePicker(plantTypeController: plantTypeController),
+                      StringPicker(plantNameController: plantTypeController, heading: 'Plant Type *', hint: 'Please enter a plant type'),
                       const SizedBox(height: 10),
                       //Plant size
                       CustomAccordion(heading: 'Plant Size', description: 'beginning, end, pot size', childrenWidgets: plantSizeAccordionChildren),
