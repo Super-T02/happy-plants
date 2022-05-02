@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:happy_plants/screens/home/tabs/options/list_groups/account_settings.dart';
 import 'package:happy_plants/screens/home/tabs/options/list_groups/design_settings.dart';
-import 'package:happy_plants/screens/home/tabs/options/list_groups/pusch_notification_settings.dart';
+import 'package:happy_plants/screens/home/tabs/options/list_groups/push_notification_settings.dart';
 import 'package:happy_plants/screens/home/tabs/options/list_groups/vacation_settings.dart';
 import 'package:happy_plants/services/authentication.dart';
 import 'package:happy_plants/shared/models/user.dart';
@@ -34,7 +34,7 @@ class _OptionsState extends State<Options> {
             DesignSettings(user: user),
 
             // OPTIONAL SETTINGS
-            PushNotificationSettings(),
+            const PushNotificationSettings(),
             VacationSettings(),
           ]
       );

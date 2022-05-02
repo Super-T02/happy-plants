@@ -50,7 +50,7 @@ class _ListOfPlantsState extends State<ListOfPlants> {
               crossAxisCount: 2,
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
                 Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                return PlantSingle(plant: Plant(name: data['name'], icon: data['icon'], type: data['type'], id: document.id, gardenID: widget.garden.id), garden: widget.garden);
+                return PlantSingle(plant: Plant(name: data['name'], icon: data['icon'], type: data['type'], eventIds: data['events'] as List<dynamic>,  id: document.id, gardenID: widget.garden.id), garden: widget.garden);
               }).toList(),
             ),
           floatingActionButton: SpeedDial(

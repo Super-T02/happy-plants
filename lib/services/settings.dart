@@ -1,6 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:happy_plants/services/shared_preferences_controller.dart';
+import 'package:happy_plants/services/user.dart';
+import 'package:happy_plants/shared/models/user.dart';
 
 import '../config.dart';
+import '../shared/models/settings.dart';
 
 class SettingsService with ChangeNotifier {
 
@@ -39,5 +44,30 @@ class SettingsService with ChangeNotifier {
       default:
         return null;
     }
+  }
+
+  /// Loads all settings to the shared prefs
+  /// Requires:
+  ///  - String userId: id of an existing user
+  ///
+  /// --> Manipulates the shared preferences
+  static Future<void> loadSettingsFromCloud(String userId) async {
+    UserService userService = UserService();
+
+    DbUser? user = await userService.userStream(userId).first;
+
+    if(user != null) {
+      // Load settings
+      user.settings ??= CustomSettings(
+        designSettings: DesignSettingsModel(),
+        vacationSettings: VacationSettingsModel(),
+        pushNotificationSettings: PushNotificationSettingsModel(),
+      );
+
+      SharedPreferencesController.setNotificationTimeStatus(user.settings!.pushNotificationSettings.enabled);
+      SharedPreferencesController.setCurrentNotificationTime(user.settings!.pushNotificationSettings.notificationTime);
+
+    }
+
   }
 }
