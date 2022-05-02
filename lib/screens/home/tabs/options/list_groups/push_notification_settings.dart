@@ -7,6 +7,7 @@ import 'package:happy_plants/shared/models/settings.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/widgets/util/lists/custom_list_group_switch.dart';
 import 'package:provider/provider.dart';
+import 'package:system_settings/system_settings.dart';
 import '../../../../../services/authentication.dart';
 import '../../../../../services/notification.dart';
 import '../../../../../shared/widgets/util/lists/custom_list_tile.dart';
@@ -103,11 +104,18 @@ class _PushNotificationSettingsState extends State<PushNotificationSettings> {
             onTap: () => onChangeNotificationTime(context, user!),
           ),
           CustomListTile(
-            title: 'Go to System settings',
-            leading: Icons.settings_outlined,
+            title: 'Show pending notifications',
+            leading: Icons.numbers_outlined,
             onTap: () async {
               final notification = NotificationService();
               notification.checkPendingNotificationRequests(context);
+            },
+          ),
+          CustomListTile(
+            title: 'Go to System settings',
+            leading: Icons.settings_outlined,
+            onTap: () async {
+              SystemSettings.app();
             },
           ),
         ]
