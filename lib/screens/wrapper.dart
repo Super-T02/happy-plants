@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:happy_plants/screens/authenticate/sign_in.dart';
 import 'package:happy_plants/screens/home/home.dart';
 import 'package:happy_plants/services/user.dart';
-import 'package:happy_plants/services/notification.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +13,6 @@ class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<CustomUser?>(context);
-    final notification = NotificationService();
 
     // Open home or sign_in
     if(user == null){

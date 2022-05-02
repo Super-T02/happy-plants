@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:happy_plants/config.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/models/settings.dart';
 

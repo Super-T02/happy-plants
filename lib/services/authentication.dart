@@ -3,9 +3,13 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:happy_plants/config.dart';
 import 'package:happy_plants/services/event.dart';
 import 'package:happy_plants/services/notification.dart';
+import 'package:happy_plants/services/settings.dart';
+import 'package:happy_plants/services/shared_preferences_controller.dart';
 import 'package:happy_plants/services/user.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/utilities/util.dart';
+
+import '../shared/models/settings.dart';
 
 /// Authentication service, handing all necessary functions for managing the
 /// registration and authentication of users
@@ -43,6 +47,9 @@ class AuthService{
 
       CustomUser? user =  _userFromFirebaseUser(result.user);
 
+      // Load settings in system storage
+      user != null? SettingsService.loadSettingsFromCloud(user.uid) : null;
+
       // Generate all notifications
       await EventService.scheduleAllNotifications(user);
 
@@ -76,6 +83,9 @@ class AuthService{
     UserCredential result = await _auth.signInWithCredential(credentials);
 
     CustomUser? user = _userFromFirebaseUser(result.user);
+
+    // Load settings in system storage
+    user != null? SettingsService.loadSettingsFromCloud(user.uid) : null;
 
     // generate user in the Firestore
     await UserService.generateUser(user, false);
@@ -123,7 +133,6 @@ class AuthService{
 
       // Delete all notifications
       await notificationService.cancelAllNotifications();
-
 
       await GoogleSignIn().signOut();
       return await _auth.signOut();

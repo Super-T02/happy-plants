@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:happy_plants/config.dart';
 import 'package:happy_plants/services/event.dart';
 import 'package:happy_plants/services/shared_preferences_controller.dart';
+import 'package:happy_plants/services/user.dart';
+import 'package:happy_plants/shared/models/settings.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/widgets/util/lists/custom_list_group_switch.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +31,19 @@ class _PushNotificationSettingsState extends State<PushNotificationSettings> {
   }
 
   /// Enables or disables the notifications for this app
-  void onSwitchChange(bool isEnabledNew, user) {
+  Future<void> onSwitchChange(bool isEnabledNew, DbUser user) async {
+
+    // Set the settings in the cloud
+    user.settings ??= CustomSettings(
+      designSettings: DesignSettingsModel(),
+      vacationSettings: VacationSettingsModel(),
+      pushNotificationSettings: PushNotificationSettingsModel(),
+    );
+
+    user.settings!.pushNotificationSettings.enabled = isEnabledNew;
+
+    await UserService.putNewDbUser(user);
+
     SharedPreferencesController.setNotificationTimeStatus(isEnabledNew);
 
     if(!isEnabledNew) {
@@ -38,21 +52,34 @@ class _PushNotificationSettingsState extends State<PushNotificationSettings> {
       EventService.scheduleAllNotifications(user);
     }
 
+
+
     setState(() {
       isEnabled = SharedPreferencesController.getNotificationTimeStatus();
       time = SharedPreferencesController.getCurrentNotificationTime();
     });
   }
 
-  Future<void> onChangeNotificationTime(context, CustomUser user) async {
+  Future<void> onChangeNotificationTime(context, DbUser user) async {
     TimeOfDay? result = await showTimePicker(context: context, initialTime: time!);
 
     if(result != null) {
+      // Set the settings in the cloud
+      user.settings ??= CustomSettings(
+        designSettings: DesignSettingsModel(),
+        vacationSettings: VacationSettingsModel(),
+        pushNotificationSettings: PushNotificationSettingsModel(),
+      );
+
+      user.settings!.pushNotificationSettings.notificationTime = result;
+
+      await UserService.putNewDbUser(user);
+
       SharedPreferencesController.setCurrentNotificationTime(result);
 
       notificationService.cancelAllNotifications();
       EventService.scheduleAllNotifications(user);
-      
+
       setState(() {
         isEnabled = SharedPreferencesController.getNotificationTimeStatus();
         time = SharedPreferencesController.getCurrentNotificationTime();
@@ -62,12 +89,12 @@ class _PushNotificationSettingsState extends State<PushNotificationSettings> {
 
   @override
   Widget build(BuildContext context) {
-    CustomUser? user = Provider.of<CustomUser?>(context);
+    DbUser? user = Provider.of<DbUser?>(context);
 
     return CustomListGroupSwitch(
         title: 'Push Notifications',
         isEnabled: isEnabled!,
-        onSwitchChange: (value) => onSwitchChange(value, user),
+        onSwitchChange: (value) => onSwitchChange(value, user!),
         children: <Widget>[
           CustomListTile(
             title: 'Change Notification Time',
@@ -146,5 +173,6 @@ class _PushNotificationSettingsState extends State<PushNotificationSettings> {
 
     return 'Current: $hour:$minute $timeType';
   }
+
 }
 

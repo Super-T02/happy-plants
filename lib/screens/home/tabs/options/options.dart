@@ -34,7 +34,7 @@ class _OptionsState extends State<Options> {
             DesignSettings(user: user),
 
             // OPTIONAL SETTINGS
-            PushNotificationSettings(),
+            const PushNotificationSettings(),
             VacationSettings(),
           ]
       );

@@ -8,9 +8,11 @@ class SharedPreferencesController{
   static const String notificationNextId = 'notification_next_id';
 
   /// Set the current notification time to the given time in the phone settings
-  static void setCurrentNotificationTime(TimeOfDay time){
-    sharedPreferences!.setInt(notificationTimeHourKey, time.hour);
-    sharedPreferences!.setInt(notificationTimeMinuteKey, time.minute);
+  static void setCurrentNotificationTime(TimeOfDay? time){
+    if(time != null) {
+      sharedPreferences!.setInt(notificationTimeHourKey, time.hour);
+      sharedPreferences!.setInt(notificationTimeMinuteKey, time.minute);
+    }
   }
 
   /// Get the default notification time from the phone settings
@@ -28,8 +30,10 @@ class SharedPreferencesController{
   }
 
   /// Set the isEnabled flag for the notifications
-  static void setNotificationTimeStatus(bool isEnabled){
-    sharedPreferences!.setBool(notificationIsEnabled, isEnabled);
+  static void setNotificationTimeStatus(bool? isEnabled){
+    if(isEnabled != null) {
+      sharedPreferences!.setBool(notificationIsEnabled, isEnabled);
+    }
   }
 
   /// Get the isEnabled flag for the notifications
