@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:system_settings/system_settings.dart';
 import '../../../../../services/authentication.dart';
 import '../../../../../services/notification.dart';
+import '../../../../../shared/utilities/app_colors.dart';
 import '../../../../../shared/widgets/util/lists/custom_list_tile.dart';
 
 class PushNotificationSettings extends StatefulWidget {
@@ -20,7 +21,6 @@ class PushNotificationSettings extends StatefulWidget {
 }
 
 class _PushNotificationSettingsState extends State<PushNotificationSettings> {
-  final AuthService _auth = AuthService();
   bool? isEnabled;
   TimeOfDay? time;
 
@@ -62,7 +62,27 @@ class _PushNotificationSettingsState extends State<PushNotificationSettings> {
   }
 
   Future<void> onChangeNotificationTime(context, DbUser user) async {
-    TimeOfDay? result = await showTimePicker(context: context, initialTime: time!);
+
+    TimeOfDay? result = await showTimePicker(
+      context: context,
+      initialTime: time!,
+      builder: (context, child) {
+      return Theme(
+        data: Theme.of(context).copyWith(
+          colorScheme: ColorScheme.light(
+            primary: AppColors.accent1, // header background color
+            onPrimary: AppColors.lightWhiteHighlight, // header text color
+            onSurface: Theme.of(context).textTheme.bodyText1!.color!, // body text color
+          ),
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              primary: AppColors.accent1, // button text color
+            ),
+          ),
+        ),
+        child: child!,
+      );
+    },);
 
     if(result != null) {
       // Set the settings in the cloud
