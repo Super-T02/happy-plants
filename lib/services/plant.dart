@@ -146,7 +146,6 @@ class PlantService {
   static Future<void> deletePlant(Plant plant, String gardenID, CustomUser user) async {
     DocumentReference plantDoc = getPlantDocRef(plant.id, gardenID, user.uid);
 
-    debugPrint(plant.eventIds.toString());
 
     if(plant.eventIds != null) {
 
@@ -196,7 +195,6 @@ class PlantService {
       Watering watering = plant.watering!;
 
       if(watering.startDate != null && watering.interval != null) {
-        debugPrint(watering.startDate.toString());
         DocumentReference event = await EventService.addEvent(
             EventsModel<Watering>(
               userId: user.uid,
