@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:happy_plants/services/garden.dart';
 import 'package:happy_plants/shared/models/garden.dart';
@@ -20,6 +21,7 @@ class _ListOfGardensState extends State<ListOfGardens> {
   // Images
   final lightImage = "assets/images/LightGardenEmpty.svg";
   final darkImage = "assets/images/DarkGardenEmpty.svg";
+
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,7 @@ class _ListOfGardensState extends State<ListOfGardens> {
 
         // Waiting for the answer
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text("Document does not exist");
+          return const SpinKitFadingCircle(color: Colors.white);
         }
 
         // Display empty text or not
@@ -59,11 +61,9 @@ class _ListOfGardensState extends State<ListOfGardens> {
                 style: theme.textTheme.headline3!,
               ),
               const SizedBox(height: 32.0,),
-              Container(
+              SizedBox(
                 height: 200,
                 width: MediaQuery.of(context).size.width * 0.8,
-                margin: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width * 0.09),
                 child: SvgPicture.asset(darkMode == Brightness.dark? darkImage : lightImage),
               ),
               const SizedBox(height: 32.0,),
