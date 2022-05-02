@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:happy_plants/shared/widgets/forms/custom_dropdown.dart';
 import 'package:happy_plants/shared/widgets/util/custom_accordion.dart';
 import 'package:happy_plants/shared/widgets/forms/int_picker.dart';
-import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/type_picker.dart';
 import 'package:happy_plants/shared/utilities/sizes.dart';
 import 'package:happy_plants/shared/widgets/forms/custom_datepicker.dart';
 import '../../../../../services/plant.dart';

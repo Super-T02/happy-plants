@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../../screens/home/tabs/garden/plants/plant_card.dart';
 import '../utilities/sizes.dart';
 
 // Data structure for a plant
@@ -47,6 +50,67 @@ class Plant{
     else{
       return false;
     }
+  }
+
+  static Plant mapFirebaseDocToPlant(DocumentSnapshot snapshot, String gardenID){
+    Map<String, dynamic> data = snapshot.data()! as Map<String, dynamic>;
+
+    PlantSize plantSize = PlantSize();
+    Watering watering = Watering();
+    IntervalDateTime spray = IntervalDateTime();
+    Fertilize fertilize = Fertilize();
+    IntervalDateTime repot = IntervalDateTime();
+    IntervalDateTime dustOff = IntervalDateTime();
+
+
+    if(data['plantSize'] != null){
+      plantSize.now = data['plantSize']['now'];
+      plantSize.begin = data['plantSize']['begin'];
+    }
+
+    if(data['watering'] != null){
+      watering.waterAmount = data['watering']['waterAmount'];
+      watering.interval = data['watering']['interval']; //TODO: edit (edit after event merge)
+      watering.lastTime = data['watering']['lastTime']?.toDate(); //TODO: lasttime to startdate
+    }
+
+    if(data['spray'] != null){
+      spray.interval = data['spray']['interval']; //TODO: edit (edit after event merge)
+      spray.lastTime = data['spray']['lastTime']?.toDate();//TODO: lasttime to startdate
+    }
+
+    if(data['fertilize'] != null){
+      fertilize.amount = data['fertilize']['amount'];
+      fertilize.interval = data['fertilize']['interval']; //TODO: edit (edit after event merge)
+      fertilize.lastTime = data['fertilize']['lastTime']?.toDate();//TODO: lasttime to startdate
+    }
+
+    if(data['repot'] != null){
+      repot.interval = data['repot']['interval']; //TODO: edit (edit after event merge)
+      repot.lastTime = data['repot']['lastTime']?.toDate();//TODO: lasttime to startdate
+    }
+
+    if(data['dustOff'] != null){
+      dustOff.interval = data['dustOff']['interval']; //TODO: edit (edit after event merge)
+      dustOff.lastTime = data['dustOff']['lastTime']?.toDate();//TODO: lasttime to startdate
+    }
+
+    Plant plant = Plant(name: data['name'],
+        icon: data['icon'],
+        id: snapshot.id,
+        type: data['type'],
+        plantSize: plantSize,
+        potSize: SizeHelper.getSizeFromString(data['potSize']),
+        watering: watering,
+        spray: spray,
+        fertilize: fertilize,
+        temperature: data['temperature'],
+        sunDemand: SizeHelper.getSizeFromString(data['sunDemand']),
+        repot: repot,
+        dustOff: dustOff,
+        gardenID: gardenID);
+
+    return plant;
   }
 
 }

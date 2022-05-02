@@ -50,22 +50,8 @@ class _ListOfPlantsState extends State<ListOfPlants> {
               addAutomaticKeepAlives: true,
               crossAxisCount: 2,
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
                 return PlantSingle(
-                    plant: Plant(name: data['name'],
-                        icon: data['icon'],
-                        id: document.id,
-                        type: data['type'],
-                        plantSize: PlantSize(begin: data['plantSize.begin'], now: data['plantSize.now']),
-                        potSize: SizeHelper.getSizeFromString(data['potSize']),
-                        watering: Watering(interval: data['watering{interval}'], waterAmount: data['watering{waterAmount}'], lastTime: data['watering{lastTime}']),
-                        spray: IntervalDateTime(interval: data['spray.interval'], lastTime: data['spray.lastTime']),
-                        fertilize: Fertilize(interval: data['fertilize.interval'], amount: data['fertilize.amount'], lastTime: data['fertilize.lastTime']),
-                        temperature: data['temperature'],
-                        sunDemand: SizeHelper.getSizeFromString(data['sunDemand']),
-                        repot: IntervalDateTime(interval: data['repot.interval'], lastTime: data['repot.lastTime']),
-                        dustOff: IntervalDateTime(interval: data['dustOff.interval'], lastTime: data['dustOff.lastTime']),
-                        gardenID: widget.garden.id),
+                    plant: Plant.mapFirebaseDocToPlant(document, widget.garden.id),
                     garden: widget.garden);
               }).toList(),
             ),

@@ -2,13 +2,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_plants/shared/widgets/forms/custom_dropdown.dart';
 import 'package:happy_plants/shared/widgets/util/custom_accordion.dart';
-import 'package:happy_plants/screens/home/tabs/garden/plants/gardenForm/int_picker.dart';
 import 'package:happy_plants/shared/utilities/sizes.dart';
 import 'package:happy_plants/shared/widgets/forms/custom_datepicker.dart';
 import '../../../../../services/plant.dart';
 import '../../../../../shared/models/garden.dart';
 import '../../../../../shared/models/plant.dart';
 import '../../../../../shared/models/user.dart';
+import '../../../../../shared/widgets/forms/int_picker.dart';
 import '../../../../../shared/widgets/util/image_card.dart';
 import 'gardenForm/string_picker.dart';
 
@@ -109,31 +109,68 @@ class _EditPlantState extends State<EditPlant> {
     // Form controllers
     TextEditingController plantNameController = TextEditingController(text: widget.plant.name);
     TextEditingController plantTypeController = TextEditingController(text: widget.plant.type);
-    TextEditingController plantSizeBeginningController = TextEditingController(text: widget.plant.plantSize?.begin.toString());
-    TextEditingController plantSizeEndController = TextEditingController(text: widget.plant.plantSize?.now.toString());
+    TextEditingController plantSizeBeginningController = TextEditingController();
+    TextEditingController plantSizeEndController = TextEditingController();
 
-    TextEditingController wateringAmountController = TextEditingController(text: widget.plant.watering?.waterAmount.toString());
-    TextEditingController wateringIntervalController = TextEditingController(text: widget.plant.watering?.interval.toString());
+    TextEditingController wateringAmountController = TextEditingController();
+    TextEditingController wateringIntervalController = TextEditingController();
 
-    TextEditingController sprayingIntervalController = TextEditingController(text: widget.plant.spray?.interval.toString());
+    TextEditingController sprayingIntervalController = TextEditingController();
 
-    TextEditingController fertilizeAmountController = TextEditingController(text: widget.plant.fertilize?.amount.toString());
-    TextEditingController fertilizeIntervalController = TextEditingController(text: widget.plant.fertilize?.interval.toString());
+    TextEditingController fertilizeAmountController = TextEditingController();
+    TextEditingController fertilizeIntervalController = TextEditingController();
 
-    TextEditingController temperatureController = TextEditingController(text: widget.plant.temperature?.toString());
+    TextEditingController temperatureController = TextEditingController();
 
-    TextEditingController repotIntervalController = TextEditingController(text: widget.plant.repot?.toString());
+    TextEditingController repotIntervalController = TextEditingController();
 
-    TextEditingController dustOffIntervalController = TextEditingController(text: widget.plant.dustOff?.interval.toString());
+    TextEditingController dustOffIntervalController = TextEditingController();
 
-    //variables for the pickers & their callback functions
-    DateTime? wateringLastTime = widget.plant.watering?.lastTime;
-    DateTime? sprayPlantsLastTime = widget.plant.spray?.lastTime;
-    DateTime? fertilizeLastTime = widget.plant.fertilize?.lastTime;
-    DateTime? repotLastTime = widget.plant.repot?.lastTime;
-    DateTime? dustOffLastTime = widget.plant.dustOff?.lastTime;
+    DateTime? wateringLastTime;
+    DateTime? sprayPlantsLastTime;
+    DateTime? fertilizeLastTime;
+    DateTime? repotLastTime;
+    DateTime? dustOffLastTime;
     String? potSize;
     String? sunNeed;
+    //if data exists:
+    if(widget.plant.plantSize?.now != null && widget.plant.plantSize?.begin != null){
+      plantSizeBeginningController.text = widget.plant.plantSize!.begin.toString();
+      plantSizeEndController.text = widget.plant.plantSize!.now.toString();
+    }
+
+    if(widget.plant.watering?.waterAmount != null && widget.plant.watering?.lastTime != null && widget.plant.watering?.interval != null){
+    wateringAmountController.text = widget.plant.watering!.waterAmount.toString();
+    wateringIntervalController.text = widget.plant.watering!.interval.toString();
+    wateringLastTime = widget.plant.watering!.lastTime;
+    }
+
+    if(widget.plant.spray?.interval != null && widget.plant.spray?.lastTime != null){
+      sprayingIntervalController.text = widget.plant.spray!.interval.toString();
+      sprayPlantsLastTime = widget.plant.spray?.lastTime;
+    }
+
+    if(widget.plant.fertilize?.amount != null && widget.plant.fertilize?.interval != null && widget.plant.fertilize?.lastTime != null){
+      fertilizeAmountController.text = widget.plant.fertilize!.amount.toString();
+      fertilizeIntervalController.text = widget.plant.fertilize!.interval.toString();
+      fertilizeLastTime = widget.plant.fertilize?.lastTime;
+    }
+
+    if(widget.plant.temperature != null){
+      temperatureController.text = widget.plant.temperature!.toString();
+    }
+
+    if(widget.plant.repot?.lastTime != null && widget.plant.repot?.interval != null){
+      repotIntervalController.text = widget.plant.repot!.interval.toString();
+      repotLastTime = widget.plant.repot?.lastTime;
+    }
+
+    if(widget.plant.dustOff?.interval != null && widget.plant.dustOff?.lastTime != null){
+      dustOffIntervalController.text = widget.plant.dustOff!.interval.toString();
+      dustOffLastTime = widget.plant.dustOff?.lastTime;
+    }
+
+    //variables for the pickers & their callback functions
     if(widget.plant.potSize != null){
       potSize = SizeHelper.getStringFromSize(widget.plant.potSize);
     } else {
