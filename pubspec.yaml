@@ -59,6 +59,7 @@ dependencies:
   rxdart: ^0.27.3
   flutter_native_timezone: ^2.0.0
   system_settings: ^2.1.0
+  quiver: ^3.0.1+1
 
 dev_dependencies:
   flutter_test:

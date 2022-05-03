@@ -1,7 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:happy_plants/shared/models/garden.dart';
 import 'package:happy_plants/shared/models/plant.dart';
+import 'package:quiver/time.dart';
 
 /// Events model for saved events
 ///
@@ -141,6 +145,78 @@ class EventsModel<T extends JSON> {
 
     return newEvent;
   }
+
+  /// Get the next event date
+  DateTime getNextDate() {
+    switch (period) {
+      case Periods.single:
+        return startDate;
+      case Periods.daily:
+        return _getDaily();
+      case Periods.monthly:
+        return _getMonthly();
+      case Periods.weekly:
+        return _getWeekly();
+      case Periods.yearly:
+        return _getYearly();
+    }
+  }
+
+  /// Get the daily date
+  DateTime _getDaily() {
+    DateTime date = startDate;
+
+    while(date.isBefore(DateTime.now())) {
+      date = date.add(aDay);
+    }
+
+    return date;
+  }
+
+  /// Get the monthly date
+  DateTime _getMonthly() {
+    DateTime date = startDate;
+
+    // Add days of the month to date
+    while(date.isBefore(DateTime.now())) {
+      Duration duration = Duration(days: daysInMonth(date.year, date.month));
+      date = date.add(duration);
+    }
+
+    // If month has less days
+    while(date.day > daysInMonth(date.year, date.month)){
+      date = date.subtract(aDay);
+    }
+
+    return date;
+  }
+
+  /// Get the yearly date
+  DateTime _getYearly() {
+    DateTime date = startDate;
+
+    while(date.isBefore(DateTime.now())) {
+      date = DateTime(date.year + 1, date.month, date.day);
+    }
+
+    // If month has less days (only february)
+    while(date.day > daysInMonth(date.year, date.month)){
+      date = date.subtract(aDay);
+    }
+
+    return date;
+  }
+
+  /// Get the weekly date
+  DateTime _getWeekly() {
+    DateTime date = startDate;
+
+    while(date.isBefore(DateTime.now())) {
+      date = date.add(aWeek);
+    }
+
+    return date;
+  }
 }
 
 /// Class for having a event with the related plant and garden
@@ -165,6 +241,43 @@ enum EventTypes {
   dustOff
 }
 
+/// Mapping and helper class for event types
+class EventTypesHelper {
+  static EventTypes? getEventTypeFromString(String? text){
+    switch(text?.toLowerCase()) {
+      case 'watering': return EventTypes.watering;
+      case 'spray': return EventTypes.spray;
+      case 'fertilize': return EventTypes.fertilize;
+      case 'repot': return EventTypes.repot;
+      case 'dust off': return EventTypes.dustOff;
+      default: return null;
+    }
+  }
+
+  static String? getStringFromEventType(EventTypes? eventType){
+    switch(eventType) {
+      case EventTypes.watering: return 'Watering';
+      case EventTypes.spray: return 'Spray';
+      case EventTypes.fertilize: return 'Fertilize';
+      case EventTypes.repot: return 'Repot';
+      case EventTypes.dustOff: return 'Dust off';
+      default: return null;
+    }
+  }
+
+  static IconData? getIconDataFromEventType(EventTypes? eventType){
+    switch(eventType) {
+      case EventTypes.watering: return Icons.water_drop;
+      case EventTypes.spray: return FontAwesome5.spray_can;
+      case EventTypes.fertilize: return FontAwesome5.poo;
+      case EventTypes.repot: return FontAwesome5.exchange_alt;
+      case EventTypes.dustOff: return FontAwesome5.paint_brush;
+      default: return null;
+    }
+  }
+}
+
+
 /// Period Types
 enum Periods {
   single,
@@ -175,7 +288,7 @@ enum Periods {
 }
 
 class PeriodsHelper {
-  static List<String> periodsMenuItems = ['single', 'daily', 'monthly', 'weekly', 'yearly'];
+  static List<String> periodsMenuItems = ['single', 'daily', 'weekly', 'monthly', 'yearly'];
 
   static Periods? getPeriodsFromString(String? text){
     switch(text) {

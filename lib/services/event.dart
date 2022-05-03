@@ -100,10 +100,10 @@ class EventService {
   }
 
   /// Gets all the events of a user as a stream
-  static Future<Stream<List<EventWithPlantAndGarden?>>> getUserEventsStream(CustomUser? user) async {
+  static Future<List<EventWithPlantAndGarden?>> getUserEventsList(CustomUser? user) async {
 
     if(user == null) {
-      return const Stream.empty();
+      return [];
     }
 
     CollectionReference events = EventService.getEventsCollectionRef(user);
@@ -130,7 +130,7 @@ class EventService {
       }
 
       return eventsList;
-    });
+    }).first;
   }
 
   /// Get the ref on a event instance based on the user and event id

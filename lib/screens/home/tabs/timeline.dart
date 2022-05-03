@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:happy_plants/screens/notifications/notification.dart';
 import 'package:happy_plants/services/event.dart';
 import 'package:happy_plants/shared/models/events.dart';
 import 'package:happy_plants/shared/widgets/util/lists/custom_list_group.dart';
@@ -24,49 +25,50 @@ class _TimelineState extends State<Timeline> {
     super.initState();
   }
 
-  Future<Stream<List<CustomListGroup?>>> _getListGroup(CustomUser? user) async {
-    Stream<List<EventWithPlantAndGarden?>> eventStream
-      = await EventService.getUserEventsStream(user);
 
-    return eventStream.map((events) {
+  /// Generates a stream of all list components
+  Future<List<CustomListGroup?>> _getListGroup(CustomUser? user) async {
+    List<EventWithPlantAndGarden?> eventList
+      = await EventService.getUserEventsList(user);
+
+
+    if(eventList.isNotEmpty){
       List<CustomListGroup?> listGroup = [];
+      Map<DateTime, List<CustomListTile>> children = {};
 
-      if(events.isNotEmpty){
+      for(EventWithPlantAndGarden? event in eventList){
+        DateTime nextDate = event!.event.getNextDate();
+        // Add list tiles
+        if(!children.containsKey(nextDate)) { // Date doesn't exist
+          children[nextDate] = [
+            CustomListTile(
+              title: event.plant.name,
+              subtitle: EventTypesHelper.getStringFromEventType(event.event.type),
+              leading: EventTypesHelper.getIconDataFromEventType(event.event.type),
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationScreen(eventId: event.event.id))),
+            )
+          ];
 
-        Map<DateTime, List<CustomListTile>> children = {};
-        
-        for(EventWithPlantAndGarden? event in events){
-
-          // Add list tiles
-          if(!children.containsKey(event!.event.startDate)) { // Date doesn't exist
-
-            children[event.event.startDate] = [
+        } else { // Date already exist
+          children[nextDate]!.add(
               CustomListTile(
                 title: event.plant.name,
-                subtitle: 'Watering', // TODO map
+                subtitle: EventTypesHelper.getStringFromEventType(event.event.type),
+                leading: EventTypesHelper.getIconDataFromEventType(event.event.type),
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationScreen(eventId: event.event.id))),
               )
-            ];
-
-          } else { // Date already exist
-
-            children[event.event.startDate]!.add(
-                CustomListTile(
-                  title: event.plant.name,
-                  subtitle: 'Watering', // TODO map
-                )
-            );
-          }
+          );
         }
-
-        children.forEach((date, children) {
-          listGroup.add(CustomListGroup(title: date.toString(), children: children));
-        });
-
-        return listGroup;
       }
 
-      return [];
-    });
+      children.forEach((date, children) {
+        listGroup.add(CustomListGroup(title: date.toString(), children: children));
+      });
+
+      return listGroup;
+    }
+
+    return [];
   }
 
   @override
@@ -74,11 +76,11 @@ class _TimelineState extends State<Timeline> {
     final user = Provider.of<DbUser?>(context);
 
     // Listen to the group stream
-    _getListGroup(user).then((stream) => stream.listen((value) {
-      if(value.isNotEmpty) {
+    _getListGroup(user).then((list) {
+      if(list.isNotEmpty && children!.isEmpty) {
         List<CustomListGroup> listGroup = [];
 
-        for(CustomListGroup? group in value) {
+        for(CustomListGroup? group in list) {
           if(group != null) {
             listGroup.add(group);
           }
@@ -88,7 +90,8 @@ class _TimelineState extends State<Timeline> {
           children = listGroup;
         });
       }
-    }));
+    });
+
 
     if(user != null && children != null && children!.isNotEmpty) {
       return ListView(
