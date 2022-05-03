@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:happy_plants/shared/models/garden.dart';
 import 'package:happy_plants/shared/models/plant.dart';
 
 /// Events model for saved events
@@ -140,6 +141,19 @@ class EventsModel<T extends JSON> {
 
     return newEvent;
   }
+}
+
+/// Class for having a event with the related plant and garden
+class EventWithPlantAndGarden{
+  EventsModel event;
+  Plant plant;
+  Garden garden;
+
+  EventWithPlantAndGarden({
+    required this.event,
+    required this.plant,
+    required this.garden
+  });
 }
 
 /// Event Types
