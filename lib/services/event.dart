@@ -94,6 +94,28 @@ class EventService {
     }
   }
 
+  /// Gets all the events of a user
+  static Future<List<EventsModel>> getAllUserEvents(CustomUser? user) async {
+    List<EventsModel> eventsList = [];
+
+    if(user != null) {
+      CollectionReference events = EventService.getEventsCollectionRef(user);
+
+      events.get().then((QuerySnapshot querySnapshot) async {
+        for (DocumentSnapshot event in querySnapshot.docs) {
+
+          // Get the mapped model
+          EventsModel newEvent = EventsModel.mapFirebaseDocToEvent(user.uid, event);
+
+          // Add event to list
+          eventsList.add(newEvent);
+        }
+      });
+    }
+
+    return eventsList;
+  }
+
   /// Get the ref on a event instance based on the user and event id
   static DocumentReference getEventDocRef(String eventId, CustomUser user) {
     return FirebaseFirestore.instance
