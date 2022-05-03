@@ -166,7 +166,7 @@ class EventsModel<T extends JSON> {
   DateTime _getDaily() {
     DateTime date = startDate;
 
-    while(date.isBefore(DateTime.now())) {
+    while(date.isBefore(DateTime.now().subtract(aDay))) {
       date = date.add(aDay);
     }
 
@@ -178,7 +178,7 @@ class EventsModel<T extends JSON> {
     DateTime date = startDate;
 
     // Add days of the month to date
-    while(date.isBefore(DateTime.now())) {
+    while(date.isBefore(DateTime.now().subtract(aDay))) {
       Duration duration = Duration(days: daysInMonth(date.year, date.month));
       date = date.add(duration);
     }
@@ -195,7 +195,7 @@ class EventsModel<T extends JSON> {
   DateTime _getYearly() {
     DateTime date = startDate;
 
-    while(date.isBefore(DateTime.now())) {
+    while(date.isBefore(DateTime.now().subtract(aDay))) {
       date = DateTime(date.year + 1, date.month, date.day);
     }
 
@@ -211,11 +211,24 @@ class EventsModel<T extends JSON> {
   DateTime _getWeekly() {
     DateTime date = startDate;
 
-    while(date.isBefore(DateTime.now())) {
+    while(date.isBefore(DateTime.now().subtract(aDay))) {
       date = date.add(aWeek);
     }
 
     return date;
+  }
+
+  static int sort(event, nextEvent) {
+    DateTime nextDateEvent = event!.event.getNextDate();
+    DateTime nextDateNextEvent = nextEvent!.event.getNextDate();
+
+    if(nextDateEvent.isBefore(nextDateNextEvent)){
+      return -1;
+    } else if (nextDateEvent.isAtSameMomentAs(nextDateNextEvent)){
+      return 0;
+    } else {
+      return 1;
+    }
   }
 }
 
@@ -319,6 +332,66 @@ class PeriodsHelper {
       case Periods.weekly: return DateTimeComponents.dayOfWeekAndTime;
       case Periods.yearly: return DateTimeComponents.dateAndTime;
       default: return null;
+    }
+  }
+
+  /// Generates the date string in the following format
+  ///
+  /// Tue, 22.05.2022
+  static String getNiceDateWording(DateTime time){
+    int dayNow = DateTime.now().day;
+    int monthNow = DateTime.now().month;
+    int yearNow = DateTime.now().year;
+    String weekDay = _getDayOfWeekAsString(time);;
+
+    if(time.month == monthNow && time.year == yearNow){
+      // Same Day
+      if(time.day == dayNow){
+        weekDay = 'Today';
+      }
+
+      // Tomorrow
+      if(time.day == DateTime.now().add(aDay).day){
+        weekDay = 'Tomorrow';
+      }
+    }
+
+    String month;
+    if(time.month < 10){
+      month = '0${time.month}';
+    } else {
+      month = time.month.toString();
+    }
+
+    String day;
+    if(time.day < 10){
+      day = '0${time.day}';
+    } else {
+      day = time.day.toString();
+    }
+
+    return '$weekDay, $day.$month.${time.year}';
+  }
+
+  /// Returns the day of the week as string
+  static String _getDayOfWeekAsString(DateTime time){
+    switch(time.weekday){
+      case 1:
+        return 'Mon';
+      case 2:
+        return 'Tue';
+      case 3:
+        return 'Wed';
+      case 4:
+        return 'Thr';
+      case 5:
+        return 'Fri';
+      case 6:
+        return 'Sat';
+      case 7:
+        return 'Sun';
+      default:
+        throw Exception('Invalid weekday ${time.weekday}');
     }
   }
 }

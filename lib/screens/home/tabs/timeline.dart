@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:happy_plants/screens/notifications/notification.dart';
 import 'package:happy_plants/services/event.dart';
 import 'package:happy_plants/shared/models/events.dart';
+import 'package:happy_plants/shared/utilities/app_colors.dart';
 import 'package:happy_plants/shared/widgets/util/lists/custom_list_group.dart';
 import 'package:happy_plants/shared/widgets/util/lists/custom_list_tile.dart';
 import 'package:provider/provider.dart';
@@ -34,13 +35,18 @@ class _TimelineState extends State<Timeline> {
 
     if(eventList.isNotEmpty){
       List<CustomListGroup?> listGroup = [];
-      Map<DateTime, List<CustomListTile>> children = {};
+      Map<String, List<CustomListTile>> children = {};
+
+      // Sorts the event list
+      eventList.sort((a, b) => EventsModel.sort(a, b));
 
       for(EventWithPlantAndGarden? event in eventList){
         DateTime nextDate = event!.event.getNextDate();
+        String wording = PeriodsHelper.getNiceDateWording(nextDate);
+
         // Add list tiles
-        if(!children.containsKey(nextDate)) { // Date doesn't exist
-          children[nextDate] = [
+        if(!children.containsKey(wording)) { // Date doesn't exist
+          children[wording] = [
             CustomListTile(
               title: event.plant.name,
               subtitle: EventTypesHelper.getStringFromEventType(event.event.type),
@@ -50,7 +56,7 @@ class _TimelineState extends State<Timeline> {
           ];
 
         } else { // Date already exist
-          children[nextDate]!.add(
+          children[wording]!.add(
               CustomListTile(
                 title: event.plant.name,
                 subtitle: EventTypesHelper.getStringFromEventType(event.event.type),
@@ -61,8 +67,8 @@ class _TimelineState extends State<Timeline> {
         }
       }
 
-      children.forEach((date, children) {
-        listGroup.add(CustomListGroup(title: date.toString(), children: children));
+      children.forEach((dateString, children) {
+        listGroup.add(CustomListGroup(title: dateString, children: children));
       });
 
       return listGroup;
@@ -98,7 +104,7 @@ class _TimelineState extends State<Timeline> {
         children: children!,
       );
     } else {
-      return const SpinKitFadingCircle(color: Colors.white);
+      return const SpinKitFadingCircle(color: AppColors.accent1);
     }
   }
 }
