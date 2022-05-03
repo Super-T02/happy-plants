@@ -78,25 +78,7 @@ Future<void> main() async {
 
   /// START APP
   runApp(
-    StreamProvider<CustomUser?>.value(
-      value: AuthService().user,
-      initialData: null,
-      child: MaterialApp(
-        title: 'Happy Plants',
-        themeMode: currentTheme.currentMode,
-        theme: MyAppTheme.lightTheme,
-        darkTheme: MyAppTheme.darkTheme,
-        navigatorKey: navigatorKey,
-        initialRoute: MyApp.routeName,
-        routes: {
-          MyApp.routeName: (_) => MyApp(notificationAppLaunchDetails: notificationAppLaunchDetails),
-          NotificationScreen.routeName: (_) => NotificationScreen(eventId: selectedNotificationPayload,),
-          '/newGarden': (context) => const NewGarden(),
-          '/forgetPassword': (context) => const ForgetPassword(),
-          '/signUp': (context) => const SignUpForm(),
-        },
-      ),
-    ),
+    MyApp(notificationAppLaunchDetails: notificationAppLaunchDetails)
   );
 }
 
@@ -114,7 +96,6 @@ Future<void> _configureLocalTimeZone() async {
 class MyApp extends StatefulWidget {
   const MyApp({Key? key, this.notificationAppLaunchDetails}) : super(key: key);
 
-  static const String routeName = '/';
 
   final NotificationAppLaunchDetails? notificationAppLaunchDetails;
 
@@ -211,7 +192,25 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return const Wrapper();
+    return StreamProvider<CustomUser?>.value(
+      value: AuthService().user,
+      initialData: null,
+      child: MaterialApp(
+        title: 'Happy Plants',
+        themeMode: currentTheme.currentMode,
+        theme: MyAppTheme.lightTheme,
+        darkTheme: MyAppTheme.darkTheme,
+        navigatorKey: navigatorKey,
+        initialRoute: '/',
+        routes: {
+          '/': (_) => const Wrapper(),
+          NotificationScreen.routeName: (_) => NotificationScreen(eventId: selectedNotificationPayload,),
+          '/newGarden': (context) => const NewGarden(),
+          '/forgetPassword': (context) => const ForgetPassword(),
+          '/signUp': (context) => const SignUpForm(),
+        },
+      ),
+    );
   }
 }
 

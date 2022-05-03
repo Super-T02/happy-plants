@@ -65,8 +65,6 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
   Widget build(BuildContext context) {
     final darkMode = Theme.of(context).brightness;
 
-    debugPrint((darkMode).toString() + " is " + (darkMode == Brightness.light).toString());
-
     return Form(
       key: _formKey,
       child: Padding(

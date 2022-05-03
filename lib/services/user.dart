@@ -43,6 +43,8 @@ class UserService{
   static Future<void> putNewDbUser(DbUser user){
     user.settings ??= CustomSettings.getDefault();
 
+    debugPrint(user.settings!.designSettings.colorScheme.toString());
+
     return users.doc(user.uid).set({
       "isEmailPasswordAuth": user.isEmailPasswordAuth,
       "email": user.email,
