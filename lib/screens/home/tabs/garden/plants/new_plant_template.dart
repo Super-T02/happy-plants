@@ -26,6 +26,8 @@ class _NewPlantTemplateState extends State<NewPlantTemplate> {
     List<Widget> allTemplateWidgets = [];
     List<Plant> allTemplatePlants = [];
 
+    //begin of templates
+    //bonsai
     allTemplatePlants.add(
       Plant(
         gardenID: widget.garden.id,
@@ -42,12 +44,30 @@ class _NewPlantTemplateState extends State<NewPlantTemplate> {
         spray: IntervalDateTime(interval: PeriodsHelper.getPeriodsFromString('weekly'), startDate: DateTime.now()),
         sunDemand: SizeHelper.getSizeFromString('l'),
         temperature: 21,
-      //TODO: eventIDs???
       )
+    );
+    //cactus
+    allTemplatePlants.add(
+        Plant(
+          gardenID: widget.garden.id,
+          id: '',
+          name: 'Cactus',
+          type: 'Cactus',
+          icon: 'cactus',
+          watering: Watering(interval: PeriodsHelper.getPeriodsFromString('monthly'), startDate: DateTime.now(), waterAmount: 100),
+          plantSize: PlantSize(begin: 15, now: 18),
+          fertilize: Fertilize(interval: PeriodsHelper.getPeriodsFromString('yearly'), startDate: DateTime.now(), amount: 30),
+          dustOff: IntervalDateTime(interval: PeriodsHelper.getPeriodsFromString('yearly'), startDate: DateTime.now()),
+          potSize: SizeHelper.getSizeFromString('s'),
+          repot: IntervalDateTime(interval: PeriodsHelper.getPeriodsFromString('yearly'), startDate: DateTime.now()),
+          spray: IntervalDateTime(interval: PeriodsHelper.getPeriodsFromString('monthly'), startDate: DateTime.now()),
+          sunDemand: SizeHelper.getSizeFromString('xl'),
+          temperature: 25,
+        )
     );
 
     for(Plant plant in allTemplatePlants){
-      allTemplateWidgets.add(NewPlantTemplateSingleEntry(user: widget.user, garden: widget.garden, plant: plant));
+      allTemplateWidgets.add(NewPlantTemplateSingleEntry(user: widget.user, garden: widget.garden, plant: plant, iconForEntry: const Icon(Icons.yard),));
     }
 
     return Scaffold(
@@ -62,10 +82,7 @@ class _NewPlantTemplateState extends State<NewPlantTemplate> {
         scrollDirection: Axis.vertical,
         padding: const EdgeInsets.all(15), //padding from screen to widget
         addAutomaticKeepAlives: true,
-        children: <Widget>[
-          NewPlantTemplateSingleEntry(user: widget.user, garden: widget.garden, plant: allTemplatePlants[0])
-          //TODO itterate through all plants
-        ],
+        children: allTemplateWidgets,
       ),
     );;
   }

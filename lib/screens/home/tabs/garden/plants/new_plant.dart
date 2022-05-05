@@ -316,11 +316,8 @@ class _NewPlantState extends State<NewPlant> {
   }
 
   void _onSubmitted(user, garden) async {
-    debugPrint('onSubmitted errreicht ----------------------');
     if(widget.isNew) {
-      debugPrint('new plant added --------------');
       if (_formKey.currentState!.validate() && getAccordionsErrors() == null) {
-        debugPrint('wir kommen in validate');
         await PlantService.addPlant(
             AddPlant(
               name: plantNameController.text,
@@ -340,6 +337,9 @@ class _NewPlantState extends State<NewPlant> {
         );
 
         Navigator.pop(context);
+        if(widget.plant != null){
+          Navigator.pop(context);
+        }
       } else if (!_formKey.currentState!.validate()){
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Please fill out required fields!')),
@@ -355,7 +355,6 @@ class _NewPlantState extends State<NewPlant> {
       }// add the plant
     }
     else {
-      debugPrint('existing plant edited --------------');
       if (_formKey.currentState!.validate() && getAccordionsErrors() == null) {
         // add the plant
         await PlantService.putPlant(

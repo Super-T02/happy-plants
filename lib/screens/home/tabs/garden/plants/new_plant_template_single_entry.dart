@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../shared/models/events.dart';
 import '../../../../../shared/models/garden.dart';
 import '../../../../../shared/models/plant.dart';
 import '../../../../../shared/models/user.dart';
@@ -7,11 +8,18 @@ import 'edit_plant.dart';
 import 'new_plant.dart';
 
 class NewPlantTemplateSingleEntry extends StatefulWidget {
-  const NewPlantTemplateSingleEntry({Key? key, required this.user, required this.garden, required this.plant}) : super(key: key);
+  const NewPlantTemplateSingleEntry({
+    Key? key,
+    required this.user,
+    required this.garden,
+    required this.plant,
+    required this.iconForEntry
+  }) : super(key: key);
 
   final CustomUser user;
   final Garden garden;
   final Plant plant;
+  final Icon iconForEntry;
 
   @override
   State<NewPlantTemplateSingleEntry> createState() => _NewPlantTemplateSingleEntryState();
@@ -23,12 +31,17 @@ class _NewPlantTemplateSingleEntryState extends State<NewPlantTemplateSingleEntr
     final darkMode = Theme.of(context).brightness;
     final ThemeData theme = Theme.of(context);
 
+    Text subtitle = Text("Type: " + widget.plant.type);
+    if(widget.plant.watering?.waterAmount != null && widget.plant.watering?.interval != null){
+      subtitle = Text("Water amount: " + widget.plant.watering!.waterAmount.toString() + " ml, Interval: " + PeriodsHelper.getStringFromPeriod(widget.plant.watering!.interval)!);
+    }
+
     return Column(
       children: <Widget>[
         ListTile(
-          leading: Icon(Icons.face),
+          leading: widget.iconForEntry,
           title: Text(widget.plant.type),
-          subtitle: Text("Watering: " + widget.plant.watering.toString()),
+          subtitle: subtitle,
           onTap: () {
             Navigator.push(
                 context,
