@@ -94,18 +94,18 @@ class _NewPlantState extends State<NewPlant> {
 
       if(widget.plant?.watering?.waterAmount != null && widget.plant!.watering?.startDate != null && widget.plant!.watering?.interval != null){
         wateringAmountController.text = widget.plant!.watering!.waterAmount.toString();
-        wateringInterval = widget.plant!.watering!.interval.toString();
+        wateringInterval = PeriodsHelper.getStringFromPeriod(widget.plant!.watering!.interval);
         wateringLastTime = widget.plant!.watering!.startDate;
       }
 
       if(widget.plant!.spray?.interval != null && widget.plant!.spray?.startDate != null){
-        sprayInterval = widget.plant!.spray!.interval.toString();
+        sprayInterval = PeriodsHelper.getStringFromPeriod(widget.plant!.spray!.interval);
         sprayPlantsLastTime = widget.plant!.spray?.startDate;
       }
 
       if(widget.plant!.fertilize?.amount != null && widget.plant!.fertilize?.interval != null && widget.plant!.fertilize?.startDate != null){
         fertilizeAmountController.text = widget.plant!.fertilize!.amount.toString();
-        fertilizeInterval = widget.plant!.fertilize!.interval.toString();
+        fertilizeInterval = PeriodsHelper.getStringFromPeriod(widget.plant!.fertilize!.interval);
         fertilizeLastTime = widget.plant!.fertilize?.startDate;
       }
 
@@ -114,12 +114,12 @@ class _NewPlantState extends State<NewPlant> {
       }
 
       if(widget.plant!.repot?.startDate != null && widget.plant!.repot?.interval != null){
-        repotInterval = widget.plant!.repot!.interval.toString();
+        repotInterval = PeriodsHelper.getStringFromPeriod(widget.plant!.repot!.interval);
         repotLastTime = widget.plant!.repot?.startDate;
       }
 
       if(widget.plant!.dustOff?.interval != null && widget.plant!.dustOff?.startDate != null){
-        dustOffInterval = widget.plant!.dustOff!.interval.toString();
+        dustOffInterval = PeriodsHelper.getStringFromPeriod(widget.plant!.dustOff!.interval);
         dustOffLastTime = widget.plant!.dustOff?.startDate;
       }
 

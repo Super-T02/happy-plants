@@ -23,6 +23,7 @@ class _NewPlantTemplateState extends State<NewPlantTemplate> {
   Widget build(BuildContext context) {
     final darkMode = Theme.of(context).brightness;
     final ThemeData theme = Theme.of(context);
+    List<Widget> allTemplateWidgets = [];
     List<Plant> allTemplatePlants = [];
 
     allTemplatePlants.add(
@@ -44,6 +45,10 @@ class _NewPlantTemplateState extends State<NewPlantTemplate> {
       //TODO: eventIDs???
       )
     );
+
+    for(Plant plant in allTemplatePlants){
+      allTemplateWidgets.add(NewPlantTemplateSingleEntry(user: widget.user, garden: widget.garden, plant: plant));
+    }
 
     return Scaffold(
       appBar: AppBar(
