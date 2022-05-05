@@ -1,0 +1,18 @@
+allTemplates.add(
+        Plant(
+          gardenID: gardenID,
+          id: '',
+          name: 'My Palm',
+          type: 'Palm',
+          icon: 'palm',
+          watering: Watering(interval: PeriodsHelper.getPeriodsFromString('weekly'), startDate: DateTime.now(), waterAmount: 350),
+          plantSize: PlantSize(begin: 50, now: 70),
+          fertilize: Fertilize(interval: PeriodsHelper.getPeriodsFromString('monthly'), startDate: DateTime.now(), amount: 25),
+          dustOff: IntervalDateTime(interval: PeriodsHelper.getPeriodsFromString('weekly'), startDate: DateTime.now()),
+          potSize: SizeHelper.getSizeFromString('xl'),
+          repot: IntervalDateTime(interval: PeriodsHelper.getPeriodsFromString('yearly'), startDate: DateTime.now()),
+          spray: IntervalDateTime(interval: PeriodsHelper.getPeriodsFromString('weekly'), startDate: DateTime.now()),
+          sunDemand: SizeHelper.getSizeFromString('l'),
+          temperature: 23,
+        )
+    );
