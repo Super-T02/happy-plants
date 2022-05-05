@@ -425,17 +425,20 @@ class _NewPlantState extends State<NewPlant> {
     }
     wateringAccordionChildren.addAll([
       IntPicker(plantSizeController: wateringAmountController, heading: 'Water amount needed', hint: 'Water needed by plant in ml / interval', onChange: (value) =>  wateringOnChanged()),
-      CustomDropDown(menuItems: PeriodsHelper.periodsMenuItems, title: 'Interval between watering', hint: 'Choose an Option', onChange: (_interval) {wateringInterval = _interval; wateringOnChanged();}),
-      CustomDatePicker(description: 'Last time watered:', onSubmit: (newDate){wateringLastTime = newDate;wateringOnChanged();})
+      CustomDropDown(menuItems: PeriodsHelper.periodsMenuItems, title: 'Interval between watering', hint: 'Choose an Option',
+          value: PeriodsHelper.getStringFromPeriod(widget.plant?.watering?.interval), onChange: (_interval) {wateringInterval = _interval; wateringOnChanged();}),
+      CustomDatePicker(description: 'Last time watered:', onSubmit: (newDate){wateringLastTime = newDate;wateringOnChanged();}, value: widget.plant?.watering?.startDate)
     ]);
+
 
     List<Widget> sprayPlantsAccordionChildren = [];
     if(!sprayPlantsCorrect!){
       sprayPlantsAccordionChildren.addAll(warningString);
     }
     sprayPlantsAccordionChildren.addAll([
-      CustomDropDown(menuItems: PeriodsHelper.periodsMenuItems, title: 'Interval between spraying', hint: 'Choose an Option', onChange: (_interval) {sprayInterval = _interval; sprayPlantsOnChanged();}),
-      CustomDatePicker(description: 'Last time sprayed:', onSubmit: (newDate){sprayPlantsLastTime= newDate;sprayPlantsOnChanged();}),
+      CustomDropDown(menuItems: PeriodsHelper.periodsMenuItems, title: 'Interval between spraying', hint: 'Choose an Option',
+          value: PeriodsHelper.getStringFromPeriod(widget.plant?.watering?.interval), onChange: (_interval) {sprayInterval = _interval; sprayPlantsOnChanged();}),
+      CustomDatePicker(description: 'Last time sprayed:', onSubmit: (newDate){sprayPlantsLastTime= newDate;sprayPlantsOnChanged();}, value: widget.plant?.watering?.startDate),
     ]);
 
     List<Widget> fertilizeAccordionChildren = [];
@@ -444,8 +447,9 @@ class _NewPlantState extends State<NewPlant> {
     }
     fertilizeAccordionChildren.addAll([
       IntPicker(plantSizeController: fertilizeAmountController, heading: 'Fertilize amount needed', hint: 'Amount of fertilizer needed in mg / interval', onChange: (value) =>  fertilizeOnChanged()),
-      CustomDropDown(menuItems: PeriodsHelper.periodsMenuItems, title: 'Interval between fertilizing', hint: 'Choose an Option', onChange: (_interval) {fertilizeInterval = _interval; fertilizeOnChanged();}),
-      CustomDatePicker(description: 'Last time fertilized:', onSubmit: (newDate){fertilizeLastTime= newDate;fertilizeOnChanged();})
+      CustomDropDown(menuItems: PeriodsHelper.periodsMenuItems, title: 'Interval between fertilizing', hint: 'Choose an Option',
+          value: PeriodsHelper.getStringFromPeriod(widget.plant?.watering?.interval), onChange: (_interval) {fertilizeInterval = _interval; fertilizeOnChanged();}),
+      CustomDatePicker(description: 'Last time fertilized:', onSubmit: (newDate){fertilizeLastTime= newDate;fertilizeOnChanged();}, value: widget.plant?.watering?.startDate)
     ]);
 
     List<Widget> environmentAccordionChildren = [];
@@ -454,7 +458,8 @@ class _NewPlantState extends State<NewPlant> {
     }
     environmentAccordionChildren.addAll([
       IntPicker(plantSizeController: temperatureController, heading: 'Favourite temperature of plant', hint: 'Enter value of plants preferred temperature in °C', onChange: (value) =>  environmentOnChanged()),
-      CustomDropDown(menuItems: const ['xs', 's', 'm', 'l', 'xl'], title: 'Sun amount preferred', onChange: (_sunNeeded){sunNeed = _sunNeeded;environmentOnChanged();}, value: sunNeed, hint: 'Please choose an option for the preferred sun amount')
+      CustomDropDown(menuItems: const ['xs', 's', 'm', 'l', 'xl'], title: 'Sun amount preferred', onChange: (_sunNeeded){sunNeed = _sunNeeded;environmentOnChanged();},
+          value: sunNeed, hint: 'Please choose an option for the preferred sun amount')
     ]);
 
     List<Widget> repotAccordionChildren = [];
@@ -462,8 +467,9 @@ class _NewPlantState extends State<NewPlant> {
       repotAccordionChildren.addAll(warningString);
     }
     repotAccordionChildren.addAll([
-      CustomDropDown(menuItems: PeriodsHelper.periodsMenuItems, title: 'Interval between repot', hint: 'Choose an Option', onChange: (_interval) {repotInterval = _interval; repotOnChanged();}),
-      CustomDatePicker(description: 'Last time sprayed:', onSubmit: (newDate){repotLastTime= newDate;repotOnChanged();}),
+      CustomDropDown(menuItems: PeriodsHelper.periodsMenuItems, title: 'Interval between repot', hint: 'Choose an Option',
+          value: PeriodsHelper.getStringFromPeriod(widget.plant?.watering?.interval), onChange: (_interval) {repotInterval = _interval; repotOnChanged();}),
+      CustomDatePicker(description: 'Last time sprayed:', onSubmit: (newDate){repotLastTime= newDate;repotOnChanged();}, value: widget.plant?.watering?.startDate),
     ]);
 
     List<Widget> dustOffAccordionChildren = [];
@@ -471,8 +477,9 @@ class _NewPlantState extends State<NewPlant> {
       dustOffAccordionChildren.addAll(warningString);
     }
     dustOffAccordionChildren.addAll([
-      CustomDropDown(menuItems: PeriodsHelper.periodsMenuItems, title: 'Interval between dusting off', hint: 'Choose an Option', onChange: (_interval) {dustOffInterval = _interval; dustOffOnChanged();}),
-      CustomDatePicker(description: 'Last time sprayed:', onSubmit: (newDate){dustOffLastTime= newDate;dustOffOnChanged();}),
+      CustomDropDown(menuItems: PeriodsHelper.periodsMenuItems, title: 'Interval between dusting off', hint: 'Choose an Option',
+          value: PeriodsHelper.getStringFromPeriod(widget.plant?.watering?.interval), onChange: (_interval) {dustOffInterval = _interval; dustOffOnChanged();}),
+      CustomDatePicker(description: 'Last time sprayed:', onSubmit: (newDate){dustOffLastTime= newDate;dustOffOnChanged();}, value: widget.plant?.watering?.startDate),
     ]);
     Text titleOfPage;
     if(widget.plant != null){

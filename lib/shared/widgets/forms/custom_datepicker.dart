@@ -3,10 +3,11 @@ import 'package:happy_plants/shared/utilities/app_colors.dart';
 import 'package:happy_plants/shared/utilities/custom_button.dart';
 
 class CustomDatePicker extends StatefulWidget {
-  const CustomDatePicker({Key? key, required this.description, required this.onSubmit}) : super(key: key);
+  const CustomDatePicker({Key? key, required this.description, required this.onSubmit, this.value}) : super(key: key);
 
   final String description;
   final Function(DateTime newDate) onSubmit;
+  final DateTime? value;
 
   @override
   State<CustomDatePicker> createState() => _CustomDatePickerState();
@@ -14,7 +15,6 @@ class CustomDatePicker extends StatefulWidget {
 
 class _CustomDatePickerState extends State<CustomDatePicker> {
   DateTime selectedDate = DateTime.now();
-
   _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -53,10 +53,15 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
     widget.onSubmit(selectedDate);
   }
 
+  @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     InputDecorationTheme inputDecorationTheme = Theme.of(context).inputDecorationTheme;
     ThemeData theme = Theme.of(context);
+
+    if(widget.value != null){
+      selectedDate = widget.value!;
+    }
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
