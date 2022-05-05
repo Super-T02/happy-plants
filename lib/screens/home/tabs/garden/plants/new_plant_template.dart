@@ -23,23 +23,26 @@ class _NewPlantTemplateState extends State<NewPlantTemplate> {
   Widget build(BuildContext context) {
     final darkMode = Theme.of(context).brightness;
     final ThemeData theme = Theme.of(context);
+    List<Plant> allTemplatePlants = [];
 
-    Plant plant = Plant(
-      gardenID: widget.garden.id,
-      id: '',
-      name: 'Bonsai',
-      type: 'Bonsai',
-      icon: 'bonsai',
-      watering: Watering(interval: PeriodsHelper.getPeriodsFromString('weekly'), startDate: DateTime.now(), waterAmount: 100),
-      plantSize: PlantSize(begin: 20, now: 25),
-      fertilize: Fertilize(interval: PeriodsHelper.getPeriodsFromString('monthly'), startDate: DateTime.now(), amount: 20),
-      dustOff: IntervalDateTime(interval: PeriodsHelper.getPeriodsFromString('monthly'), startDate: DateTime.now()),
-      potSize: SizeHelper.getSizeFromString('s'),
-      repot: IntervalDateTime(interval: PeriodsHelper.getPeriodsFromString('yearly'), startDate: DateTime.now()),
-      spray: IntervalDateTime(interval: PeriodsHelper.getPeriodsFromString('weekly'), startDate: DateTime.now()),
-      sunDemand: SizeHelper.getSizeFromString('l'),
-      temperature: 21,
-    //TODO: eventIDs???
+    allTemplatePlants.add(
+      Plant(
+        gardenID: widget.garden.id,
+        id: '',
+        name: 'Bonsai',
+        type: 'Bonsai',
+        icon: 'bonsai',
+        watering: Watering(interval: PeriodsHelper.getPeriodsFromString('weekly'), startDate: DateTime.now(), waterAmount: 100),
+        plantSize: PlantSize(begin: 20, now: 25),
+        fertilize: Fertilize(interval: PeriodsHelper.getPeriodsFromString('monthly'), startDate: DateTime.now(), amount: 20),
+        dustOff: IntervalDateTime(interval: PeriodsHelper.getPeriodsFromString('monthly'), startDate: DateTime.now()),
+        potSize: SizeHelper.getSizeFromString('s'),
+        repot: IntervalDateTime(interval: PeriodsHelper.getPeriodsFromString('yearly'), startDate: DateTime.now()),
+        spray: IntervalDateTime(interval: PeriodsHelper.getPeriodsFromString('weekly'), startDate: DateTime.now()),
+        sunDemand: SizeHelper.getSizeFromString('l'),
+        temperature: 21,
+      //TODO: eventIDs???
+      )
     );
 
     return Scaffold(
@@ -55,7 +58,8 @@ class _NewPlantTemplateState extends State<NewPlantTemplate> {
         padding: const EdgeInsets.all(15), //padding from screen to widget
         addAutomaticKeepAlives: true,
         children: <Widget>[
-          NewPlantTemplateSingleEntry(user: widget.user, garden: widget.garden, plant: plant)
+          NewPlantTemplateSingleEntry(user: widget.user, garden: widget.garden, plant: allTemplatePlants[0])
+          //TODO itterate through all plants
         ],
       ),
     );;

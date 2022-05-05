@@ -72,7 +72,7 @@ class _ListOfPlantsState extends State<ListOfPlants> {
                 onTap: () {
                   Navigator.push( context, MaterialPageRoute(
                       builder: (context) =>
-                      NewPlant(user: widget.user, garden: widget.garden)
+                      NewPlant(user: widget.user, garden: widget.garden, isNew: true)
                     )
                   );
                 },
@@ -122,7 +122,7 @@ class _ListOfPlantsState extends State<ListOfPlants> {
                   onTap: () {
                     Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => NewPlant(user: widget.user, garden: widget.garden))
+                        MaterialPageRoute(builder: (context) => NewPlant(user: widget.user, garden: widget.garden, isNew: true))
                     );
                   },
                   label: 'own',

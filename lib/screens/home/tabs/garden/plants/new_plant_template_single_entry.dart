@@ -32,7 +32,7 @@ class _NewPlantTemplateSingleEntryState extends State<NewPlantTemplateSingleEntr
           onTap: () {
             Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => EditPlant(user: widget.user, garden: widget.garden, plant: widget.plant))
+                MaterialPageRoute(builder: (context) => EditPlant(user: widget.user, garden: widget.garden, plant: widget.plant, isTemplate: true,))
             );
           },
           style: theme.listTileTheme.style,
