@@ -83,7 +83,6 @@ class _NewPlantState extends State<NewPlant> {
     dustOffCorrect = true;
 
     if(widget.plant != null){
-      debugPrint('Pflanze gefunden');
       plantNameController.text = widget.plant!.name;
       plantTypeController.text = widget.plant!.type;
       //if data exists:
@@ -140,7 +139,7 @@ class _NewPlantState extends State<NewPlant> {
       }
     }
     else{
-      debugPrint('keine Pflanze gefunden');
+      // TODO: error handling
     }
 
     super.initState();
