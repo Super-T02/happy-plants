@@ -76,14 +76,14 @@ class _ViewPlantState extends State<ViewPlant> {
 
           //List group for plant size
           CustomListGroup(title: 'Plant Size', children: <Widget>[
-            CustomListRow(title: 'Begin', data: widget.plant.plantSize?.begin.toString()),
-            CustomListRow(title: 'Now', data: widget.plant.plantSize?.now.toString()),
-            CustomListRow(title: 'Pot Size', data: SizeHelper.getStringFromSize(widget.plant.potSize))
+            CustomListRow(title: 'Begin', data: widget.plant.plantSize?.begin.toString(), unit: 'cm'),
+            CustomListRow(title: 'Now', data: widget.plant.plantSize?.now.toString(), unit: 'cm'),
+            CustomListRow(title: 'Pot Size', data: SizeHelper.getFullNameFromSize(widget.plant.potSize))
           ]),
 
           //List group for watering
           CustomListGroup(title: 'Watering', children: <Widget>[
-            CustomListRow(title: 'Amount', data: widget.plant.watering?.waterAmount.toString()),
+            CustomListRow(title: 'Amount', data: widget.plant.watering?.waterAmount.toString(), unit: 'ml'),
             CustomListRow(title: 'Interval', data: PeriodsHelper.getStringFromPeriod(widget.plant.watering?.interval)),
             CustomListRow(title: 'Last Time', data: Util.getStringFromDateTime(widget.plant.watering?.startDate))
           ]),
@@ -98,15 +98,15 @@ class _ViewPlantState extends State<ViewPlant> {
 
           //List group for Fertilize
           CustomListGroup(title: 'Fertilize', children: <Widget>[
-            CustomListRow(title: 'Amount', data: widget.plant.fertilize?.amount.toString()),
+            CustomListRow(title: 'Amount', data: widget.plant.fertilize?.amount.toString(), unit: 'mg'),
             CustomListRow(title: 'Interval', data: PeriodsHelper.getStringFromPeriod(widget.plant.fertilize?.interval)),
             CustomListRow(title: 'Last Time', data: Util.getStringFromDateTime(widget.plant.fertilize?.startDate))
           ]),
 
           //List group for Environment
           CustomListGroup(title: 'Environment', children: <Widget>[
-            CustomListRow(title: 'Temperature', data: widget.plant.temperature.toString()),
-            CustomListRow(title: 'Sun-need', data: SizeHelper.getStringFromSize(widget.plant.sunDemand)),
+            CustomListRow(title: 'Temperature', data: widget.plant.temperature.toString(), unit: '°C'),
+            CustomListRow(title: 'Sun-need', data: SizeHelper.getFullNameFromSize(widget.plant.sunDemand)),
           ]),
 
           //List group for Repot

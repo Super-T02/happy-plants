@@ -28,4 +28,15 @@ class SizeHelper{
       default: return null;
     }
   }
+
+  static String? getFullNameFromSize(Sizes? size){
+    switch(size) {
+      case Sizes.extraSmall: return 'extra small';
+      case Sizes.small: return 'small';
+      case Sizes.medium: return 'medium';
+      case Sizes.large: return 'large';
+      case Sizes.extraLarge: return 'extra large';
+      default: return null;
+    }
+  }
 }
