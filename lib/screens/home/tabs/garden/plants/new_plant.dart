@@ -144,9 +144,6 @@ class _NewPlantState extends State<NewPlant> {
         pictureName = widget.plant!.icon!;
       }
     }
-    else{
-      UtilService.showError('Failed', 'Not able to fetch plant');
-    }
 
     super.initState();
   }
