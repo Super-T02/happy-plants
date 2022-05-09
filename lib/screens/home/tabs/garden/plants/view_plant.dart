@@ -10,6 +10,7 @@ import 'package:happy_plants/shared/widgets/util/lists/custom_list_tile.dart';
 
 import '../../../../../shared/models/garden.dart';
 import '../../../../../shared/models/plant.dart';
+import '../../../../../shared/utilities/util.dart';
 
 class ViewPlant extends StatefulWidget {
   const ViewPlant({Key? key,
@@ -84,13 +85,13 @@ class _ViewPlantState extends State<ViewPlant> {
           CustomListGroup(title: 'Watering', children: <Widget>[
             CustomListRow(title: 'Amount', data: widget.plant.watering?.waterAmount.toString()),
             CustomListRow(title: 'Interval', data: PeriodsHelper.getStringFromPeriod(widget.plant.watering?.interval)),
-            CustomListRow(title: 'Last Time', data: widget.plant.watering?.startDate.toString())
+            CustomListRow(title: 'Last Time', data: Util.getStringFromDateTime(widget.plant.watering?.startDate))
           ]),
 
           //List group for Spray plants
           CustomListGroup(title: 'Spray Plants', children: <Widget>[
             CustomListRow(title: 'Interval', data: PeriodsHelper.getStringFromPeriod(widget.plant.spray?.interval)),
-            CustomListRow(title: 'Last Time', data: "${widget.plant.spray?.startDate?.toLocal()}".split(' ')[0]),
+            CustomListRow(title: 'Last Time', data: Util.getStringFromDateTime(widget.plant.spray?.startDate)),
             //widget.plant.spray?.startDate?.toString()
             //"${widget.plant.spray?.startDate?.toLocal()}".split(' ')[0]
           ]),
@@ -99,7 +100,7 @@ class _ViewPlantState extends State<ViewPlant> {
           CustomListGroup(title: 'Fertilize', children: <Widget>[
             CustomListRow(title: 'Amount', data: widget.plant.fertilize?.amount.toString()),
             CustomListRow(title: 'Interval', data: PeriodsHelper.getStringFromPeriod(widget.plant.fertilize?.interval)),
-            CustomListRow(title: 'Last Time', data: widget.plant.fertilize?.startDate.toString())
+            CustomListRow(title: 'Last Time', data: Util.getStringFromDateTime(widget.plant.fertilize?.startDate))
           ]),
 
           //List group for Environment
@@ -111,21 +112,22 @@ class _ViewPlantState extends State<ViewPlant> {
           //List group for Repot
           CustomListGroup(title: 'Repot', children: <Widget>[
             CustomListRow(title: 'Interval', data: PeriodsHelper.getStringFromPeriod(widget.plant.repot?.interval)),
-            CustomListRow(title: 'Last Time', data: widget.plant.repot?.startDate.toString())
+            CustomListRow(title: 'Last Time', data: Util.getStringFromDateTime(widget.plant.repot?.startDate))
           ]),
 
           //List group for Dust Off
           CustomListGroup(title: 'Dust Off', children: <Widget>[
             CustomListRow(title: 'Interval', data: PeriodsHelper.getStringFromPeriod(widget.plant.dustOff?.interval)),
-            CustomListRow(title: 'Last Time', data: widget.plant.dustOff?.startDate.toString())
+            CustomListRow(title: 'Last Time', data: Util.getStringFromDateTime(widget.plant.dustOff?.startDate))
           ]),
-          const SizedBox(height: 40),
+          const SizedBox(height: 50),
 
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Navigate to new garden form
+          Navigator.of(context).pop();
           Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => EditPlant(
