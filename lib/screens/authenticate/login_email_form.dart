@@ -51,7 +51,7 @@ class _EmailLoginFormState extends State<EmailLoginForm> {
     if (_formKey.currentState!.validate()) {
       await _authService.signInEmail(
           emailController.text.trim(),
-          passwordController.text
+          passwordController.text,
       );
     }
   }

@@ -31,7 +31,6 @@ class NotificationService {
         payload: 'item x');
   }
 
-  // TODO: needs to be removed in porduction
   Future<void> checkPendingNotificationRequests(context) async {
     final List<PendingNotificationRequest> pendingNotificationRequests =
     await flutterLocalNotificationsPlugin.pendingNotificationRequests();
@@ -57,7 +56,6 @@ class NotificationService {
 
   /// Schedules a notification for a defined period of time
   Future<void> scheduledNotificationRepeat(ScheduledNotificationModel notification) async {
-
     if(SharedPreferencesController.getNotificationTimeStatus()){
 
       await flutterLocalNotificationsPlugin.zonedSchedule(

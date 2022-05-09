@@ -1,15 +1,17 @@
+import 'dart:ffi';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:happy_plants/config.dart';
 import 'package:happy_plants/services/event.dart';
 import 'package:happy_plants/services/notification.dart';
 import 'package:happy_plants/services/settings.dart';
-import 'package:happy_plants/services/shared_preferences_controller.dart';
 import 'package:happy_plants/services/user.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/utilities/util.dart';
 
-import '../shared/models/settings.dart';
+import 'util_service.dart';
 
 /// Authentication service, handing all necessary functions for managing the
 /// registration and authentication of users
@@ -55,13 +57,13 @@ class AuthService{
 
       return user;
     } on FirebaseAuthException catch(e){
-      if(e.code == 'user-not-found') {
-        // TODO: Alert for false email
-      } else if (e.code == 'wrong-password') {
-        // TODO: Alert for false password
-      }
-    } finally {
       Util.endLoading();
+      if(e.code == 'user-not-found' || e.code == 'wrong-password') {
+        UtilService.showError('User or password wrong', '');
+      }
+    } catch (_) {
+      Util.endLoading();
+      UtilService.showError('Unknown Exception', '');
     }
   }
 
@@ -69,35 +71,44 @@ class AuthService{
   Future<CustomUser?> signInWithGoogle() async {
 
     Util.startLoading();
+    CustomUser? user;
 
     // Trigger the auth flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+      final credentials = GoogleAuthProvider.credential(
+          accessToken: googleAuth?.accessToken,
+          idToken: googleAuth?.idToken
+      );
 
-    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+      UserCredential result = await _auth.signInWithCredential(credentials);
 
-    final credentials = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken
-    );
+      user = _userFromFirebaseUser(result.user);
 
-    UserCredential result = await _auth.signInWithCredential(credentials);
+      // Load settings in system storage
+      user != null? SettingsService.loadSettingsFromCloud(user.uid) : null;
 
-    CustomUser? user = _userFromFirebaseUser(result.user);
+      // generate user in the Firestore
+      await UserService.generateUser(user, false);
+      await EventService.scheduleAllNotifications(user);
 
-    // Load settings in system storage
-    user != null? SettingsService.loadSettingsFromCloud(user.uid) : null;
+    } on PlatformException catch (e) {
+      UtilService.showError('Authentication error', e.message);
+    } on Exception catch (e) {
+      UtilService.showError('Internal Error', 'Unknown Error');
 
-    // generate user in the Firestore
-    await UserService.generateUser(user, false);
-    await EventService.scheduleAllNotifications(user);
-
-    Util.endLoading();
+    } finally {
+      Util.endLoading();
+    }
 
     return user;
   }
 
   /// Register with Email
-  Future signUpEmail(String name,String email,String password) async{
+  Future<bool> signUpEmail(String name,String email,String password) async{
+    bool success = false;
+
     try{
       Util.startLoading();
 
@@ -112,18 +123,37 @@ class AuthService{
 
       // generate user in the Firestore
       await UserService.generateUser(user, true);
-
-    } on FirebaseAuthException catch(e){
-      if(e.code == 'weak-password') {
-        // TODO: Alert for weak password
-      } else if (e.code == 'email-already-in-use') {
-        //TODO: Alter for used email
-      }
-    } catch(e) {
-      // TODO: Print error
-    } finally {
+      success = true;
       Util.endLoading();
+    } on FirebaseAuthException catch(e){
+
+      if(e.code == 'weak-password') {
+        Util.endLoading();
+        UtilService.showError(
+            'Weak Password',
+            'Please use at least one digit, uppercase letter, lower case letter'
+        );
+      } else if (e.code == 'email-already-in-use') {
+        Util.endLoading();
+        UtilService.showError(
+            'Email already in use',
+            'Please use another email'
+        );
+      } else {
+        Util.endLoading();
+        UtilService.showError(
+            'Something went wrong',
+            'Please try another email'
+        );
+      }
+
+    } catch(e) {
+      Util.endLoading();
+      UtilService.unknownError();
+
     }
+
+    return success;
   }
 
   ///Sign out
@@ -137,7 +167,8 @@ class AuthService{
       await GoogleSignIn().signOut();
       return await _auth.signOut();
     } catch(e){
-      // TODO: Handle error
+      Util.endLoading();
+      UtilService.unknownError();
       return null;
     } finally {
       modeInit = false;
@@ -147,14 +178,13 @@ class AuthService{
 
   ///Reset Password
   Future resetPassword(String email) async {
-
     try{
       Util.startLoading();
       await _auth.sendPasswordResetEmail(email: email);
-    } finally {
       Util.endLoading();
+    } catch (e) {
+      Util.endLoading();
+      UtilService.unknownError();
     }
-
-    // TODO: error handling
   }
 }

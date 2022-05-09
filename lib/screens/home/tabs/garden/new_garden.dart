@@ -1,7 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_plants/services/garden.dart';
+import 'package:happy_plants/services/util_service.dart';
 import 'package:happy_plants/shared/models/user.dart';
+import 'package:happy_plants/shared/utilities/util.dart';
 import 'package:happy_plants/shared/widgets/util/custom_form_field.dart';
 import 'package:provider/provider.dart';
 import '../../../../shared/models/garden.dart';
@@ -49,16 +51,22 @@ class _NewGardenState extends State<NewGarden> {
   void _onSubmitted(user) async {
     if (_formKey.currentState!.validate()) {
 
-      // TODO: Loading spinner
+      try {
+        Util.startLoading();
 
-      // add the garden
-      await GardenService.addGarden(
-          AddGarden(
-            name: gardenNameController.text,
-            icon: pictureName.toLowerCase(),
-          ), user);
+        // add the garden
+        await GardenService.addGarden(
+            AddGarden(
+              name: gardenNameController.text,
+              icon: pictureName.toLowerCase(),
+            ), user);
 
-      Navigator.pop(context);
+        Util.endLoading();
+        Navigator.pop(context);
+        UtilService.showSuccess('Created!', '${gardenNameController.text} was created successfully!');
+      } catch (e) {
+        UtilService.showError('Unable to create Garden', 'Please add the garden later');
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fill the form correctly')),

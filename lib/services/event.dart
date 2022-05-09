@@ -19,7 +19,8 @@ class EventService {
   static Future<DocumentReference> addEvent(EventsModel newEvent, CustomUser user) async {
     DocumentReference result;
 
-    try{
+
+    try {
       Util.startLoading();
 
       CollectionReference events = getEventsCollectionRef(user);
@@ -30,15 +31,12 @@ class EventService {
 
       // Schedule notification
       notificationService.scheduledNotificationRepeat(notification);
-    } catch (e){
-      debugPrint('error');
-      throw Exception(e);
+
     } finally {
       Util.endLoading();
     }
 
     return result;
-    // TODO: Error handling
   }
 
   /// Updates a event based on its eventID
@@ -58,7 +56,6 @@ class EventService {
     }
 
     return result;
-    // TODO: Error handling
   }
 
   /// Deletes a event based on its eventId
@@ -75,7 +72,7 @@ class EventService {
       Util.endLoading();
     }
 
-    return result; // TODO: Error handling
+    return result;
   }
 
   /// Schedules all events for the given user
@@ -89,11 +86,13 @@ class EventService {
           // Get the mapped model
           EventsModel newEvent = EventsModel.mapFirebaseDocToEvent(user.uid, event);
 
-          // Get notification
-          ScheduledNotificationModel notification = await notificationService.getScheduledNotificationFromEvent(newEvent);
+          if(newEvent.startDate.isAfter(DateTime.now()) || newEvent.period != Periods.single){
+            // Get notification
+            ScheduledNotificationModel notification = await notificationService.getScheduledNotificationFromEvent(newEvent);
 
-          // Schedule notification
-          notificationService.scheduledNotificationRepeat(notification);
+            // Schedule notification
+            notificationService.scheduledNotificationRepeat(notification);
+          }
         }
       });
     }

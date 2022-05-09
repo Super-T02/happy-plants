@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:happy_plants/services/garden.dart';
+import 'package:happy_plants/services/util_service.dart';
 import 'package:happy_plants/shared/models/garden.dart';
 import 'package:happy_plants/shared/widgets/util/custom_button.dart';
 import '../../../../shared/models/user.dart';
@@ -35,13 +36,13 @@ class _ListOfGardensState extends State<ListOfGardens> {
 
     Widget widget;
 
-
     // Build the stream
     return StreamBuilder<QuerySnapshot>(
       stream: _gardenStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         // Has errors
         if (snapshot.hasError) {
+          UtilService.showError('Something went Wrong', 'Please try later again');
           return const Text("Something went wrong");
         }
 

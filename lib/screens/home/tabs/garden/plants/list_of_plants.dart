@@ -130,7 +130,7 @@ class _ListOfPlantsState extends State<ListOfPlants> {
               ),
               // FAB 2
               SpeedDialChild(
-                  child: const Icon(Icons.library_books_outlined), //todo right icon
+                  child: const Icon(Icons.library_books_outlined),
                   backgroundColor: Theme.of(context).primaryColor,
                   onTap: () {
                     Navigator.push(

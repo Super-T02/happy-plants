@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:happy_plants/services/user.dart';
+import 'package:happy_plants/services/util_service.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/widgets/dialogs/form_dialog.dart';
 import 'package:happy_plants/shared/widgets/dialogs/submit_dialog.dart';
@@ -37,9 +38,6 @@ class AccountSettings extends StatelessWidget {
             DbUser newUser = user;
             newUser.name = userControl.text.trim();
             await UserService.putNewDbUser(newUser);
-            // ScaffoldMessenger.of(context).showSnackBar(
-            //   const SnackBar(content: Text('Deleted')), // TODO: refresh
-            // );
           },
           children: <Widget>[
             CustomFormField(
@@ -76,6 +74,7 @@ class AccountSettings extends StatelessWidget {
           onSubmit: () async {
             await _auth.resetPassword(user.email);
             await _auth.signOut();
+            UtilService.showSuccess('Email sent', 'Check your emails to reset your password');
           }
       );
     });
