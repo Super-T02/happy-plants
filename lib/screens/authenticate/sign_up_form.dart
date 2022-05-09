@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 
 import '../../services/authentication.dart';
+import '../../services/util_service.dart';
 import '../../shared/utilities/util.dart';
 import '../../shared/widgets/util/custom_button.dart';
 import '../../shared/widgets/util/custom_form_field.dart';
@@ -85,18 +86,16 @@ class _SignUpFormState extends State<SignUpForm> {
       // Check for valid form
       if (_formKey.currentState!.validate()) {
 
-        await _authService.signUpEmail(
+        bool success = await _authService.signUpEmail(
             nameController.text.trim(),
             emailController.text.trim(),
-            passwordController.text.trim()
+            passwordController.text.trim(),
         );
 
-        // TODO: give user feedback
-
-        Navigator.of(context).pop();
+        if(success) {
+          Navigator.of(context).pop();
+        }
       }
-
-      // Todo: else
     }
 
     return Scaffold(

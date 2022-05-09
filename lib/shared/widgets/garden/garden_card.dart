@@ -5,6 +5,7 @@ import 'package:happy_plants/screens/home/tabs/garden/edit_garden.dart';
 import 'package:happy_plants/services/garden.dart';
 import 'package:happy_plants/shared/models/garden.dart';
 import 'package:provider/provider.dart';
+import '../../../services/util_service.dart';
 import '../../models/user.dart';
 import '../util/custom_cupertino_context_menu.dart';
 
@@ -35,12 +36,13 @@ class _GardenSingleState extends State<GardenSingle> {
 
   /// Delete the garden
   void deleteGarden(String gardenId, CustomUser user) async {
-    Navigator.pop(context);
-    await GardenService.deleteGarden(gardenId, user);
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Deleted')), // TODO: refresh
-    );
+    try {
+      Navigator.pop(context);
+      await GardenService.deleteGarden(gardenId, user);
+      UtilService.showSuccess('Deleted', 'Garden deleted successfully!');
+    } catch (e) {
+      UtilService.showError('Unable to delete Garden', 'Please try again later');
+    }
   }
 
   @override
@@ -140,7 +142,7 @@ class _GardenSingleState extends State<GardenSingle> {
         text: "Delete",
         color: theme.errorColor,
         icon: Icons.delete_outlined,
-        onPressed: () => deleteGarden(widget.garden.id, user!), // TODO: Error handling
+        onPressed: () => deleteGarden(widget.garden.id, user!),
       ),
     ],
   );

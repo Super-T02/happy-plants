@@ -52,8 +52,6 @@ class PlantService {
     });
 
     await _addEventsAll(newPlant, user, addedPlant.id);
-
-    // TODO: Error handling
   }
 
   /// Updates a plant based on its plant id
@@ -115,8 +113,6 @@ class PlantService {
     );
 
     await _addEventsAll(newPlant, user, updatedPlant.id);
-
-    // TODO: Error handling
   }
 
   /// Updates a plant based on its gardenID and plantId
@@ -137,27 +133,28 @@ class PlantService {
     }
 
     return result;
-    // TODO: Error handling
   }
-
-  //TODO: ladebalken einfuegen
 
   /// Deletes a plants based on its plantId
   static Future<void> deletePlant(Plant plant, String gardenID, CustomUser user) async {
     DocumentReference plantDoc = getPlantDocRef(plant.id, gardenID, user.uid);
-
-
-    if(plant.eventIds != null) {
-
-      for (String eventId in plant.eventIds!) {
-        await EventService.deleteEvent(eventId, user);
+    try {
+      Util.startLoading();
+      
+      if(plant.eventIds != null) {
+      
+        for (String eventId in plant.eventIds!) {
+          await EventService.deleteEvent(eventId, user);
+        }
+      
+        await notificationService.cancelAllNotifications();
+        await EventService.scheduleAllNotifications(user);
       }
-
-      await notificationService.cancelAllNotifications();
-      await EventService.scheduleAllNotifications(user);
+    } finally {
+      Util.endLoading();
     }
 
-    return plantDoc.delete(); // TODO: Error handling
+    return plantDoc.delete();
   }
 
   /// Get the ref on a garden instance based on the user, gardenId and plantId

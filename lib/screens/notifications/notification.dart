@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:happy_plants/services/event.dart';
 import 'package:happy_plants/services/garden.dart';
 import 'package:happy_plants/services/plant.dart';
+import 'package:happy_plants/services/util_service.dart';
 import 'package:happy_plants/shared/models/events.dart';
 import 'package:happy_plants/shared/models/plant.dart';
 import 'package:happy_plants/shared/models/user.dart';
@@ -71,8 +72,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
       await EventService.patchEvent(event!.id!, 'lastDate', DateTime.now(), user);
       Util.endLoading();
       Navigator.of(context).pop();
+      UtilService.showSuccess('Done', 'Event marked as done!');
     } catch (e) {
-      // TODO
+      UtilService.showError('Error', 'Unable to mark the event as done!');
     }
   }
 

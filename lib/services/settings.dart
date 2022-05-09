@@ -60,7 +60,6 @@ class SettingsService with ChangeNotifier {
       // Load settings
       user.settings ??= CustomSettings(
         designSettings: DesignSettingsModel(),
-        vacationSettings: VacationSettingsModel(),
         pushNotificationSettings: PushNotificationSettingsModel(),
       );
 

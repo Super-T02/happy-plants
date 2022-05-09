@@ -2,7 +2,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../services/authentication.dart';
-import '../../shared/utilities/util.dart';
+import '../../services/util_service.dart';
 import '../../shared/widgets/util/custom_button.dart';
 import '../../shared/widgets/util/custom_form_field.dart';
 
@@ -41,8 +41,8 @@ class _ForgetPasswordState extends State<ForgetPassword> {
       await _authService.resetPassword(
           emailController.text.trim(),
       );
-
       Navigator.of(context).pop();
+      UtilService.showSuccess('Email sent', 'Check your emails to reset your password');
     }
   }
 

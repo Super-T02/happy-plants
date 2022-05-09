@@ -4,20 +4,17 @@ import 'package:flutter/material.dart';
 /// defined bellow
 class CustomSettings{
   DesignSettingsModel designSettings;
-  VacationSettingsModel vacationSettings;
   PushNotificationSettingsModel pushNotificationSettings;
 
 
   CustomSettings({
     required this.designSettings,
-    required this.vacationSettings,
     required this.pushNotificationSettings,
   });
 
   Map toJSON(){
     return {
       "designSettings": designSettings.toJSON(),
-      "vacationSettings": vacationSettings.toJSON(),
       "pushNotificationSettings": pushNotificationSettings.toJSON(),
     };
   }
@@ -26,7 +23,6 @@ class CustomSettings{
   static CustomSettings getDefault() {
     return CustomSettings(
       designSettings: DesignSettingsModel(),
-      vacationSettings: VacationSettingsModel(),
       pushNotificationSettings: PushNotificationSettingsModel(),
     );
   }
@@ -54,39 +50,6 @@ class DesignSettingsModel extends SettingsInterface{
     colorScheme = ThemeMode.system;
   }
 }
-
-
-
-/// Settings for the vacations, if the mode is enabled the person gets no push
-/// messages and if implemented a mail to the given contact person will be sent:
-/// - enabled (default: false)
-/// - until (default: 5 days)
-class VacationSettingsModel extends SettingsInterface{
-  bool? enabled;
-  DateTime? duration; // Duration in days
-
-  VacationSettingsModel({
-    this.enabled = false,
-    duration = 5
-  }){
-    this.duration = DateTime.now().add(Duration(days: duration!));
-  }
-
-  Map toJSON(){
-    return {
-      "enabled": enabled,
-      "duration": duration,
-    };
-  }
-
-  @override
-  void setDefault() {
-    enabled = false;
-    duration = DateTime.now().add(const Duration(days: 5));
-  }
-}
-
-
 
 /// Settings related to push notifications. User can set his default notification
 /// time and disable or enable notification:

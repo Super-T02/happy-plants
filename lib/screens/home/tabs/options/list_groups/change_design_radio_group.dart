@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:happy_plants/config.dart';
 import 'package:happy_plants/services/user.dart';
 import 'package:happy_plants/shared/models/user.dart';
+import 'package:happy_plants/shared/utilities/util.dart';
 import '../../../../../shared/models/settings.dart';
 import '../../../../../shared/widgets/dialogs/information_dialog.dart';
 import '../../../../../shared/widgets/forms/custom_radio_button.dart';
@@ -41,8 +42,9 @@ class _ChangeDesignRadioGroupState extends State<ChangeDesignRadioGroup> {
   /// Handles the submit of the dialog
   void onSubmit() async {
     widget.user.settings!.designSettings.colorScheme = _mode!;
-    // TODO: Loading
+    Util.startLoading();
     await UserService.putNewDbUser(widget.user);
+    Util.endLoading();
     currentTheme.changeThemeMode(_mode!);
   }
 
