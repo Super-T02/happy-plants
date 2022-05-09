@@ -85,11 +85,11 @@ class _CustomDropDownState extends State<CustomDropDown> {
 
     return DropdownButtonFormField(
       items: _mappedMenuItems,
+      value: _currentValue,
       onChanged: (String? newValue) {
         widget.onChange(newValue!);
         _currentValue = newValue;
       },
-      value: _currentValue,
       validator: widget.validator,
       enableFeedback: true,
       focusNode: _focus,
