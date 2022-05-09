@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
+import 'package:happy_plants/shared/models/garden.dart';
 import 'package:happy_plants/shared/models/plant.dart';
+import 'package:quiver/time.dart';
 
 /// Events model for saved events
 ///
@@ -22,6 +26,7 @@ class EventsModel<T extends JSON> {
   Periods period;
   T data;
   DateTime startDate;
+  DateTime? lastDate;
 
   EventsModel({
      this.id,
@@ -32,6 +37,7 @@ class EventsModel<T extends JSON> {
      required this.period,
      required this.data,
      required this.startDate,
+     this.lastDate,
   });
 
   Map<String, dynamic> toJSON() {
@@ -42,6 +48,7 @@ class EventsModel<T extends JSON> {
       'period': period.index,
       'data': data.toJSON(),
       'startDate': startDate,
+      'lastDate': lastDate,
     };
   }
 
@@ -98,7 +105,8 @@ class EventsModel<T extends JSON> {
               startDate: data['data']['startDate'].toDate(),
               waterAmount: data['data']['waterAmount'],
           ),
-          startDate: data['startDate'].toDate()
+          startDate: data['startDate'].toDate(),
+          lastDate: data['lastDate']?.toDate(),
         );
         break;
       case EventTypes.dustOff:
@@ -115,7 +123,8 @@ class EventsModel<T extends JSON> {
             interval: period,
             startDate: data['data']['startDate'].toDate(),
           ),
-          startDate: data['startDate'].toDate()
+          startDate: data['startDate'].toDate(),
+          lastDate: data['lastDate']?.toDate(),
         );
         break;
       case EventTypes.fertilize:
@@ -131,7 +140,8 @@ class EventsModel<T extends JSON> {
             startDate: data['data']['startDate'].toDate(),
             amount: data['data']['amount'],
           ),
-          startDate: data['startDate'].toDate()
+          startDate: data['startDate'].toDate(),
+          lastDate: data['lastDate']?.toDate(),
         );
         break;
       default:
@@ -140,6 +150,104 @@ class EventsModel<T extends JSON> {
 
     return newEvent;
   }
+
+  /// Get the next event date
+  DateTime getNextDate() {
+    switch (period) {
+      case Periods.single:
+        return startDate;
+      case Periods.daily:
+        return _getDaily();
+      case Periods.monthly:
+        return _getMonthly();
+      case Periods.weekly:
+        return _getWeekly();
+      case Periods.yearly:
+        return _getYearly();
+    }
+  }
+
+  /// Get the daily date
+  DateTime _getDaily() {
+    DateTime date = startDate;
+
+    while(date.isBefore(DateTime.now().subtract(aDay))) {
+      date = date.add(aDay);
+    }
+
+    return date;
+  }
+
+  /// Get the monthly date
+  DateTime _getMonthly() {
+    DateTime date = startDate;
+
+    // Add days of the month to date
+    while(date.isBefore(DateTime.now().subtract(aDay))) {
+      Duration duration = Duration(days: daysInMonth(date.year, date.month));
+      date = date.add(duration);
+    }
+
+    // If month has less days
+    while(date.day > daysInMonth(date.year, date.month)){
+      date = date.subtract(aDay);
+    }
+
+    return date;
+  }
+
+  /// Get the yearly date
+  DateTime _getYearly() {
+    DateTime date = startDate;
+
+    while(date.isBefore(DateTime.now().subtract(aDay))) {
+      date = DateTime(date.year + 1, date.month, date.day);
+    }
+
+    // If month has less days (only february)
+    while(date.day > daysInMonth(date.year, date.month)){
+      date = date.subtract(aDay);
+    }
+
+    return date;
+  }
+
+  /// Get the weekly date
+  DateTime _getWeekly() {
+    DateTime date = startDate;
+
+    while(date.isBefore(DateTime.now().subtract(aDay))) {
+      date = date.add(aWeek);
+    }
+
+    return date;
+  }
+
+  static int sort(event, nextEvent) {
+    DateTime nextDateEvent = event!.event.getNextDate();
+    DateTime nextDateNextEvent = nextEvent!.event.getNextDate();
+
+    if(nextDateEvent.isBefore(nextDateNextEvent)){
+      return -1;
+    } else if (nextDateEvent.isAtSameMomentAs(nextDateNextEvent)){
+      return 0;
+    } else {
+      return 1;
+    }
+  }
+}
+
+/// Class for having a event with the related plant and garden
+class EventWithPlantAndGarden{
+  EventsModel event;
+  Plant plant;
+  Garden garden;
+
+  EventWithPlantAndGarden({
+    required this.event,
+    required this.plant,
+    required this.garden
+  });
 }
 
 /// Event Types
@@ -151,6 +259,43 @@ enum EventTypes {
   dustOff
 }
 
+/// Mapping and helper class for event types
+class EventTypesHelper {
+  static EventTypes? getEventTypeFromString(String? text){
+    switch(text?.toLowerCase()) {
+      case 'watering': return EventTypes.watering;
+      case 'spray': return EventTypes.spray;
+      case 'fertilize': return EventTypes.fertilize;
+      case 'repot': return EventTypes.repot;
+      case 'dust off': return EventTypes.dustOff;
+      default: return null;
+    }
+  }
+
+  static String? getStringFromEventType(EventTypes? eventType){
+    switch(eventType) {
+      case EventTypes.watering: return 'Watering';
+      case EventTypes.spray: return 'Spray';
+      case EventTypes.fertilize: return 'Fertilize';
+      case EventTypes.repot: return 'Repot';
+      case EventTypes.dustOff: return 'Dust off';
+      default: return null;
+    }
+  }
+
+  static IconData? getIconDataFromEventType(EventTypes? eventType){
+    switch(eventType) {
+      case EventTypes.watering: return Icons.water_drop;
+      case EventTypes.spray: return FontAwesome5.spray_can;
+      case EventTypes.fertilize: return FontAwesome5.poo;
+      case EventTypes.repot: return FontAwesome5.exchange_alt;
+      case EventTypes.dustOff: return FontAwesome5.paint_brush;
+      default: return null;
+    }
+  }
+}
+
+
 /// Period Types
 enum Periods {
   single,
@@ -161,7 +306,7 @@ enum Periods {
 }
 
 class PeriodsHelper {
-  static List<String> periodsMenuItems = ['single', 'daily', 'monthly', 'weekly', 'yearly'];
+  static List<String> periodsMenuItems = ['single', 'daily', 'weekly', 'monthly', 'yearly'];
 
   static Periods? getPeriodsFromString(String? text){
     switch(text) {
@@ -192,6 +337,66 @@ class PeriodsHelper {
       case Periods.weekly: return DateTimeComponents.dayOfWeekAndTime;
       case Periods.yearly: return DateTimeComponents.dateAndTime;
       default: return null;
+    }
+  }
+
+  /// Generates the date string in the following format
+  ///
+  /// Tue, 22.05.2022
+  static String getNiceDateWording(DateTime time){
+    int dayNow = DateTime.now().day;
+    int monthNow = DateTime.now().month;
+    int yearNow = DateTime.now().year;
+    String weekDay = _getDayOfWeekAsString(time);;
+
+    if(time.month == monthNow && time.year == yearNow){
+      // Same Day
+      if(time.day == dayNow){
+        weekDay = 'Today';
+      }
+
+      // Tomorrow
+      if(time.day == DateTime.now().add(aDay).day){
+        weekDay = 'Tomorrow';
+      }
+    }
+
+    String month;
+    if(time.month < 10){
+      month = '0${time.month}';
+    } else {
+      month = time.month.toString();
+    }
+
+    String day;
+    if(time.day < 10){
+      day = '0${time.day}';
+    } else {
+      day = time.day.toString();
+    }
+
+    return '$weekDay, $day.$month.${time.year}';
+  }
+
+  /// Returns the day of the week as string
+  static String _getDayOfWeekAsString(DateTime time){
+    switch(time.weekday){
+      case 1:
+        return 'Mon';
+      case 2:
+        return 'Tue';
+      case 3:
+        return 'Wed';
+      case 4:
+        return 'Thr';
+      case 5:
+        return 'Fri';
+      case 6:
+        return 'Sat';
+      case 7:
+        return 'Sun';
+      default:
+        throw Exception('Invalid weekday ${time.weekday}');
     }
   }
 }

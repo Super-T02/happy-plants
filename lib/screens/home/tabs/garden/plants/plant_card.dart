@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:happy_plants/services/util_service.dart';
+import 'package:happy_plants/screens/home/tabs/garden/plants/view_plant.dart';
 import 'package:provider/provider.dart';
 import '../../../../../services/plant.dart';
 import '../../../../../shared/models/garden.dart';
@@ -20,6 +21,14 @@ class PlantSingle extends StatefulWidget {
 }
 
 class _PlantSingleState extends State<PlantSingle> {
+  /// Opens the garden
+  void openPlant(Plant plant, CustomUser user){
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ViewPlant(user: user, garden: widget.garden, plant: plant))
+    );
+  }
+
   /// Delete the garden
   void deletePlant(Plant plant, String gardenID, CustomUser user) async {
     Navigator.of(context).pop();
@@ -33,7 +42,7 @@ class _PlantSingleState extends State<PlantSingle> {
     final user = Provider.of<CustomUser?>(context);
     final ThemeData theme = Theme.of(context);
 
-    widget.plant.icon ??= 'grass_outlined';
+    widget.plant.icon ??= 'bonsai';
     String stringOfImageName = 'assets/images/plant_backgrounds/bonsai.jpg';
     AssetImage imageAsWidget = AssetImage(stringOfImageName);
 
@@ -56,8 +65,7 @@ class _PlantSingleState extends State<PlantSingle> {
       // Handles gestures
       child: GestureDetector(
         onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(widget.plant.name + ' was popup Modified!')));
+          openPlant(widget.plant, user!);
         },
 
         // Initial Card definition
