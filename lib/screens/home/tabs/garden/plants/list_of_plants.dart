@@ -112,6 +112,7 @@ class _ListOfPlantsState extends State<ListOfPlants> {
             activeIcon: Icons.close,
             iconTheme: IconThemeData(size: 35, color: Theme.of(context).unselectedWidgetColor),
             backgroundColor: Theme.of(context).primaryColor,
+            overlayColor: theme.scaffoldBackgroundColor,
             visible: true,
             curve: Curves.bounceIn,
             children: [
@@ -126,7 +127,8 @@ class _ListOfPlantsState extends State<ListOfPlants> {
                     );
                   },
                   label: 'own',
-                  labelStyle: Theme.of(context).textTheme.bodyText1
+                  labelStyle: Theme.of(context).textTheme.bodyText1,
+                  labelBackgroundColor: theme.bottomAppBarColor,
               ),
               // FAB 2
               SpeedDialChild(
@@ -139,7 +141,8 @@ class _ListOfPlantsState extends State<ListOfPlants> {
                     );
                   },
                   label: 'template',
-                  labelStyle: Theme.of(context).textTheme.bodyText1
+                  labelStyle: Theme.of(context).textTheme.bodyText1,
+                  labelBackgroundColor: theme.bottomAppBarColor,
               )
             ],
           ),

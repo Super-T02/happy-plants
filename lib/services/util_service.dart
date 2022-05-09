@@ -15,13 +15,17 @@ class UtilService{
     showDialog(
         context: navigatorKey.currentContext!,
         builder: (context) {
+
+          TextTheme textTheme = Theme.of(context).textTheme;
+          InputDecorationTheme inputDecorationTheme = Theme.of(context).inputDecorationTheme;
+          ThemeData theme = Theme.of(context);
           
           Future.delayed(const Duration(seconds: 3), () {
             Navigator.of(context).pop(true);
           });
           
           return AlertDialog(
-            title: Text(title, textAlign: TextAlign.center,),
+            title: Text(title, textAlign: TextAlign.center, style: textTheme.headline3),
             content: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
@@ -31,7 +35,7 @@ class UtilService{
                   color: Theme.of(context).primaryColor,
                   size: 100.0,
                 ),
-                Text(message!, textAlign: TextAlign.center,),
+                Text(message!, textAlign: TextAlign.center, style: textTheme.bodyText1),
               ],
             ),
           );

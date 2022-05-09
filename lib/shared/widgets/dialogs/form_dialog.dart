@@ -22,6 +22,9 @@ class FormDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
     Widget? text;
+    TextTheme textTheme = Theme.of(context).textTheme;
+    InputDecorationTheme inputDecorationTheme = Theme.of(context).inputDecorationTheme;
+    ThemeData theme = Theme.of(context);
 
     if(description != null) {
       text = Text(description!);
@@ -30,7 +33,7 @@ class FormDialog extends StatelessWidget {
     }
 
     return AlertDialog(
-      title: Text(title, textAlign: TextAlign.center,),
+      title: Text(title, textAlign: TextAlign.center, style: textTheme.headline3,),
       actions: [
         CustomButton(
           onTap: (){

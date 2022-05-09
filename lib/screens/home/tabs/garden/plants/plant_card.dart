@@ -121,7 +121,7 @@ class _PlantSingleState extends State<PlantSingle> {
       actionItems: <CustomCupertinoContextMenuAction>[
         CustomCupertinoContextMenuAction(
           text: "Open",
-          color: Colors.black,
+          color: Theme.of(context).textTheme.bodyText1!.color!,
           icon: Icons.open_in_new_outlined,
           onPressed: (){
             Navigator.of(context).pop();
@@ -130,7 +130,8 @@ class _PlantSingleState extends State<PlantSingle> {
         ),
         CustomCupertinoContextMenuAction(
           text: "Edit",
-          color: Colors.black,
+
+          color: Theme.of(context).textTheme.bodyText1!.color!,
           icon: Icons.edit_outlined,
           onPressed: (){
             Navigator.of(context).pop();
