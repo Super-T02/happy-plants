@@ -75,28 +75,28 @@ class Plant extends JSON{
     if(data['watering'] != null && data['fertilize']['interval'] != null){
       watering.waterAmount = data['watering']['waterAmount'];
       watering.interval = Periods.values[data['watering']['interval']];
-      watering.startDate = data['watering']['lastTime']?.toDate();
+      watering.startDate = data['watering']['startDate']?.toDate();
     }
 
     if(data['spray'] != null && data['fertilize']['interval'] != null){
       spray.interval = Periods.values[data['spray']['interval']];
-      spray.startDate = data['spray']['lastTime']?.toDate();
+      spray.startDate = data['spray']['startDate']?.toDate();
     }
 
     if(data['fertilize'] != null && data['fertilize']['interval'] != null){
       fertilize.amount = data['fertilize']['amount'];
       fertilize.interval = Periods.values[data['fertilize']['interval']];
-      fertilize.startDate = data['fertilize']['lastTime']?.toDate();
+      fertilize.startDate = data['fertilize']['startDate']?.toDate();
     }
 
     if(data['repot'] != null && data['repot']['interval'] != null){
       repot.interval = Periods.values[data['repot']['interval']];
-      repot.startDate = data['repot']['lastTime']?.toDate();
+      repot.startDate = data['repot']['startDate']?.toDate();
     }
 
     if(data['dustOff'] != null && data['dustOff']['interval'] != null){
       dustOff.interval = Periods.values[data['dustOff']['interval']];
-      dustOff.startDate = data['dustOff']['lastTime']?.toDate();
+      dustOff.startDate = data['dustOff']['startDate']?.toDate();
     }
 
     if(data['events'] != null){

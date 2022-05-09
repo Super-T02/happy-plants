@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CustomListRow extends StatefulWidget {
-  const CustomListRow({Key? key, required this.title, this.data}) : super(key: key);
+  const CustomListRow({Key? key, required this.title, this.data, this.unit}) : super(key: key);
 
   final String title;
   final String? data;
+  final String? unit;
 
   @override
   State<CustomListRow> createState() => _CustomListRowState();
@@ -15,10 +16,14 @@ class _CustomListRowState extends State<CustomListRow> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     Widget data;
+    String unit = '';
+    if(widget.unit != null){
+      unit = ' ' + widget.unit!;
+    }
     if(widget.data != null && widget.data != 'null'){
       data = Expanded(child:
         Text(
-          widget.data!,
+          widget.data! + unit,
           style: theme.textTheme.subtitle2,
           textAlign: TextAlign.right,
         ),
