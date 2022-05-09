@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../utilities/app_colors.dart';
 
 class CustomDropDown extends StatefulWidget {
@@ -88,7 +87,6 @@ class _CustomDropDownState extends State<CustomDropDown> {
       //look the same (width and height)
       padding: const EdgeInsets.all(8),
       child: DropdownButtonFormField(
-
         items: _mappedMenuItems,
         value: _currentValue,
         onChanged: (String? newValue) {
