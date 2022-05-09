@@ -51,7 +51,7 @@ class _TimelineState extends State<Timeline> {
               title: event.plant.name,
               subtitle: EventTypesHelper.getStringFromEventType(event.event.type),
               leading: EventTypesHelper.getIconDataFromEventType(event.event.type),
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationScreen(eventId: event.event.id))),
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationScreen(eventId: event.event.id, nextDate: nextDate,))),
             )
           ];
 
@@ -61,7 +61,7 @@ class _TimelineState extends State<Timeline> {
                 title: event.plant.name,
                 subtitle: EventTypesHelper.getStringFromEventType(event.event.type),
                 leading: EventTypesHelper.getIconDataFromEventType(event.event.type),
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationScreen(eventId: event.event.id))),
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationScreen(eventId: event.event.id, nextDate: nextDate))),
               )
           );
         }

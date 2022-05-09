@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
@@ -27,6 +26,7 @@ class EventsModel<T extends JSON> {
   Periods period;
   T data;
   DateTime startDate;
+  DateTime? lastDate;
 
   EventsModel({
      this.id,
@@ -37,6 +37,7 @@ class EventsModel<T extends JSON> {
      required this.period,
      required this.data,
      required this.startDate,
+     this.lastDate,
   });
 
   Map<String, dynamic> toJSON() {
@@ -47,6 +48,7 @@ class EventsModel<T extends JSON> {
       'period': period.index,
       'data': data.toJSON(),
       'startDate': startDate,
+      'lastDate': lastDate,
     };
   }
 
@@ -103,7 +105,8 @@ class EventsModel<T extends JSON> {
               startDate: data['data']['startDate'].toDate(),
               waterAmount: data['data']['waterAmount'],
           ),
-          startDate: data['startDate'].toDate()
+          startDate: data['startDate'].toDate(),
+          lastDate: data['lastDate']?.toDate(),
         );
         break;
       case EventTypes.dustOff:
@@ -120,7 +123,8 @@ class EventsModel<T extends JSON> {
             interval: period,
             startDate: data['data']['startDate'].toDate(),
           ),
-          startDate: data['startDate'].toDate()
+          startDate: data['startDate'].toDate(),
+          lastDate: data['lastDate']?.toDate(),
         );
         break;
       case EventTypes.fertilize:
@@ -136,7 +140,8 @@ class EventsModel<T extends JSON> {
             startDate: data['data']['startDate'].toDate(),
             amount: data['data']['amount'],
           ),
-          startDate: data['startDate'].toDate()
+          startDate: data['startDate'].toDate(),
+          lastDate: data['lastDate']?.toDate(),
         );
         break;
       default:

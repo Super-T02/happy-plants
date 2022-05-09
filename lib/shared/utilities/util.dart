@@ -17,4 +17,12 @@ class Util {
     navigatorKey.currentState!.pop();
   }
 
+  static String? getStringFromDateTime(DateTime? input) {
+    if (input != null) {
+      return "${input.day.toString()}.${input.month.toString()}.${input.year
+          .toString()}";
+    }else{
+      return null;
+    }
+  }
 }

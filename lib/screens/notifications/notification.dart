@@ -1,18 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_plants/services/event.dart';
+import 'package:happy_plants/services/garden.dart';
 import 'package:happy_plants/services/plant.dart';
 import 'package:happy_plants/shared/models/events.dart';
 import 'package:happy_plants/shared/models/plant.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/utilities/util.dart';
+import 'package:happy_plants/shared/widgets/util/custom_button.dart';
+import 'package:happy_plants/shared/widgets/util/lists/custom_list_group.dart';
+import 'package:happy_plants/shared/widgets/util/lists/custom_list_row.dart';
 import 'package:provider/provider.dart';
 
+import '../../shared/models/garden.dart';
+
 class NotificationScreen extends StatefulWidget {
-  const NotificationScreen({Key? key, this.eventId}) : super(key: key);
+  const NotificationScreen({Key? key, this.eventId, this.nextDate}) : super(key: key);
 
   static const String routeName = '/notification';
   final String? eventId;
+  final DateTime? nextDate;
 
   @override
   State<NotificationScreen> createState() => _NotificationScreenState();
@@ -21,6 +28,7 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   EventsModel? event;
   Plant? plant;
+  Garden? garden;
   bool? loading;
 
   @override
@@ -35,21 +43,37 @@ class _NotificationScreenState extends State<NotificationScreen> {
     DocumentReference eventRef = EventService.getEventDocRef(widget.eventId!, user);
     EventsModel localEvent = EventsModel.mapFirebaseDocToEvent(user.uid, await eventRef.snapshots().first);
 
+    // Get doc snapshot of the plant
     DocumentSnapshot plantDoc = await PlantService.getPlantSnapshot(
         localEvent.plantId,
         localEvent.gardenId,
         user.uid
     );
 
+    // Generate garden and plant
+    Garden localGarden = await GardenService.getGarden(localEvent.gardenId, user);
     Plant localPlant = Plant.mapFirebaseDocToPlant(plantDoc, localEvent.gardenId);
 
     setState(() {
       event = localEvent;
       plant = localPlant;
+      garden = localGarden;
       loading = false;
     });
 
     Util.endLoading();
+  }
+
+  /// Handles the submit
+  Future<void> onSubmit(CustomUser user) async {
+    try {
+      Util.startLoading();
+      await EventService.patchEvent(event!.id!, 'lastDate', DateTime.now(), user);
+      Util.endLoading();
+      Navigator.of(context).pop();
+    } catch (e) {
+      // TODO
+    }
   }
 
   @override
@@ -57,12 +81,116 @@ class _NotificationScreenState extends State<NotificationScreen> {
     final user = Provider.of<CustomUser?>(context);
     final theme = Theme.of(context);
 
-    Icon eventIcon = Icon(
-      EventTypesHelper.getIconDataFromEventType(event!.type),
-      color: theme.textTheme.bodyText1!.color,
-    );
-
     if(!loading!) {
+      Icon eventIcon = Icon(
+        EventTypesHelper.getIconDataFromEventType(event!.type),
+        color: theme.textTheme.bodyText1!.color,
+      );
+
+      // Event related information
+      List<Widget> relatedInformation = [];
+      String? lastDateString = Util.getStringFromDateTime(event!.lastDate);
+      lastDateString ??= 'Not Known';
+      DateTime nextDate = event!.getNextDate();
+
+      // Choose the right extra information
+      switch(event!.type){
+        case EventTypes.watering:
+          Watering data = event?.data as Watering;
+          relatedInformation = [
+            CustomListRow(
+              title: 'Water amount',
+              data: '${data.waterAmount} ml',
+            ),
+            CustomListRow(
+              title: 'Interval',
+              data: PeriodsHelper.getStringFromPeriod(data.interval),
+            ),
+            CustomListRow(
+              title: 'Next Date',
+              data: PeriodsHelper.getNiceDateWording(nextDate),
+            ),
+            CustomListRow(
+              title: 'Last Date',
+              data: lastDateString,
+            ),
+          ];
+          break;
+        case EventTypes.spray:
+          IntervalDateTime data = event?.data as IntervalDateTime;
+          relatedInformation = [
+            CustomListRow(
+              title: 'Interval',
+              data: PeriodsHelper.getStringFromPeriod(data.interval),
+            ),
+            CustomListRow(
+              title: 'Next Date',
+              data: PeriodsHelper.getNiceDateWording(nextDate),
+            ),
+            CustomListRow(
+              title: 'Last Date',
+              data: lastDateString,
+            ),
+          ];
+          break;
+        case EventTypes.fertilize:
+          Fertilize data = event?.data as Fertilize;
+          relatedInformation = [
+            CustomListRow(
+              title: 'Fertilizer Amount',
+              data: '${data.amount} mg',
+            ),
+            CustomListRow(
+              title: 'Interval',
+              data: PeriodsHelper.getStringFromPeriod(data.interval),
+            ),
+            CustomListRow(
+              title: 'Next Date',
+              data: PeriodsHelper.getNiceDateWording(nextDate),
+            ),
+            CustomListRow(
+              title: 'Last Date',
+              data: lastDateString,
+            ),
+          ];
+          break;
+        case EventTypes.repot:
+          IntervalDateTime data = event?.data as IntervalDateTime;
+          relatedInformation = [
+            CustomListRow(
+              title: 'Interval',
+              data: PeriodsHelper.getStringFromPeriod(data.interval),
+            ),
+            CustomListRow(
+              title: 'Next Date',
+              data: PeriodsHelper.getNiceDateWording(nextDate),
+            ),
+            CustomListRow(
+              title: 'Last Date',
+              data: lastDateString,
+            ),
+          ];
+          break;
+        case EventTypes.dustOff:
+          IntervalDateTime data = event?.data as IntervalDateTime;
+          relatedInformation = [
+            CustomListRow(
+              title: 'Interval',
+              data: PeriodsHelper.getStringFromPeriod(data.interval),
+            ),
+            CustomListRow(
+              title: 'Next Date',
+              data: PeriodsHelper.getNiceDateWording(nextDate),
+            ),
+            CustomListRow(
+              title: 'Last Date',
+              data: lastDateString,
+            ),
+          ];
+          break;
+      }
+
+
       return Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(
@@ -108,24 +236,32 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   ),
                 )
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Upcoming Event:',
-                  style: theme.textTheme.headline3,
-                ),
-                Row(
-                  children: <Widget>[
-                    eventIcon,
-                    Text(
-                      '${EventTypesHelper.getStringFromEventType(event!.type)}',
-                      style: theme.textTheme.headline3,
-                    ),
-                  ],
-                )
-              ],
-            )
+            CustomListGroup(
+                title: 'Informations',
+                children: <Widget>[
+                  CustomListRow(
+                    title: 'Garden',
+                    data:  garden!.name,
+                  ),
+                  CustomListRow(
+                    title: 'Plant',
+                    data: plant!.name,
+                  ),
+                  CustomListRow(
+                    title: 'Upcoming Event',
+                    data: EventTypesHelper.getStringFromEventType(event!.type),
+                  ),
+            ]),
+            CustomListGroup(
+                title: 'Event Information',
+                children: relatedInformation
+            ),
+            CustomButton(
+              onTap: () => onSubmit(user!),
+              text: 'Done',
+              isPrimary: true,
+              iconData: Icons.check,
+            ),
           ],
         ),
       );
