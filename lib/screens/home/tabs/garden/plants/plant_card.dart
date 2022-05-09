@@ -130,6 +130,7 @@ class _PlantSingleState extends State<PlantSingle> {
           color: Colors.black,
           icon: Icons.open_in_new_outlined,
           onPressed: (){
+            Navigator.of(context).pop();
             openPlant(widget.plant, user!);
           },
         ),
@@ -138,6 +139,7 @@ class _PlantSingleState extends State<PlantSingle> {
           color: Colors.black,
           icon: Icons.edit_outlined,
           onPressed: (){
+            Navigator.of(context).pop();
             Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => EditPlant(user: user!, garden: widget.garden, plant: widget.plant))
