@@ -460,7 +460,7 @@ class _NewPlantState extends State<NewPlant> {
       IntPicker(plantSizeController: wateringAmountController, heading: 'Water amount needed', hint: 'Water needed by plant in ml / interval', onChange: (value) =>  wateringOnChanged()),
       CustomDropDown(menuItems: PeriodsHelper.periodsMenuItems, title: 'Interval between watering', hint: 'Choose an Option',
           value: wateringInterval, onChange: (_interval) {wateringInterval = _interval; wateringOnChanged();}),
-      CustomDatePicker(description: 'Last time watered:', onSubmit: (newDate){wateringLastTime = newDate;wateringOnChanged();}, value: widget.plant?.watering?.startDate)
+      CustomDatePicker(description: 'Last time watered:', onSubmit: (newDate){wateringLastTime = newDate;wateringOnChanged();}, value: null)
     ]);
 
 
