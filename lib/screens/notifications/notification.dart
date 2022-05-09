@@ -89,12 +89,36 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
       // Event related information
       List<Widget> relatedInformation = [];
-      String? lastDateString = Util.getStringFromDateTime(event!.lastDate);
+      DateTime? lastDate = event!.lastDate;
+      DateTime? now = DateTime.now();
+      String? lastDateString = Util.getStringFromDateTime(lastDate);
       lastDateString ??= 'Not Known';
       DateTime nextDate = event!.getNextDate();
 
+      // Generate button if not done now
+      Widget button = Container();
+      Widget?text = Container();
+
+      if(lastDate?.year == now.year
+        && lastDate?.month == now.month
+        && lastDate?.day == now.day
+      ){
+        text = Text(
+          'Already done today!',
+          textAlign: TextAlign.center,
+          style: theme.textTheme.headline3,
+        );
+      } else {
+        button = CustomButton(
+          onTap: () => onSubmit(user!),
+          text: 'Done',
+          isPrimary: true,
+          iconData: Icons.check,
+        );
+      }
+
       // Choose the right extra information
-      switch(event!.type){
+      switch(event!.type) {
         case EventTypes.watering:
           Watering data = event?.data as Watering;
           relatedInformation = [
@@ -236,6 +260,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   ),
                 )
             ),
+
+            text,
+
             CustomListGroup(
                 title: 'Informations',
                 children: <Widget>[
@@ -252,16 +279,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     data: EventTypesHelper.getStringFromEventType(event!.type),
                   ),
             ]),
+
             CustomListGroup(
                 title: 'Event Information',
                 children: relatedInformation
             ),
-            CustomButton(
-              onTap: () => onSubmit(user!),
-              text: 'Done',
-              isPrimary: true,
-              iconData: Icons.check,
-            ),
+
+            button
           ],
         ),
       );

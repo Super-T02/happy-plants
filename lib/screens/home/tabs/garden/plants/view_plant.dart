@@ -3,10 +3,8 @@ import 'package:happy_plants/screens/home/tabs/garden/plants/edit_plant.dart';
 import 'package:happy_plants/shared/models/events.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/utilities/sizes.dart';
-import 'package:happy_plants/shared/widgets/util/custom_button.dart';
 import 'package:happy_plants/shared/widgets/util/lists/custom_list_group.dart';
 import 'package:happy_plants/shared/widgets/util/lists/custom_list_row.dart';
-import 'package:happy_plants/shared/widgets/util/lists/custom_list_tile.dart';
 
 import '../../../../../shared/models/garden.dart';
 import '../../../../../shared/models/plant.dart';

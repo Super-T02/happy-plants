@@ -34,8 +34,9 @@ class _TimelineState extends State<Timeline> {
 
 
     if(eventList.isNotEmpty){
+      DateTime now = DateTime.now();
       List<CustomListGroup?> listGroup = [];
-      Map<String, List<CustomListTile>> children = {};
+      Map<String, List<CustomListTile>> childrenLocal = {};
 
       // Sorts the event list
       eventList.sort((a, b) => EventsModel.sort(a, b));
@@ -43,31 +44,86 @@ class _TimelineState extends State<Timeline> {
       for(EventWithPlantAndGarden? event in eventList){
         DateTime nextDate = event!.event.getNextDate();
         String wording = PeriodsHelper.getNiceDateWording(nextDate);
-
         // Add list tiles
-        if(!children.containsKey(wording)) { // Date doesn't exist
-          children[wording] = [
-            CustomListTile(
-              title: event.plant.name,
-              subtitle: EventTypesHelper.getStringFromEventType(event.event.type),
-              leading: EventTypesHelper.getIconDataFromEventType(event.event.type),
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationScreen(eventId: event.event.id, nextDate: nextDate,))),
-            )
-          ];
+        if(!childrenLocal.containsKey(wording)) { // Date doesn't exist
 
-        } else { // Date already exist
-          children[wording]!.add(
+          // If the event is already done today
+          if(event.event.lastDate?.year == now.year
+              && event.event.lastDate?.month == now.month
+              && event.event.lastDate?.day == now.day ){
+            childrenLocal[wording] = [
+              CustomListTile(
+                textDecoration: TextDecoration.lineThrough,
+                title: event.plant.name,
+                subtitle: EventTypesHelper.getStringFromEventType(event.event.type),
+                leading: Icons.check,
+                onTap: () async {
+                  await Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => NotificationScreen(eventId: event.event.id, nextDate: nextDate,)
+                  ));
+
+                  setState(() {children = [];});
+                },
+              ),
+            ];
+          } else {
+            childrenLocal[wording] = [
               CustomListTile(
                 title: event.plant.name,
                 subtitle: EventTypesHelper.getStringFromEventType(event.event.type),
                 leading: EventTypesHelper.getIconDataFromEventType(event.event.type),
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationScreen(eventId: event.event.id, nextDate: nextDate))),
+                onTap: () async {
+                  await Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => NotificationScreen(eventId: event.event.id, nextDate: nextDate,)
+                  ));
+
+                  setState(() {children = [];});
+                },
               )
-          );
+            ];
+          }
+        } else { // Date already exist
+
+          // If the event is already done today
+          if(event.event.lastDate?.year == now.year
+              && event.event.lastDate?.month == now.month
+              && event.event.lastDate?.day == now.day ){
+            childrenLocal[wording]!.add(
+                CustomListTile(
+                  textDecoration: TextDecoration.lineThrough,
+                  title: event.plant.name,
+                  subtitle: EventTypesHelper.getStringFromEventType(event.event.type),
+                  leading:  Icons.check,
+                  onTap:() async {
+                    await Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => NotificationScreen(eventId: event.event.id, nextDate: nextDate,)
+                    ));
+
+                    setState(() {children = [];});
+                  },
+                )
+            );
+          } else {
+            childrenLocal[wording]!.add(
+                CustomListTile(
+                  title: event.plant.name,
+                  subtitle: EventTypesHelper.getStringFromEventType(event.event.type),
+                  leading: EventTypesHelper.getIconDataFromEventType(event.event.type),
+                  onTap: () async {
+                    await Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => NotificationScreen(eventId: event.event.id, nextDate: nextDate,)
+                    ));
+
+                    setState(() {children = [];});
+                  },
+                )
+            );
+          }
+
         }
       }
 
-      children.forEach((dateString, children) {
+      childrenLocal.forEach((dateString, children) {
         listGroup.add(CustomListGroup(title: dateString, children: children));
       });
 
