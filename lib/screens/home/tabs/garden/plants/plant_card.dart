@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:happy_plants/services/util_service.dart';
 import 'package:provider/provider.dart';
 import '../../../../../services/plant.dart';
 import '../../../../../shared/models/garden.dart';
@@ -19,24 +20,12 @@ class PlantSingle extends StatefulWidget {
 }
 
 class _PlantSingleState extends State<PlantSingle> {
-  /// Opens the garden
-  void openPlant(Plant plant, CustomUser user){
-    //todo
-  }
-
-  /// Opens a form to edit the garden
-  void editPlant(String plantId, CustomUser user){
-    //Todo
-  }
-
   /// Delete the garden
   void deletePlant(Plant plant, String gardenID, CustomUser user) async {
     Navigator.of(context).pop();
     await PlantService.deletePlant(plant, gardenID, user);
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Deleted')),
-    );
+    UtilService.showSuccess('Deleted', '${plant.name} deleted successfully!');
   }
 
   @override

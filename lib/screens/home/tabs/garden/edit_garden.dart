@@ -2,7 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:happy_plants/services/garden.dart';
 import 'package:happy_plants/shared/models/user.dart';
+import 'package:happy_plants/shared/utilities/util.dart';
 import 'package:happy_plants/shared/widgets/util/custom_form_field.dart';
+import '../../../../services/util_service.dart';
 import '../../../../shared/models/garden.dart';
 import '../../../../shared/widgets/util/image_card.dart';
 
@@ -53,29 +55,34 @@ class _EditGardenState extends State<EditGarden> {
   void _onSubmitted(Garden garden, CustomUser user) async {
     if (_formKey.currentState!.validate()) {
 
-      // TODO: Loading spinner
+     try {
+       Util.startLoading();
 
-      if(gardenInitName != gardenNameController.text){
-        // update garden name
-        await GardenService.patchGarden(
-            garden.id,
-            "name",
-            gardenNameController.text,
-            user
-        );
-      }
+        if(gardenInitName != gardenNameController.text){
+          // update garden name
+          await GardenService.patchGarden(
+              garden.id,
+              "name",
+              gardenNameController.text,
+              user
+          );
+        }
 
-      if(pictureInitName != currentPictureName){
-        // update picture name
-        await GardenService.patchGarden(
-            garden.id,
-            "icon",
-            currentPictureName,
-            user
-        );
-      }
-
-      Navigator.pop(context);
+        if(pictureInitName != currentPictureName){
+          // update picture name
+          await GardenService.patchGarden(
+              garden.id,
+              "icon",
+              currentPictureName,
+              user
+          );
+        }
+        Util.endLoading();
+        Navigator.pop(context);
+        UtilService.showSuccess('Created!', '${gardenNameController.text} was created successfully!');
+     } catch (e) {
+       UtilService.showError('Unable to create Garden', 'Please add the garden later');
+     }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fill the form correctly')),
