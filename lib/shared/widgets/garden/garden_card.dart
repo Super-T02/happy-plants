@@ -126,21 +126,27 @@ class _GardenSingleState extends State<GardenSingle> {
         color: Theme.of(context).textTheme.bodyText1!.color!,
         icon: Icons.open_in_new_outlined,
         onPressed: (){
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(widget.garden.id + ' was popup Opened!')));
+          Navigator.of(context).pop();
+          openGarden(widget.garden, user!);
         },
       ),
       CustomCupertinoContextMenuAction(
         text: "Edit",
         color: Theme.of(context).textTheme.bodyText1!.color!,
         icon: Icons.edit_outlined,
-        onPressed: () => editGarden(widget.garden, user!),
+        onPressed: (){
+          Navigator.of(context).pop();
+          editGarden(widget.garden, user!);
+        }
       ),
       CustomCupertinoContextMenuAction(
         text: "Delete",
         color: theme.errorColor,
         icon: Icons.delete_outlined,
-        onPressed: () => deleteGarden(widget.garden.id, user!), // TODO: Error handling
+        onPressed: (){
+          deleteGarden(widget.garden.id, user!);
+        }
+        // TODO: Error handling
       ),
     ],
   );

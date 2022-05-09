@@ -130,8 +130,7 @@ class _PlantSingleState extends State<PlantSingle> {
           color: Colors.black,
           icon: Icons.open_in_new_outlined,
           onPressed: (){
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(widget.plant.name + ' was popup Opened!')));
+            openPlant(widget.plant, user!);
           },
         ),
         CustomCupertinoContextMenuAction(
