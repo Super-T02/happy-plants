@@ -56,9 +56,6 @@ class UserService{
       "settings": user.settings!.toJSON(),
       "name": user.name,
     });
-
-    // TODO: Error handling
-
   }
 
   /// Generates a snapshot stream of the user instance
@@ -113,10 +110,6 @@ class UserService{
           pushNotificationSettings: PushNotificationSettingsModel(
             enabled: data['settings']['pushNotificationSettings']['enabled'],
             notificationTime: _notificationTime,
-          ),
-          vacationSettings: VacationSettingsModel(
-            enabled: data['settings']['vacationSettings']['enabled'],
-            duration: 5, // TODO: if vacation mode is implemented this line needs to be replaced
           ),
         );
       }

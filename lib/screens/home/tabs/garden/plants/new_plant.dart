@@ -145,7 +145,7 @@ class _NewPlantState extends State<NewPlant> {
       }
     }
     else{
-      // TODO: error handling
+      UtilService.showError('Failed', 'Not able to fetch plant');
     }
 
     super.initState();
@@ -593,7 +593,6 @@ class _NewPlantState extends State<NewPlant> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           // Submit Button
-                          //TODO: implement generalized button import
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 primary: theme.primaryColor

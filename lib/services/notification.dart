@@ -31,7 +31,6 @@ class NotificationService {
         payload: 'item x');
   }
 
-  // TODO: needs to be removed in porduction
   Future<void> checkPendingNotificationRequests(context) async {
     final List<PendingNotificationRequest> pendingNotificationRequests =
     await flutterLocalNotificationsPlugin.pendingNotificationRequests();

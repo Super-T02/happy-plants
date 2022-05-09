@@ -28,9 +28,6 @@ class GardenService {
     }
 
     return result;
-
-
-    // TODO: Error handling
   }
 
   /// Updates a garden based on its gardenID
@@ -50,7 +47,6 @@ class GardenService {
     }
 
     return result;
-    // TODO: Error handling
   }
 
   /// Deletes a garden based on its gardenID
@@ -79,7 +75,7 @@ class GardenService {
       Util.endLoading();
     }
 
-    return result; // TODO: Error handling
+    return result;
   }
 
   /// Get the ref on a garden instance based on the user and garden id

@@ -142,7 +142,7 @@ class _GardenSingleState extends State<GardenSingle> {
         text: "Delete",
         color: theme.errorColor,
         icon: Icons.delete_outlined,
-        onPressed: () => deleteGarden(widget.garden.id, user!), // TODO: Error handling
+        onPressed: () => deleteGarden(widget.garden.id, user!),
       ),
     ],
   );

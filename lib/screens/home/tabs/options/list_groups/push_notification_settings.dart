@@ -36,7 +36,6 @@ class _PushNotificationSettingsState extends State<PushNotificationSettings> {
     // Set the settings in the cloud
     user.settings ??= CustomSettings(
       designSettings: DesignSettingsModel(),
-      vacationSettings: VacationSettingsModel(),
       pushNotificationSettings: PushNotificationSettingsModel(),
     );
 
@@ -87,7 +86,6 @@ class _PushNotificationSettingsState extends State<PushNotificationSettings> {
       // Set the settings in the cloud
       user.settings ??= CustomSettings(
         designSettings: DesignSettingsModel(),
-        vacationSettings: VacationSettingsModel(),
         pushNotificationSettings: PushNotificationSettingsModel(),
       );
 
