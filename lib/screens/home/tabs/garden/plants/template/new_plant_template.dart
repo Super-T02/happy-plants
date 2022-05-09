@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:happy_plants/screens/home/tabs/garden/plants/template/new_plant_template_single_entry.dart';
-import 'package:happy_plants/shared/models/events.dart';
 import 'package:happy_plants/shared/models/plant.dart';
-import 'package:happy_plants/shared/utilities/sizes.dart';
-
 import '../../../../../../shared/models/garden.dart';
 import '../../../../../../shared/models/user.dart';
-import '../new_plant.dart';
 import 'all_templates.dart';
 
 class NewPlantTemplate extends StatefulWidget {
@@ -28,7 +24,10 @@ class _NewPlantTemplateState extends State<NewPlantTemplate> {
     List<Plant> allTemplatePlants = Templates.getAllTemplates(widget.garden.id);
 
     for(Plant plant in allTemplatePlants){
-      allTemplateWidgets.add(NewPlantTemplateSingleEntry(user: widget.user, garden: widget.garden, plant: plant, iconForEntry: const Icon(Icons.yard),));
+      allTemplateWidgets.add(
+          NewPlantTemplateSingleEntry(user: widget.user, garden: widget.garden,
+              plant: plant, iconForEntry: const Icon(Icons.yard))
+      );
     }
 
     return Scaffold(

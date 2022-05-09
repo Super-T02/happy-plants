@@ -33,7 +33,9 @@ class _NewPlantTemplateSingleEntryState extends State<NewPlantTemplateSingleEntr
 
     Text subtitle = Text("Type: " + widget.plant.type);
     if(widget.plant.watering?.waterAmount != null && widget.plant.watering?.interval != null){
-      subtitle = Text("Water amount: " + widget.plant.watering!.waterAmount.toString() + " ml, Interval: " + PeriodsHelper.getStringFromPeriod(widget.plant.watering!.interval)!);
+      subtitle = Text("Water amount: " + widget.plant.watering!.waterAmount.toString()
+          + " ml, Interval: "
+          + PeriodsHelper.getStringFromPeriod(widget.plant.watering!.interval)!);
     }
 
     return Column(
@@ -45,7 +47,9 @@ class _NewPlantTemplateSingleEntryState extends State<NewPlantTemplateSingleEntr
           onTap: () {
             Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => EditPlant(user: widget.user, garden: widget.garden, plant: widget.plant, isTemplate: true,))
+                MaterialPageRoute(builder: (context) =>
+                    EditPlant(user: widget.user, garden: widget.garden, plant: widget.plant, isTemplate: true,)
+                )
             );
           },
           style: theme.listTileTheme.style,

@@ -82,41 +82,46 @@ class _NewPlantState extends State<NewPlant> {
     repotCorrect = true;
     dustOffCorrect = true;
 
+
+    //if a plant is given, set controllers of form to values present
     if(widget.plant != null){
-      plantNameController.text = widget.plant!.name;
+      if(widget.isNew == false){
+        plantNameController.text = widget.plant!.name;
+      }
       plantTypeController.text = widget.plant!.type;
-      //if data exists:
+      //if data exists, set controller now:
+      //plantsize
       if(widget.plant?.plantSize?.now != null && widget.plant?.plantSize?.begin != null){
         plantSizeBeginningController.text = widget.plant!.plantSize!.begin.toString();
         plantSizeEndController.text = widget.plant!.plantSize!.now.toString();
       }
-
+      //data for watering
       if(widget.plant?.watering?.waterAmount != null && widget.plant!.watering?.startDate != null && widget.plant!.watering?.interval != null){
         wateringAmountController.text = widget.plant!.watering!.waterAmount.toString();
         wateringInterval = PeriodsHelper.getStringFromPeriod(widget.plant!.watering!.interval);
         wateringLastTime = widget.plant!.watering!.startDate;
       }
-
+      //data for spray
       if(widget.plant!.spray?.interval != null && widget.plant!.spray?.startDate != null){
         sprayInterval = PeriodsHelper.getStringFromPeriod(widget.plant!.spray!.interval);
         sprayPlantsLastTime = widget.plant!.spray?.startDate;
       }
-
+      //data for fertilize
       if(widget.plant!.fertilize?.amount != null && widget.plant!.fertilize?.interval != null && widget.plant!.fertilize?.startDate != null){
         fertilizeAmountController.text = widget.plant!.fertilize!.amount.toString();
         fertilizeInterval = PeriodsHelper.getStringFromPeriod(widget.plant!.fertilize!.interval);
         fertilizeLastTime = widget.plant!.fertilize?.startDate;
       }
-
+      //data for temperature
       if(widget.plant!.temperature != null){
         temperatureController.text = widget.plant!.temperature!.toString();
       }
-
+      //data for repot
       if(widget.plant!.repot?.startDate != null && widget.plant!.repot?.interval != null){
         repotInterval = PeriodsHelper.getStringFromPeriod(widget.plant!.repot!.interval);
         repotLastTime = widget.plant!.repot?.startDate;
       }
-
+      //data for dust off
       if(widget.plant!.dustOff?.interval != null && widget.plant!.dustOff?.startDate != null){
         dustOffInterval = PeriodsHelper.getStringFromPeriod(widget.plant!.dustOff!.interval);
         dustOffLastTime = widget.plant!.dustOff?.startDate;
@@ -133,7 +138,7 @@ class _NewPlantState extends State<NewPlant> {
       } else {
         sunNeed = null;
       }
-
+      //set picture for scrollbar
       if(widget.plant!.icon != null){
         pictureName = widget.plant!.icon!;
       }
@@ -316,6 +321,7 @@ class _NewPlantState extends State<NewPlant> {
 
   void _onSubmitted(user, garden) async {
     if(widget.isNew) {
+      // add the plant
       if (_formKey.currentState!.validate() && getAccordionsErrors() == null) {
         await PlantService.addPlant(
             AddPlant(
@@ -351,11 +357,11 @@ class _NewPlantState extends State<NewPlant> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Please fill the form correctly')),
         );
-      }// add the plant
+      }
     }
     else {
       if (_formKey.currentState!.validate() && getAccordionsErrors() == null) {
-        // add the plant
+        // edit the plant
         await PlantService.putPlant(
             Plant(
               id: widget.plant!.id,
@@ -500,12 +506,17 @@ class _NewPlantState extends State<NewPlant> {
       CustomDatePicker(description: 'Last time sprayed:', onSubmit: (newDate){dustOffLastTime= newDate;dustOffOnChanged();}, value: widget.plant?.watering?.startDate),
     ]);
     Text titleOfPage;
-    if(widget.plant != null){
+
+    //if plant is given
+    if(widget.isNew == false){
+      //if screen is for template
       titleOfPage = Text('Edit Plant ${widget.plant!.name}');
     }
     else{
-      titleOfPage = const Text('New plant');
+      //if screen is for edit
+      titleOfPage = const Text('New Plant');
     }
+
 
     return Scaffold(
       appBar: AppBar(
