@@ -5,8 +5,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:happy_plants/screens/home/tabs/garden/plants/template/new_plant_template.dart';
 import 'package:happy_plants/screens/home/tabs/garden/plants/plant_card.dart';
 import 'package:happy_plants/shared/models/plant.dart';
-import 'package:happy_plants/shared/utilities/sizes.dart';
-import 'package:provider/provider.dart';
 import '../../../../../services/plant.dart';
 import '../../../../../shared/models/garden.dart';
 import '../../../../../shared/models/user.dart';
@@ -118,7 +116,7 @@ class _ListOfPlantsState extends State<ListOfPlants> {
             children: [
               // FAB 1
               SpeedDialChild(
-                  child: const Icon(Icons.add_circle_outline_outlined),
+                  child: Icon(Icons.add_circle_outline_outlined, color: Theme.of(context).unselectedWidgetColor),
                   backgroundColor: Theme.of(context).primaryColor,
                   onTap: () {
                     Navigator.push(
@@ -132,7 +130,7 @@ class _ListOfPlantsState extends State<ListOfPlants> {
               ),
               // FAB 2
               SpeedDialChild(
-                  child: const Icon(Icons.library_books_outlined),
+                  child: Icon(Icons.library_books_outlined, color: Theme.of(context).unselectedWidgetColor),
                   backgroundColor: Theme.of(context).primaryColor,
                   onTap: () {
                     Navigator.push(
@@ -149,8 +147,5 @@ class _ListOfPlantsState extends State<ListOfPlants> {
         );
       }
     );
-
-
-
   }
 }
