@@ -23,12 +23,15 @@ class UtilService{
           return AlertDialog(
             title: Text(title),
             content: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
                   Icons.check,
                   color: Theme.of(context).primaryColor,
+                  size: 100.0,
                 ),
-                Text(message!),
+                Text(message!, textAlign: TextAlign.center,),
               ],
             ),
           );
