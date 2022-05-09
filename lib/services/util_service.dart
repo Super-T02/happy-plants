@@ -21,9 +21,9 @@ class UtilService{
           });
           
           return AlertDialog(
-            title: Text(title),
+            title: Text(title, textAlign: TextAlign.center,),
             content: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
