@@ -60,6 +60,9 @@ class _PushNotificationSettingsState extends State<PushNotificationSettings> {
   }
 
   Future<void> onChangeNotificationTime(context, DbUser user) async {
+    TextTheme textTheme = Theme.of(context).textTheme;
+    InputDecorationTheme inputDecorationTheme = Theme.of(context).inputDecorationTheme;
+    ThemeData theme = Theme.of(context);
 
     TimeOfDay? result = await showTimePicker(
       context: context,
@@ -67,6 +70,11 @@ class _PushNotificationSettingsState extends State<PushNotificationSettings> {
       builder: (context, child) {
       return Theme(
         data: Theme.of(context).copyWith(
+          timePickerTheme: TimePickerThemeData(
+            backgroundColor: theme.scaffoldBackgroundColor,
+            helpTextStyle: textTheme.bodyText1,
+            dialTextColor: textTheme.bodyText1!.color,
+          ),
           colorScheme: ColorScheme.light(
             primary: AppColors.accent1, // header background color
             onPrimary: AppColors.lightWhiteHighlight, // header text color
