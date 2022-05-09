@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:happy_plants/services/util_service.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/models/settings.dart';
 
@@ -13,9 +14,8 @@ class UserService{
       var doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
       return doc.exists;
 
-    } on Exception catch (e) {
-      // TODO
-
+    } catch (e) {
+      UtilService.showError('User not found', 'User cannot be found!');
       return false;
     }
   }
@@ -26,17 +26,22 @@ class UserService{
     bool exists = await UserService.userExists(user);
 
       if(!exists){
-        return users.doc(user.uid).set({
-          'email': user.email.trim(),
-          'name': user.name?.trim(),
-          'isEmailPasswordAuth': isEmailPasswordAuth,
-          'settings': CustomSettings.getDefault().toJSON(),
-        });
-      }
-    }
 
-    return;
-    // TODO: Error handling
+        try {
+          return users.doc(user.uid).set({
+            'email': user.email.trim(),
+            'name': user.name?.trim(),
+            'isEmailPasswordAuth': isEmailPasswordAuth,
+            'settings': CustomSettings.getDefault().toJSON(),
+          });
+        } catch (e) {
+          UtilService.showError('Internal error', 'User cannot be generated');
+        }
+
+      }
+    } else {
+      return;
+    }
   }
 
   /// Replaces the db entry for the user

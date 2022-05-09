@@ -57,7 +57,6 @@ class NotificationService {
 
   /// Schedules a notification for a defined period of time
   Future<void> scheduledNotificationRepeat(ScheduledNotificationModel notification) async {
-
     if(SharedPreferencesController.getNotificationTimeStatus()){
 
       await flutterLocalNotificationsPlugin.zonedSchedule(
