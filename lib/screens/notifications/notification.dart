@@ -41,10 +41,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
         user.uid
     );
 
-    // TODO: When map plants exist
+    Plant localPlant = Plant.mapFirebaseDocToPlant(plantDoc, event.gardenId);
 
     setState(() {
       event = event;
+      plant = localPlant;
       loading = false;
     });
 
@@ -59,7 +60,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     if(!loading!) {
       return Scaffold(
         appBar: AppBar(title: const Text('Test')),
-        body: Text(widget.eventId!),
+        body: Text(plant!.name),
       );
 
     } else {
