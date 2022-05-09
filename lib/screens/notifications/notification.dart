@@ -33,18 +33,18 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Future<void> loadEvent(CustomUser user) async {
     Util.startLoading();
     DocumentReference eventRef = EventService.getEventDocRef(widget.eventId!, user);
-    EventsModel event = EventsModel.mapFirebaseDocToEvent(user.uid, await eventRef.snapshots().first);
+    EventsModel localEvent = EventsModel.mapFirebaseDocToEvent(user.uid, await eventRef.snapshots().first);
 
     DocumentSnapshot plantDoc = await PlantService.getPlantSnapshot(
-        event.plantId,
-        event.gardenId,
+        localEvent.plantId,
+        localEvent.gardenId,
         user.uid
     );
 
-    Plant localPlant = Plant.mapFirebaseDocToPlant(plantDoc, event.gardenId);
+    Plant localPlant = Plant.mapFirebaseDocToPlant(plantDoc, localEvent.gardenId);
 
     setState(() {
-      event = event;
+      event = localEvent;
       plant = localPlant;
       loading = false;
     });
@@ -55,12 +55,79 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<CustomUser?>(context);
+    final theme = Theme.of(context);
 
+    Icon eventIcon = Icon(
+      EventTypesHelper.getIconDataFromEventType(event!.type),
+      color: theme.textTheme.bodyText1!.color,
+    );
 
     if(!loading!) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Test')),
-        body: Text(plant!.name),
+        appBar: AppBar(
+          iconTheme: IconThemeData(
+            color: theme.textTheme.bodyText1!.color,
+          ),
+          title: Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(plant!.name),
+                const SizedBox(width: 16.0,),
+                eventIcon
+              ],
+            ),
+          ),
+        ),
+        body: ListView(
+          shrinkWrap: true,
+          scrollDirection: Axis.vertical,
+          padding: const EdgeInsets.all(20), //padding from screen to widget
+          addAutomaticKeepAlives: true,
+          children: <Widget>[
+            // Picture
+            Card(
+                semanticContainer: true,
+                margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0)
+                ),
+                child: Container(
+                  height: 200,
+                  width: 200,
+
+                  // Image for the background of the card
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      image: DecorationImage(
+                          image: AssetImage(
+                              'assets/images/plant_backgrounds/${plant!.icon}.jpg'
+                          ),
+                          fit: BoxFit.cover
+                      )
+                  ),
+                )
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Upcoming Event:',
+                  style: theme.textTheme.headline3,
+                ),
+                Row(
+                  children: <Widget>[
+                    eventIcon,
+                    Text(
+                      '${EventTypesHelper.getStringFromEventType(event!.type)}',
+                      style: theme.textTheme.headline3,
+                    ),
+                  ],
+                )
+              ],
+            )
+          ],
+        ),
       );
 
     } else {
