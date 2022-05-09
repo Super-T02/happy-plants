@@ -82,6 +82,14 @@ class GardenService {
     return result; // TODO: Error handling
   }
 
+  /// Get the single garden name
+  static Future<Garden> getGarden(String gardenId, CustomUser user) async {
+    DocumentReference garden = getGardenDocRef(gardenId, user);
+    DocumentSnapshot gardenSnapshot = await garden.snapshots().first;
+
+    return Garden.mapFirebaseDocToGarden(gardenSnapshot);
+  }
+
   /// Get the ref on a garden instance based on the user and garden id
   static DocumentReference getGardenDocRef(String gardenID, CustomUser user) {
     return FirebaseFirestore.instance

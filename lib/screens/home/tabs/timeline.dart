@@ -1,4 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:happy_plants/screens/notifications/notification.dart';
+import 'package:happy_plants/services/event.dart';
+import 'package:happy_plants/shared/models/events.dart';
+import 'package:happy_plants/shared/utilities/app_colors.dart';
+import 'package:happy_plants/shared/widgets/util/lists/custom_list_group.dart';
+import 'package:happy_plants/shared/widgets/util/lists/custom_list_tile.dart';
+import 'package:provider/provider.dart';
+
+import '../../../shared/models/user.dart';
 
 class Timeline extends StatefulWidget {
   const Timeline({Key? key}) : super(key: key);
@@ -8,8 +18,149 @@ class Timeline extends StatefulWidget {
 }
 
 class _TimelineState extends State<Timeline> {
+  List<CustomListGroup>? children;
+
+  @override
+  initState(){
+    children = [];
+    super.initState();
+  }
+
+
+  /// Generates a stream of all list components
+  Future<List<CustomListGroup?>> _getListGroup(CustomUser? user) async {
+    List<EventWithPlantAndGarden?> eventList
+      = await EventService.getUserEventsList(user);
+
+
+    if(eventList.isNotEmpty){
+      DateTime now = DateTime.now();
+      List<CustomListGroup?> listGroup = [];
+      Map<String, List<CustomListTile>> childrenLocal = {};
+
+      // Sorts the event list
+      eventList.sort((a, b) => EventsModel.sort(a, b));
+
+      for(EventWithPlantAndGarden? event in eventList){
+        DateTime nextDate = event!.event.getNextDate();
+        String wording = PeriodsHelper.getNiceDateWording(nextDate);
+        // Add list tiles
+        if(!childrenLocal.containsKey(wording)) { // Date doesn't exist
+
+          // If the event is already done today
+          if(event.event.lastDate?.year == now.year
+              && event.event.lastDate?.month == now.month
+              && event.event.lastDate?.day == now.day ){
+            childrenLocal[wording] = [
+              CustomListTile(
+                textDecoration: TextDecoration.lineThrough,
+                title: event.plant.name,
+                subtitle: EventTypesHelper.getStringFromEventType(event.event.type),
+                leading: Icons.check,
+                onTap: () async {
+                  await Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => NotificationScreen(eventId: event.event.id, nextDate: nextDate,)
+                  ));
+
+                  setState(() {children = [];});
+                },
+              ),
+            ];
+          } else {
+            childrenLocal[wording] = [
+              CustomListTile(
+                title: event.plant.name,
+                subtitle: EventTypesHelper.getStringFromEventType(event.event.type),
+                leading: EventTypesHelper.getIconDataFromEventType(event.event.type),
+                onTap: () async {
+                  await Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => NotificationScreen(eventId: event.event.id, nextDate: nextDate,)
+                  ));
+
+                  setState(() {children = [];});
+                },
+              )
+            ];
+          }
+        } else { // Date already exist
+
+          // If the event is already done today
+          if(event.event.lastDate?.year == now.year
+              && event.event.lastDate?.month == now.month
+              && event.event.lastDate?.day == now.day ){
+            childrenLocal[wording]!.add(
+                CustomListTile(
+                  textDecoration: TextDecoration.lineThrough,
+                  title: event.plant.name,
+                  subtitle: EventTypesHelper.getStringFromEventType(event.event.type),
+                  leading:  Icons.check,
+                  onTap:() async {
+                    await Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => NotificationScreen(eventId: event.event.id, nextDate: nextDate,)
+                    ));
+
+                    setState(() {children = [];});
+                  },
+                )
+            );
+          } else {
+            childrenLocal[wording]!.add(
+                CustomListTile(
+                  title: event.plant.name,
+                  subtitle: EventTypesHelper.getStringFromEventType(event.event.type),
+                  leading: EventTypesHelper.getIconDataFromEventType(event.event.type),
+                  onTap: () async {
+                    await Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => NotificationScreen(eventId: event.event.id, nextDate: nextDate,)
+                    ));
+
+                    setState(() {children = [];});
+                  },
+                )
+            );
+          }
+
+        }
+      }
+
+      childrenLocal.forEach((dateString, children) {
+        listGroup.add(CustomListGroup(title: dateString, children: children));
+      });
+
+      return listGroup;
+    }
+
+    return [];
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Text('timeline', style: Theme.of(context).textTheme.bodyText1);
+    final user = Provider.of<DbUser?>(context);
+
+    // Listen to the group stream
+    _getListGroup(user).then((list) {
+      if(list.isNotEmpty && children!.isEmpty) {
+        List<CustomListGroup> listGroup = [];
+
+        for(CustomListGroup? group in list) {
+          if(group != null) {
+            listGroup.add(group);
+          }
+        }
+
+        setState(() {
+          children = listGroup;
+        });
+      }
+    });
+
+
+    if(user != null && children != null && children!.isNotEmpty) {
+      return ListView(
+        children: children!,
+      );
+    } else {
+      return const SpinKitFadingCircle(color: AppColors.accent1);
+    }
   }
 }

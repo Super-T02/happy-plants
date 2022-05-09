@@ -8,13 +8,14 @@ class CustomListTile extends StatefulWidget {
     this.subtitle,
     this.leading,
     this.onTap,
-
+    this.textDecoration = TextDecoration.none,
   }) : super(key: key);
 
   final String title;
   final String? subtitle;
   final IconData? leading;
   final void Function()? onTap;
+  final TextDecoration textDecoration;
 
   @override
   State<CustomListTile> createState() => _CustomListTileState();
@@ -26,8 +27,11 @@ class _CustomListTileState extends State<CustomListTile> {
     ThemeData theme = Theme.of(context);
     Widget? subtitle;
 
+
     if(widget.subtitle != null) {
-      subtitle = Text(widget.subtitle!, style: theme.textTheme.subtitle2, );
+      subtitle = Text(widget.subtitle!, style: theme.textTheme.subtitle2?.copyWith(
+        decoration: widget.textDecoration,
+      ));
     }
 
       return Container(
@@ -37,7 +41,9 @@ class _CustomListTileState extends State<CustomListTile> {
             ),
           ),
           child: ListTile(
-            title: Text(widget.title, style: theme.textTheme.bodyText1),
+            title: Text(widget.title, style: theme.textTheme.bodyText1?.copyWith(
+                decoration: widget.textDecoration,
+            )),
             subtitle: subtitle,
             leading: Icon(widget.leading),
             onTap: widget.onTap,

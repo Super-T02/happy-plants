@@ -117,7 +117,6 @@ class _MyAppState extends State<MyApp> {
     // NotificationScreen stuff
     _requestPermissions();
     _configureDidReceiveLocalNotificationSubject();
-    _configureSelectNotificationSubject();
 
   }
 
@@ -175,13 +174,6 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  /// Select Notification
-  void _configureSelectNotificationSubject() {
-    selectNotificationSubject.stream.listen((String? payload) async {
-      await Navigator.pushNamed(context, NotificationScreen.routeName);
-    });
-  }
-
   @override
   void dispose() {
     didReceiveLocalNotificationSubject.close();
@@ -192,6 +184,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+
     return StreamProvider<CustomUser?>.value(
       value: AuthService().user,
       initialData: null,
@@ -204,7 +197,7 @@ class _MyAppState extends State<MyApp> {
         initialRoute: '/',
         routes: {
           '/': (_) => const Wrapper(),
-          NotificationScreen.routeName: (_) => NotificationScreen(eventId: selectedNotificationPayload,),
+          NotificationScreen.routeName: (context) => NotificationScreen(eventId: selectedNotificationPayload,),
           '/newGarden': (context) => const NewGarden(),
           '/forgetPassword': (context) => const ForgetPassword(),
           '/signUp': (context) => const SignUpForm(),
