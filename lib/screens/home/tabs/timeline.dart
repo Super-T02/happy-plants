@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:happy_plants/screens/notifications/notification.dart';
 import 'package:happy_plants/services/event.dart';
 import 'package:happy_plants/shared/models/events.dart';
@@ -18,11 +19,19 @@ class Timeline extends StatefulWidget {
 }
 
 class _TimelineState extends State<Timeline> {
+  // Images
+  final lightImage = "assets/images/LightEventEmpty.svg";
+  final darkImage = "assets/images/DarkEventEmpty.svg";
+
   List<CustomListGroup>? children;
+  bool? timeout;
+  String? timeoutString;
 
   @override
   initState(){
     children = [];
+    timeout = false;
+    timeoutString = 'Server timed out, please try it later again';
     super.initState();
   }
 
@@ -136,6 +145,8 @@ class _TimelineState extends State<Timeline> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<DbUser?>(context);
+    final darkMode = Theme.of(context).brightness;
+    final ThemeData theme = Theme.of(context);
 
     // Listen to the group stream
     _getListGroup(user).then((list) {
@@ -151,6 +162,11 @@ class _TimelineState extends State<Timeline> {
         setState(() {
           children = listGroup;
         });
+      } else {
+        setState(() {
+          timeoutString = 'You have no event yet :(';
+          timeout = true;
+        });
       }
     });
 
@@ -159,7 +175,31 @@ class _TimelineState extends State<Timeline> {
       return ListView(
         children: children!,
       );
+    } else if(timeout!) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            timeoutString!,
+            style: theme.textTheme.headline3!,
+          ),
+          const SizedBox(height: 32.0,),
+          SizedBox(
+            height: 200,
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: SvgPicture.asset(darkMode == Brightness.dark? darkImage : lightImage),
+          ),
+        ],
+      );
     } else {
+      Future.delayed(const Duration(seconds: 15), () {
+        if(children != null && children!.isEmpty){
+          setState(() {
+            timeout = true;
+            timeoutString = 'Server timed out, please try it later again';
+          });
+        }
+      });
       return const SpinKitFadingCircle(color: AppColors.accent1);
     }
   }
