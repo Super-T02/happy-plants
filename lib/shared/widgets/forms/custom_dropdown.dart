@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../utilities/app_colors.dart';
 
 class CustomDropDown extends StatefulWidget {
@@ -83,24 +82,28 @@ class _CustomDropDownState extends State<CustomDropDown> {
     ).toList();
 
 
-    return DropdownButtonFormField(
-      items: _mappedMenuItems,
-      value: _currentValue,
-      onChanged: (String? newValue) {
-        widget.onChange(newValue!);
-        _currentValue = newValue;
-      },
-      validator: widget.validator,
-      enableFeedback: true,
-      focusNode: _focus,
-      decoration: InputDecoration(
-        focusColor: AppColors.accent1,
-        hintText: widget.hint,
-        labelText: widget.title,
-        suffixIcon: suffixIcon,
+    return Container(
+      //same padding as in custom_form_field, so in every form dropdown and form_field
+      //look the same (width and height)
+      padding: const EdgeInsets.all(8),
+      child: DropdownButtonFormField(
+        items: _mappedMenuItems,
+        value: _currentValue,
+        onChanged: (String? newValue) {
+          widget.onChange(newValue!);
+          _currentValue = newValue;
+        },
+        validator: widget.validator,
+        enableFeedback: true,
+        focusNode: _focus,
+        decoration: InputDecoration(
+          focusColor: AppColors.accent1,
+          hintText: widget.hint,
+          labelText: widget.title,
+          suffixIcon: suffixIcon,
+        ),
       ),
     );
-
   }
 
 }
