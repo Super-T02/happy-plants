@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:happy_plants/screens/home/tabs/garden/list_of_gardens.dart';
 import 'package:happy_plants/screens/home/tabs/garden/plants/list_of_plants.dart';
 import 'package:happy_plants/screens/home/tabs/garden/edit_garden.dart';
 import 'package:happy_plants/services/garden.dart';
 import 'package:happy_plants/shared/models/garden.dart';
 import 'package:provider/provider.dart';
+import 'package:quiver/time.dart';
+import '../../../config.dart';
 import '../../../services/util_service.dart';
 import '../../models/user.dart';
 import '../util/custom_cupertino_context_menu.dart';
@@ -19,6 +20,7 @@ class GardenSingle extends StatefulWidget {
 }
 
 class _GardenSingleState extends State<GardenSingle> {
+  bool longPress = false;
 
   /// Opens the garden
   void openGarden(Garden garden, CustomUser user){
@@ -71,8 +73,21 @@ class _GardenSingleState extends State<GardenSingle> {
 
       // Handles gestures
       child: GestureDetector(
-        onTap: () {
-          openGarden(widget.garden, user!);
+        onTapUp: (details) {
+          if(!longPress){
+            openGarden(widget.garden, user!);
+          }
+        },
+
+        onLongPressStart: (details) {
+          longPress = true;
+          Future.delayed(const Duration(seconds: 3), (){
+            longPress = false;
+          });
+        },
+
+        onLongPressEnd: (details){
+          longPress = false;
         },
 
         // Initial Card definition
@@ -145,7 +160,12 @@ class _GardenSingleState extends State<GardenSingle> {
         text: "Delete",
         color: theme.errorColor,
         icon: Icons.delete_outlined,
-        onPressed: () => deleteGarden(widget.garden.id, user!),
+        onPressed: () {
+          if(utilServiceConfig.gardenOpen){
+            Navigator.pop(context);
+          }
+          deleteGarden(widget.garden.id, user!);
+        }
       ),
     ],
   );

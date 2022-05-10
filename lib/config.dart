@@ -4,6 +4,7 @@
 library config.globals;
 
 import 'package:happy_plants/services/notification.dart';
+import 'package:happy_plants/services/util_service.dart';
 import 'package:happy_plants/shared/notifier/theme_notifier.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,6 +16,7 @@ SharedPreferences? sharedPreferences;
 
 /// Marks, whether the user data are already loaded or not
 bool modeInit = false;
+UtilService utilServiceConfig = UtilService();
 
 int notificationNextId = 0;
 NotificationService notificationService = NotificationService();
