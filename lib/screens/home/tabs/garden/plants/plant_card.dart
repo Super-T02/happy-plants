@@ -32,7 +32,7 @@ class _PlantSingleState extends State<PlantSingle> {
   /// Delete the garden
   void deletePlant(Plant plant, String gardenID, CustomUser user) async {
     Navigator.of(context).pop();
-    await PlantService.deletePlant(plant, gardenID, user);
+    await PlantService.deletePlant(plant.id, gardenID, user);
 
     UtilService.showSuccess('Deleted', '${plant.name} deleted successfully!');
   }
