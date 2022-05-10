@@ -67,6 +67,9 @@ class _CustomFormFieldState extends State<CustomFormField> {
   @override
   Widget build(BuildContext context) {
     Widget? icon;
+    TextTheme textTheme = Theme.of(context).textTheme;
+    InputDecorationTheme inputDecorationTheme = Theme.of(context).inputDecorationTheme;
+    ThemeData theme = Theme.of(context);
 
     if(widget.suffixIcon != null) {
       icon = Icon(widget.suffixIcon, color: _getIconColor());

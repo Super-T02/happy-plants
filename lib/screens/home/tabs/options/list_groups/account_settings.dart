@@ -34,6 +34,7 @@ class AccountSettings extends StatelessWidget {
     showDialog(context: _key.currentContext!, builder: (BuildContext context){
       return FormDialog(
           title: 'Change Username',
+
           onSubmit: () async {
             DbUser newUser = user;
             newUser.name = userControl.text.trim();

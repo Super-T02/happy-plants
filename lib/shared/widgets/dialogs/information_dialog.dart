@@ -20,8 +20,12 @@ class InformationDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme textTheme = Theme.of(context).textTheme;
+    InputDecorationTheme inputDecorationTheme = Theme.of(context).inputDecorationTheme;
+    ThemeData theme = Theme.of(context);
+
     return AlertDialog(
-      title: Text(title, textAlign: TextAlign.center,),
+      title: Text(title, textAlign: TextAlign.center, style: textTheme.headline3),
       actions: [
         CustomButton(
           onTap: (){

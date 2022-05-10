@@ -34,18 +34,22 @@ class NotificationService {
   Future<void> checkPendingNotificationRequests(context) async {
     final List<PendingNotificationRequest> pendingNotificationRequests =
     await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+    TextTheme textTheme = Theme.of(context).textTheme;
+    InputDecorationTheme inputDecorationTheme = Theme.of(context).inputDecorationTheme;
+    ThemeData theme = Theme.of(context);
+
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
         content:
         Text('${pendingNotificationRequests.length} pending notification '
-            'requests'),
+            'requests', style: textTheme.bodyText1),
         actions: <Widget>[
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: const Text('OK'),
+            child: Text('OK', style: textTheme.bodyText1),
           ),
         ],
       ),
