@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:happy_plants/services/util_service.dart';
 import 'package:happy_plants/screens/home/tabs/garden/plants/view_plant.dart';
 import 'package:provider/provider.dart';
+import '../../../../../config.dart';
 import '../../../../../services/plant.dart';
 import '../../../../../shared/models/garden.dart';
 import '../../../../../shared/models/plant.dart';
@@ -21,6 +22,8 @@ class PlantSingle extends StatefulWidget {
 }
 
 class _PlantSingleState extends State<PlantSingle> {
+  bool longPress = false;
+
   /// Opens the garden
   void openPlant(Plant plant, CustomUser user){
     Navigator.push(
@@ -65,7 +68,20 @@ class _PlantSingleState extends State<PlantSingle> {
       // Handles gestures
       child: GestureDetector(
         onTap: () {
-          openPlant(widget.plant, user!);
+          if(!longPress){
+            openPlant(widget.plant, user!);
+          }
+        },
+
+        onLongPressStart: (details) {
+          longPress = true;
+          Future.delayed(const Duration(seconds: 3), (){
+            longPress = false;
+          });
+        },
+
+        onLongPressEnd: (details){
+          longPress = false;
         },
 
         // Initial Card definition
@@ -134,6 +150,9 @@ class _PlantSingleState extends State<PlantSingle> {
           color: Theme.of(context).textTheme.bodyText1!.color!,
           icon: Icons.edit_outlined,
           onPressed: (){
+            if(utilServiceConfig.plantOpen){
+              Navigator.pop(context);
+            }
             Navigator.of(context).pop();
             Navigator.push(
                 context,
@@ -146,6 +165,9 @@ class _PlantSingleState extends State<PlantSingle> {
           color: theme.errorColor,
           icon: Icons.delete_outlined,
           onPressed: (){
+            if(utilServiceConfig.plantOpen){
+              Navigator.pop(context);
+            }
             deletePlant(widget.plant, widget.garden.id, user!);
           }
         ),

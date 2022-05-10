@@ -5,6 +5,9 @@ import '../shared/widgets/util/custom_button.dart';
 
 /// Service for some util shit
 class UtilService{
+  bool gardenOpen = false;
+  bool plantOpen = false;
+
 
   /// Displays a success for 3 seconds
   /// Needs:

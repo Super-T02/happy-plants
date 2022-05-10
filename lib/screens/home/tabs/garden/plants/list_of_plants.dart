@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:happy_plants/config.dart';
 import 'package:happy_plants/screens/home/tabs/garden/plants/template/new_plant_template.dart';
 import 'package:happy_plants/screens/home/tabs/garden/plants/plant_card.dart';
 import 'package:happy_plants/shared/models/plant.dart';
@@ -27,6 +28,18 @@ class _ListOfPlantsState extends State<ListOfPlants> {
   final lightImage = "assets/images/LightPlantEmpty.svg";
   final darkImage = "assets/images/DarkPlantEmpty.svg";
 
+
+  @override
+  void initState() {
+    utilServiceConfig.gardenOpen = true;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    utilServiceConfig.gardenOpen = false;
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
