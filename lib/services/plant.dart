@@ -81,6 +81,18 @@ class PlantService {
       watering = updatedPlant.watering;
     }
 
+    CollectionReference events = EventService.getEventsCollectionRef(user);
+
+    // Delete all events
+    events.where('plantId', isEqualTo: updatedPlant.id).get().then((QuerySnapshot querySnapshot) async {
+      for (DocumentSnapshot event in querySnapshot.docs) {
+        await EventService.deleteEvent(event.id, user);
+      }
+
+      await notificationService.cancelAllNotifications();
+      await EventService.scheduleAllNotifications(user);
+    });
+
     await plant.set({
       'dustOff': dustOff.toJSON(),
       'fertilize': fertilize.toJSON(),
@@ -136,20 +148,22 @@ class PlantService {
   }
 
   /// Deletes a plants based on its plantId
-  static Future<void> deletePlant(Plant plant, String gardenID, CustomUser user) async {
-    DocumentReference plantDoc = getPlantDocRef(plant.id, gardenID, user.uid);
+  static Future<void> deletePlant(String plantId, String gardenID, CustomUser user) async {
+    DocumentReference plantDoc = getPlantDocRef(plantId, gardenID, user.uid);
     try {
       Util.startLoading();
-      
-      if(plant.eventIds != null) {
-      
-        for (String eventId in plant.eventIds!) {
-          await EventService.deleteEvent(eventId, user);
+
+      CollectionReference events = EventService.getEventsCollectionRef(user);
+
+      // Delete all events
+      events.where('plantId', isEqualTo: plantId).get().then((QuerySnapshot querySnapshot) async {
+        for (DocumentSnapshot event in querySnapshot.docs) {
+          await EventService.deleteEvent(event.id, user);
         }
-      
+
         await notificationService.cancelAllNotifications();
         await EventService.scheduleAllNotifications(user);
-      }
+      });
     } finally {
       Util.endLoading();
     }
