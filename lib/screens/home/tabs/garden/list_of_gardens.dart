@@ -93,7 +93,7 @@ class _ListOfGardensState extends State<ListOfGardens> {
             addAutomaticKeepAlives: true,
             children: [
               const SizedBox(
-                width: 16.0,
+                height: 16.0,
               ),
               // Add the Gardens to the screen
               ...snapshot.data!.docs.map((DocumentSnapshot document) {
