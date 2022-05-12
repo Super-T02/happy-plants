@@ -8,7 +8,8 @@ import '../../../../../shared/widgets/dialogs/information_dialog.dart';
 import '../../../../../shared/widgets/forms/custom_radio_button.dart';
 
 class ChangeDesignRadioGroup extends StatefulWidget {
-  const ChangeDesignRadioGroup({Key? key, required this.user}) : super(key: key);
+  const ChangeDesignRadioGroup({Key? key, required this.user})
+      : super(key: key);
   final DbUser user;
 
   @override
@@ -18,10 +19,9 @@ class ChangeDesignRadioGroup extends StatefulWidget {
 class _ChangeDesignRadioGroupState extends State<ChangeDesignRadioGroup> {
   ThemeMode? _mode;
 
-
   @override
   void initState() {
-    if(widget.user.settings!.designSettings.colorScheme == null) {
+    if (widget.user.settings!.designSettings.colorScheme == null) {
       widget.user.settings!.designSettings = DesignSettingsModel();
       _mode = widget.user.settings!.designSettings.colorScheme!;
     } else {
@@ -32,7 +32,7 @@ class _ChangeDesignRadioGroupState extends State<ChangeDesignRadioGroup> {
 
   /// changes the mode of the current radio group
   changeMode(ThemeMode? newMode) {
-    if(newMode != null) {
+    if (newMode != null) {
       setState(() {
         _mode = newMode;
       });

@@ -5,6 +5,7 @@ import 'package:happy_plants/screens/home/tabs/options/list_groups/push_notifica
 import 'package:happy_plants/services/authentication.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:provider/provider.dart';
+
 class Options extends StatefulWidget {
   const Options({Key? key}) : super(key: key);
 
@@ -18,28 +19,21 @@ class _OptionsState extends State<Options> {
   DbUser? dbUser;
   bool isInitialized = false;
 
-
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<DbUser?>(context);
 
-    if(user != null) {
-      return ListView(
-          key: _key,
-          children: <Widget>[
+    if (user != null) {
+      return ListView(key: _key, children: <Widget>[
+        // ALWAYS DISPLAYED
+        AccountSettings(user: user),
+        DesignSettings(user: user),
 
-            // ALWAYS DISPLAYED
-            AccountSettings(user: user),
-            DesignSettings(user: user),
-
-            // OPTIONAL SETTINGS
-            const PushNotificationSettings(),
-          ]
-      );
+        // OPTIONAL SETTINGS
+        const PushNotificationSettings(),
+      ]);
     } else {
       return Column();
     }
-
-
   }
 }

@@ -26,21 +26,20 @@ import 'screens/notifications/notification.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 // Settings for the notification class
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 /// Streams are created so that app can respond to notification-related events
 /// since the plugin is initialised in the `main` function
-final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject = BehaviorSubject<ReceivedNotification>();
-final BehaviorSubject<String?> selectNotificationSubject = BehaviorSubject<String?>();
+final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject =
+    BehaviorSubject<ReceivedNotification>();
+final BehaviorSubject<String?> selectNotificationSubject =
+    BehaviorSubject<String?>();
 String? selectedNotificationPayload;
-
-
 
 /// Start the app
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-
 
   /// INIT SHARED PREFS
   sharedPreferences = await SharedPreferences.getInstance();
@@ -51,35 +50,33 @@ Future<void> main() async {
   /// INIT NOTIFICATIONS
   await _configureLocalTimeZone();
 
-  final NotificationAppLaunchDetails? notificationAppLaunchDetails = !kIsWeb && Platform.isLinux
-      ? null : await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+  final NotificationAppLaunchDetails? notificationAppLaunchDetails = !kIsWeb &&
+          Platform.isLinux
+      ? null
+      : await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
-  const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('ic_launcher');
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('ic_launcher');
 
-  const InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
+  const InitializationSettings initializationSettings =
+      InitializationSettings(android: initializationSettingsAndroid);
 
   await flutterLocalNotificationsPlugin.initialize(initializationSettings,
       onSelectNotification: (String? payload) async {
-        if (payload != null) {
-          debugPrint('notification payload: $payload');
-        }
-        selectedNotificationPayload = payload;
-        selectNotificationSubject.add(payload);
-      }
-  );
-
-
+    if (payload != null) {
+      debugPrint('notification payload: $payload');
+    }
+    selectedNotificationPayload = payload;
+    selectNotificationSubject.add(payload);
+  });
 
   /// LOAD FIREBASE
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-
   /// START APP
-  runApp(
-    MyApp(notificationAppLaunchDetails: notificationAppLaunchDetails)
-  );
+  runApp(MyApp(notificationAppLaunchDetails: notificationAppLaunchDetails));
 }
 
 /// Configures the local time Zone for the project
@@ -96,17 +93,16 @@ Future<void> _configureLocalTimeZone() async {
 class MyApp extends StatefulWidget {
   const MyApp({Key? key, this.notificationAppLaunchDetails}) : super(key: key);
 
-
   final NotificationAppLaunchDetails? notificationAppLaunchDetails;
 
-  bool get didNotificationLaunchApp => notificationAppLaunchDetails?.didNotificationLaunchApp ?? false;
+  bool get didNotificationLaunchApp =>
+      notificationAppLaunchDetails?.didNotificationLaunchApp ?? false;
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   void initState() {
     super.initState();
@@ -117,27 +113,26 @@ class _MyAppState extends State<MyApp> {
     // NotificationScreen stuff
     _requestPermissions();
     _configureDidReceiveLocalNotificationSubject();
-
   }
 
   /// Request notification permissions
   void _requestPermissions() {
     flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-        IOSFlutterLocalNotificationsPlugin>()
+            IOSFlutterLocalNotificationsPlugin>()
         ?.requestPermissions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+          alert: true,
+          badge: true,
+          sound: true,
+        );
     flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-        MacOSFlutterLocalNotificationsPlugin>()
+            MacOSFlutterLocalNotificationsPlugin>()
         ?.requestPermissions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+          alert: true,
+          badge: true,
+          sound: true,
+        );
   }
 
   /// Checks if the notification arrives and gives it to the notification widget
@@ -161,8 +156,8 @@ class _MyAppState extends State<MyApp> {
                 await Navigator.push(
                   context,
                   MaterialPageRoute<void>(
-                    builder: (BuildContext context) =>
-                        NotificationScreen(eventId: receivedNotification.payload),
+                    builder: (BuildContext context) => NotificationScreen(
+                        eventId: receivedNotification.payload),
                   ),
                 );
               },
@@ -181,10 +176,8 @@ class _MyAppState extends State<MyApp> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return StreamProvider<CustomUser?>.value(
       value: AuthService().user,
       initialData: null,
@@ -197,7 +190,9 @@ class _MyAppState extends State<MyApp> {
         initialRoute: '/',
         routes: {
           '/': (_) => const Wrapper(),
-          NotificationScreen.routeName: (context) => NotificationScreen(eventId: selectedNotificationPayload,),
+          NotificationScreen.routeName: (context) => NotificationScreen(
+                eventId: selectedNotificationPayload,
+              ),
           '/newGarden': (context) => const NewGarden(),
           '/forgetPassword': (context) => const ForgetPassword(),
           '/signUp': (context) => const SignUpForm(),
@@ -206,5 +201,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
-

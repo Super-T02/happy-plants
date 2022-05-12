@@ -4,16 +4,18 @@ import 'package:happy_plants/services/util_service.dart';
 import 'package:happy_plants/shared/models/user.dart';
 import 'package:happy_plants/shared/models/settings.dart';
 
-class UserService{
-  static final CollectionReference users = FirebaseFirestore.instance.collection('users');
+class UserService {
+  static final CollectionReference users =
+      FirebaseFirestore.instance.collection('users');
 
   /// Checks if a user exists in the Firestore
   static Future<bool> userExists(CustomUser user) async {
     try {
-
-      var doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      var doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
       return doc.exists;
-
     } catch (e) {
       UtilService.showError('User not found', 'User cannot be found!');
       return false;
@@ -21,12 +23,12 @@ class UserService{
   }
 
   /// Generate add a new User to the Firestore
-  static Future<void> generateUser(CustomUser? user, bool isEmailPasswordAuth) async {
-    if(user != null){
-    bool exists = await UserService.userExists(user);
+  static Future<void> generateUser(
+      CustomUser? user, bool isEmailPasswordAuth) async {
+    if (user != null) {
+      bool exists = await UserService.userExists(user);
 
-      if(!exists){
-
+      if (!exists) {
         try {
           return users.doc(user.uid).set({
             'email': user.email.trim(),
@@ -37,7 +39,6 @@ class UserService{
         } catch (e) {
           UtilService.showError('Internal error', 'User cannot be generated');
         }
-
       }
     } else {
       return;
@@ -45,7 +46,7 @@ class UserService{
   }
 
   /// Replaces the db entry for the user
-  static Future<void> putNewDbUser(DbUser user){
+  static Future<void> putNewDbUser(DbUser user) {
     user.settings ??= CustomSettings.getDefault();
 
     debugPrint(user.settings!.designSettings.colorScheme.toString());
@@ -60,11 +61,11 @@ class UserService{
 
   /// Generates a snapshot stream of the user instance
   Stream<DbUser?> userStream(String? id) {
-
-    if(id == null) return Stream.value(null);
+    if (id == null) return Stream.value(null);
 
     // ID is not null:
-    final snapshot = FirebaseFirestore.instance.collection('users').doc(id).snapshots();
+    final snapshot =
+        FirebaseFirestore.instance.collection('users').doc(id).snapshots();
 
     return snapshot.map((data) {
       DbUser user = DbUser(
@@ -74,20 +75,20 @@ class UserService{
         name: data['name'],
       );
 
-      if(data['settings'] == null) {
+      if (data['settings'] == null) {
         user.settings = CustomSettings.getDefault();
-
       } else {
         ThemeMode _mode;
 
         // map time of day
         TimeOfDay _notificationTime = TimeOfDay(
-            hour:  data['settings']['pushNotificationSettings']['notificationTime']['hour'],
-            minute:  data['settings']['pushNotificationSettings']['notificationTime']['minute']
-        );
+            hour: data['settings']['pushNotificationSettings']
+                ['notificationTime']['hour'],
+            minute: data['settings']['pushNotificationSettings']
+                ['notificationTime']['minute']);
 
         // chose theme mode
-        switch(data['settings']['designSettings']['colorScheme']){
+        switch (data['settings']['designSettings']['colorScheme']) {
           case 'ThemeMode.system':
             _mode = ThemeMode.system;
             break;
@@ -117,6 +118,4 @@ class UserService{
       return user;
     });
   }
-
-
 }

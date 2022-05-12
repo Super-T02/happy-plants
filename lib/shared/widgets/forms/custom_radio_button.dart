@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class CustomRadioButton<T> extends StatelessWidget {
-  const CustomRadioButton({
-    Key? key,
-    required this.value,
-    required this.text,
-    required this.onChange,
-    this.groupValue
-  }) : super(key: key);
+  const CustomRadioButton(
+      {Key? key,
+      required this.value,
+      required this.text,
+      required this.onChange,
+      this.groupValue})
+      : super(key: key);
 
   final T value;
   final String text;
@@ -17,12 +17,9 @@ class CustomRadioButton<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RadioListTile<T>(
-      title: Text(text),
-      value: value,
-      groupValue: groupValue,
-      onChanged: onChange
-    );
+        title: Text(text),
+        value: value,
+        groupValue: groupValue,
+        onChanged: onChange);
   }
 }
-
-

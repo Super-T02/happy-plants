@@ -35,9 +35,8 @@ class _WrapperState extends State<Wrapper> {
   Widget build(BuildContext context) {
     final user = Provider.of<CustomUser?>(context);
 
-
     // Open home or sign_in
-    if(user == null){
+    if (user == null) {
       return const SignIn(title: 'Happy Plants');
     } else {
       return StreamProvider<DbUser?>.value(

@@ -23,7 +23,6 @@ class _ListOfGardensState extends State<ListOfGardens> {
   final lightImage = "assets/images/LightGardenEmpty.svg";
   final darkImage = "assets/images/DarkGardenEmpty.svg";
 
-
   @override
   Widget build(BuildContext context) {
     // Get user of context
@@ -32,7 +31,8 @@ class _ListOfGardensState extends State<ListOfGardens> {
     final theme = Theme.of(context);
 
     // Get the current data stream for the authenticated user
-    final Stream<QuerySnapshot> _gardenStream = GardenService.gardenStream(user);
+    final Stream<QuerySnapshot> _gardenStream =
+        GardenService.gardenStream(user);
 
     Widget widget;
 
@@ -42,7 +42,8 @@ class _ListOfGardensState extends State<ListOfGardens> {
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         // Has errors
         if (snapshot.hasError) {
-          UtilService.showError('Something went Wrong', 'Please try later again');
+          UtilService.showError(
+              'Something went Wrong', 'Please try later again');
           return const Text("Something went wrong");
         }
 
@@ -52,7 +53,7 @@ class _ListOfGardensState extends State<ListOfGardens> {
         }
 
         // Display empty text or not
-        if(snapshot.data!.docs.isEmpty){
+        if (snapshot.data!.docs.isEmpty) {
           widget = Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
@@ -61,13 +62,18 @@ class _ListOfGardensState extends State<ListOfGardens> {
                 'You have no garden yet :(',
                 style: theme.textTheme.headline3!,
               ),
-              const SizedBox(height: 32.0,),
+              const SizedBox(
+                height: 32.0,
+              ),
               SizedBox(
                 height: 200,
                 width: MediaQuery.of(context).size.width * 0.8,
-                child: SvgPicture.asset(darkMode == Brightness.dark? darkImage : lightImage),
+                child: SvgPicture.asset(
+                    darkMode == Brightness.dark ? darkImage : lightImage),
               ),
-              const SizedBox(height: 32.0,),
+              const SizedBox(
+                height: 32.0,
+              ),
               CustomButton(
                 onTap: () {
                   Navigator.of(context).pushNamed('/newGarden');
@@ -78,20 +84,29 @@ class _ListOfGardensState extends State<ListOfGardens> {
               )
             ],
           );
-
         } else {
           widget = Expanded(
               child: ListView(
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                padding: const EdgeInsets.all(15), //padding from screen to widget
-                addAutomaticKeepAlives: true,
-                children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                  Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                  return GardenSingle(garden: Garden(name: data['name'], icon: data['icon'], id: document.id));
-                }).toList(),
-              )
-          );
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            padding: const EdgeInsets.all(15), //padding from screen to widget
+            addAutomaticKeepAlives: true,
+            children: [
+              const SizedBox(
+                height: 16.0,
+              ),
+              // Add the Gardens to the screen
+              ...snapshot.data!.docs.map((DocumentSnapshot document) {
+                Map<String, dynamic> data =
+                    document.data()! as Map<String, dynamic>;
+                return GardenSingle(
+                    garden: Garden(
+                        name: data['name'],
+                        icon: data['icon'],
+                        id: document.id));
+              }).toList()
+            ],
+          ));
         }
 
         // Widget to be returned if the request was successful

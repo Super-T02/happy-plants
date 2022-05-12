@@ -6,7 +6,8 @@ import '../../../../../../shared/models/user.dart';
 import 'all_templates.dart';
 
 class NewPlantTemplate extends StatefulWidget {
-  const NewPlantTemplate({Key? key, required this.user, required this.garden}) : super(key: key);
+  const NewPlantTemplate({Key? key, required this.user, required this.garden})
+      : super(key: key);
 
   final CustomUser user;
   final Garden garden;
@@ -23,11 +24,12 @@ class _NewPlantTemplateState extends State<NewPlantTemplate> {
     List<Widget> allTemplateWidgets = [];
     List<Plant> allTemplatePlants = Templates.getAllTemplates(widget.garden.id);
 
-    for(Plant plant in allTemplatePlants){
-      allTemplateWidgets.add(
-          NewPlantTemplateSingleEntry(user: widget.user, garden: widget.garden,
-              plant: plant, iconForEntry: const Icon(Icons.yard))
-      );
+    for (Plant plant in allTemplatePlants) {
+      allTemplateWidgets.add(NewPlantTemplateSingleEntry(
+          user: widget.user,
+          garden: widget.garden,
+          plant: plant,
+          iconForEntry: const Icon(Icons.yard)));
     }
 
     return Scaffold(
@@ -44,6 +46,7 @@ class _NewPlantTemplateState extends State<NewPlantTemplate> {
         addAutomaticKeepAlives: true,
         children: allTemplateWidgets,
       ),
-    );;
+    );
+    ;
   }
 }

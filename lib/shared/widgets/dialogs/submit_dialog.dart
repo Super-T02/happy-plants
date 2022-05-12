@@ -16,30 +16,35 @@ class SubmitDialog extends StatelessWidget {
   final Function onSubmit;
   final Function? onAbort;
 
-
-
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
-    InputDecorationTheme inputDecorationTheme = Theme.of(context).inputDecorationTheme;
+    InputDecorationTheme inputDecorationTheme =
+        Theme.of(context).inputDecorationTheme;
     ThemeData theme = Theme.of(context);
     return AlertDialog(
-      title: Text(title, textAlign: TextAlign.center, style: textTheme.headline3,),
+      title: Text(
+        title,
+        textAlign: TextAlign.center,
+        style: textTheme.headline3,
+      ),
       actions: [
         CustomButton(
-          onTap: (){
-              Navigator.pop(context);
-              onSubmit();
-            },
+          onTap: () {
+            Navigator.pop(context);
+            onSubmit();
+          },
           text: submitText,
           isDanger: true,
         ),
-        const SizedBox(height: 16.0,),
+        const SizedBox(
+          height: 16.0,
+        ),
         CustomButton(
-          onTap: (){
-              Navigator.pop(context);
-              if(onAbort != null) onAbort!();
-            },
+          onTap: () {
+            Navigator.pop(context);
+            if (onAbort != null) onAbort!();
+          },
           text: 'Abort',
         )
       ],

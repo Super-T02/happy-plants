@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import '../../../../../../shared/widgets/util/custom_form_field.dart';
 
 class StringPicker extends StatefulWidget {
-  const StringPicker({Key? key, required this.plantNameController, required this.heading, required this.hint}) : super(key: key);
+  const StringPicker(
+      {Key? key,
+      required this.plantNameController,
+      required this.heading,
+      required this.hint})
+      : super(key: key);
 
   final TextEditingController plantNameController;
   final String heading;
@@ -13,10 +18,9 @@ class StringPicker extends StatefulWidget {
 }
 
 class _StringPickerState extends State<StringPicker> {
-
   /// Validator for the plant name
   String? nameValidator(String? value) {
-    if(value == null || value.isEmpty){
+    if (value == null || value.isEmpty) {
       return 'Please enter a name';
     } else {
       return null;
@@ -34,7 +38,6 @@ class _StringPickerState extends State<StringPicker> {
         textInputAction: TextInputAction.done,
         controller: widget.plantNameController,
         maxLines: 1,
-        validator: nameValidator
-    );
+        validator: nameValidator);
   }
 }

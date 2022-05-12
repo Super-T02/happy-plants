@@ -9,30 +9,29 @@ import '../shared/utilities/sizes.dart';
 import '../shared/utilities/util.dart';
 
 class PlantService {
-
   /// Adds a new plant
-  static Future<void> addPlant( AddPlant newPlant, CustomUser user) async {
-    CollectionReference plants = getPlantsCollectionRef(user, newPlant.gardenID);
-
+  static Future<void> addPlant(AddPlant newPlant, CustomUser user) async {
+    CollectionReference plants =
+        getPlantsCollectionRef(user, newPlant.gardenID);
 
     dynamic dustOff, fertilize, plantSize, repot, spray, watering;
 
-    if(newPlant.dustOff != null){
+    if (newPlant.dustOff != null) {
       dustOff = newPlant.dustOff;
     }
-    if(newPlant.fertilize != null){
+    if (newPlant.fertilize != null) {
       fertilize = newPlant.fertilize;
     }
-    if(newPlant.plantSize != null){
+    if (newPlant.plantSize != null) {
       plantSize = newPlant.plantSize;
     }
-    if(newPlant.repot != null){
+    if (newPlant.repot != null) {
       repot = newPlant.repot;
     }
-    if(newPlant.spray != null){
+    if (newPlant.spray != null) {
       spray = newPlant.spray;
     }
-    if(newPlant.watering != null){
+    if (newPlant.watering != null) {
       watering = newPlant.watering;
     }
 
@@ -56,35 +55,39 @@ class PlantService {
 
   /// Updates a plant based on its plant id
   static Future<void> putPlant(Plant updatedPlant, CustomUser user) async {
-    DocumentReference plant = getPlantDocRef(updatedPlant.id, updatedPlant.gardenID, user.uid);
+    DocumentReference plant =
+        getPlantDocRef(updatedPlant.id, updatedPlant.gardenID, user.uid);
 
     notificationService.cancelAllNotifications();
 
     dynamic dustOff, fertilize, plantSize, repot, spray, watering;
 
-    if(updatedPlant.dustOff != null){
+    if (updatedPlant.dustOff != null) {
       dustOff = updatedPlant.dustOff;
     }
-    if(updatedPlant.fertilize != null){
+    if (updatedPlant.fertilize != null) {
       fertilize = updatedPlant.fertilize;
     }
-    if(updatedPlant.plantSize != null){
+    if (updatedPlant.plantSize != null) {
       plantSize = updatedPlant.plantSize;
     }
-    if(updatedPlant.repot != null){
+    if (updatedPlant.repot != null) {
       repot = updatedPlant.repot;
     }
-    if(updatedPlant.spray != null){
+    if (updatedPlant.spray != null) {
       spray = updatedPlant.spray;
     }
-    if(updatedPlant.watering != null){
+    if (updatedPlant.watering != null) {
       watering = updatedPlant.watering;
     }
 
     CollectionReference events = EventService.getEventsCollectionRef(user);
 
     // Delete all events
-    events.where('plantId', isEqualTo: updatedPlant.id).get().then((QuerySnapshot querySnapshot) async {
+    events
+        .where('plantId', isEqualTo: updatedPlant.id)
+        .get()
+        .then((QuerySnapshot querySnapshot) async {
       for (DocumentSnapshot event in querySnapshot.docs) {
         await EventService.deleteEvent(event.id, user);
       }
@@ -129,17 +132,15 @@ class PlantService {
 
   /// Updates a plant based on its gardenID and plantId
   /// WARNING: PATCH PLANT DOES NOT UPDATE THE NOTIFICATIONS!!!!!
-  static Future<void> patchPlant(String gardenID, String plantId, String fieldName, dynamic updatedValue, CustomUser user) {
+  static Future<void> patchPlant(String gardenID, String plantId,
+      String fieldName, dynamic updatedValue, CustomUser user) {
     dynamic result;
 
-    try{
+    try {
       Util.startLoading();
 
       DocumentReference plant = getPlantDocRef(plantId, gardenID, user.uid);
-      result = plant.update({
-        fieldName: updatedValue
-      });
-
+      result = plant.update({fieldName: updatedValue});
     } finally {
       Util.endLoading();
     }
@@ -148,7 +149,8 @@ class PlantService {
   }
 
   /// Deletes a plants based on its plantId
-  static Future<void> deletePlant(String plantId, String gardenID, CustomUser user) async {
+  static Future<void> deletePlant(
+      String plantId, String gardenID, CustomUser user) async {
     DocumentReference plantDoc = getPlantDocRef(plantId, gardenID, user.uid);
     try {
       Util.startLoading();
@@ -156,7 +158,10 @@ class PlantService {
       CollectionReference events = EventService.getEventsCollectionRef(user);
 
       // Delete all events
-      events.where('plantId', isEqualTo: plantId).get().then((QuerySnapshot querySnapshot) async {
+      events
+          .where('plantId', isEqualTo: plantId)
+          .get()
+          .then((QuerySnapshot querySnapshot) async {
         for (DocumentSnapshot event in querySnapshot.docs) {
           await EventService.deleteEvent(event.id, user);
         }
@@ -172,26 +177,35 @@ class PlantService {
   }
 
   /// Get the ref on a garden instance based on the user, gardenId and plantId
-  static DocumentReference getPlantDocRef(String plantId, String gardenID, String userId) {
+  static DocumentReference getPlantDocRef(
+      String plantId, String gardenID, String userId) {
     return FirebaseFirestore.instance
-        .collection('users').doc(userId)
-        .collection('gardens').doc(gardenID)
-        .collection('plants').doc(plantId);
+        .collection('users')
+        .doc(userId)
+        .collection('gardens')
+        .doc(gardenID)
+        .collection('plants')
+        .doc(plantId);
   }
 
   /// Get the ref on the plants collection based on the user id and garden id
-  static CollectionReference getPlantsCollectionRef(CustomUser user, String gardenId) {
+  static CollectionReference getPlantsCollectionRef(
+      CustomUser user, String gardenId) {
     return FirebaseFirestore.instance
-        .collection('users').doc(user.uid)
-        .collection('gardens').doc(gardenId)
+        .collection('users')
+        .doc(user.uid)
+        .collection('gardens')
+        .doc(gardenId)
         .collection('plants');
   }
 
   /// Generates a snapshot stream of the plant instances
   static Stream<QuerySnapshot> plantStream(CustomUser user, String gardenId) {
     return FirebaseFirestore.instance
-        .collection('users').doc(user.uid)
-        .collection('gardens').doc(gardenId)
+        .collection('users')
+        .doc(user.uid)
+        .collection('gardens')
+        .doc(gardenId)
         .collection('plants')
         .snapshots();
   }
@@ -200,12 +214,11 @@ class PlantService {
   static _addEventsAll(AddPlant plant, CustomUser user, plantId) async {
     List<String> eventIds = [];
 
-
     // Watering
-    if(plant.watering != null){
+    if (plant.watering != null) {
       Watering watering = plant.watering!;
 
-      if(watering.startDate != null && watering.interval != null) {
+      if (watering.startDate != null && watering.interval != null) {
         DocumentReference event = await EventService.addEvent(
             EventsModel<Watering>(
               userId: user.uid,
@@ -216,18 +229,17 @@ class PlantService {
               data: watering,
               startDate: watering.startDate!,
             ),
-            user
-        );
+            user);
 
         eventIds.add(event.id);
       }
     }
 
     // Spray
-    if(plant.spray != null){
+    if (plant.spray != null) {
       IntervalDateTime spray = plant.spray!;
 
-      if(spray.startDate != null && spray.interval != null) {
+      if (spray.startDate != null && spray.interval != null) {
         DocumentReference event = await EventService.addEvent(
             EventsModel<IntervalDateTime>(
               userId: user.uid,
@@ -238,19 +250,17 @@ class PlantService {
               data: spray,
               startDate: spray.startDate!,
             ),
-            user
-        );
-
+            user);
 
         eventIds.add(event.id);
       }
     }
 
     // Fertilize
-    if(plant.fertilize != null){
+    if (plant.fertilize != null) {
       Fertilize fertilize = plant.fertilize!;
 
-      if(fertilize.startDate != null && fertilize.interval != null) {
+      if (fertilize.startDate != null && fertilize.interval != null) {
         DocumentReference event = await EventService.addEvent(
             EventsModel<Fertilize>(
               userId: user.uid,
@@ -261,18 +271,17 @@ class PlantService {
               data: fertilize,
               startDate: fertilize.startDate!,
             ),
-            user
-        );
+            user);
 
         eventIds.add(event.id);
       }
     }
 
     // Repot
-    if(plant.repot != null){
+    if (plant.repot != null) {
       IntervalDateTime repot = plant.repot!;
 
-      if(repot.startDate != null && repot.interval != null) {
+      if (repot.startDate != null && repot.interval != null) {
         DocumentReference event = await EventService.addEvent(
             EventsModel<IntervalDateTime>(
               userId: user.uid,
@@ -283,18 +292,17 @@ class PlantService {
               data: repot,
               startDate: repot.startDate!,
             ),
-            user
-        );
+            user);
 
         eventIds.add(event.id);
       }
     }
 
     // DustOff
-    if(plant.dustOff != null){
+    if (plant.dustOff != null) {
       IntervalDateTime dustOff = plant.dustOff!;
 
-      if(dustOff.startDate != null && dustOff.interval != null) {
+      if (dustOff.startDate != null && dustOff.interval != null) {
         DocumentReference event = await EventService.addEvent(
             EventsModel<IntervalDateTime>(
               userId: user.uid,
@@ -305,8 +313,7 @@ class PlantService {
               data: dustOff,
               startDate: dustOff.startDate!,
             ),
-            user
-        );
+            user);
 
         eventIds.add(event.id);
       }
@@ -315,7 +322,8 @@ class PlantService {
     patchPlant(plant.gardenID, plantId, 'events', eventIds, user);
   }
 
-  static Future<DocumentSnapshot> getPlantSnapshot(String plantId,String gardenID, String userId) {
+  static Future<DocumentSnapshot> getPlantSnapshot(
+      String plantId, String gardenID, String userId) {
     return getPlantDocRef(plantId, gardenID, userId).get();
   }
 }

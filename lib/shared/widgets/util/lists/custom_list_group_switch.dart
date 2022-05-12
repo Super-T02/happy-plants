@@ -20,7 +20,6 @@ class CustomListGroupSwitch extends StatefulWidget {
 }
 
 class _CustomListGroupSwitchState extends State<CustomListGroupSwitch> {
-
   bool? isEnabled;
 
   @override
@@ -34,9 +33,8 @@ class _CustomListGroupSwitchState extends State<CustomListGroupSwitch> {
     ThemeData theme = Theme.of(context);
     List<Widget> children = [];
 
-
     // Only display the options, when enabled
-    if(isEnabled!) {
+    if (isEnabled!) {
       children = widget.children;
     }
 
@@ -46,9 +44,12 @@ class _CustomListGroupSwitchState extends State<CustomListGroupSwitch> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: List<Widget>.from([
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(widget.title, style: theme.textTheme.headline3,),
+                Text(
+                  widget.title,
+                  style: theme.textTheme.headline3,
+                ),
                 Switch(
                     value: isEnabled!,
                     activeColor: theme.primaryColor,
@@ -57,12 +58,10 @@ class _CustomListGroupSwitchState extends State<CustomListGroupSwitch> {
                         isEnabled = changedValue;
                       });
                       widget.onSwitchChange(changedValue);
-                    }
-                ),
-              ]
-          ),
-
-        ])..addAll(children),
+                    }),
+              ]),
+        ])
+          ..addAll(children),
       ),
     );
   }

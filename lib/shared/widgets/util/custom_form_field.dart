@@ -2,22 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:happy_plants/shared/utilities/custom_text_styles.dart';
 import '../../utilities/app_colors.dart';
 
-
 class CustomFormField extends StatefulWidget {
-  const CustomFormField(
-      {Key? key,
-        required this.headingText,
-        required this.hintText,
-        required this.obscureText,
-        required this.textInputType,
-        required this.textInputAction,
-        required this.controller,
-        required this.maxLines,
-        required this.validator,
-        this.suffixIcon,
-        this.onChange,
-      })
-      : super(key: key);
+  const CustomFormField({
+    Key? key,
+    required this.headingText,
+    required this.hintText,
+    required this.obscureText,
+    required this.textInputType,
+    required this.textInputAction,
+    required this.controller,
+    required this.maxLines,
+    required this.validator,
+    this.suffixIcon,
+    this.onChange,
+  }) : super(key: key);
 
   final String headingText;
   final String hintText;
@@ -56,8 +54,8 @@ class _CustomFormFieldState extends State<CustomFormField> {
   }
 
   /// Generates the color of the suffix icon
-  Color? _getIconColor(){
-    if(_focus.hasFocus){
+  Color? _getIconColor() {
+    if (_focus.hasFocus) {
       return AppColors.accent1;
     }
 
@@ -68,10 +66,11 @@ class _CustomFormFieldState extends State<CustomFormField> {
   Widget build(BuildContext context) {
     Widget? icon;
     TextTheme textTheme = Theme.of(context).textTheme;
-    InputDecorationTheme inputDecorationTheme = Theme.of(context).inputDecorationTheme;
+    InputDecorationTheme inputDecorationTheme =
+        Theme.of(context).inputDecorationTheme;
     ThemeData theme = Theme.of(context);
 
-    if(widget.suffixIcon != null) {
+    if (widget.suffixIcon != null) {
       icon = Icon(widget.suffixIcon, color: _getIconColor());
     }
 
@@ -90,20 +89,18 @@ class _CustomFormFieldState extends State<CustomFormField> {
             keyboardType: widget.textInputType,
             obscureText: widget.obscureText,
             style: Theme.of(context).textTheme.bodyText1,
-            onChanged: (String? value){
-              if(widget.onChange != null) widget.onChange!(value);
+            onChanged: (String? value) {
+              if (widget.onChange != null) widget.onChange!(value);
             },
             // Decoration
             decoration: InputDecoration(
                 focusColor: AppColors.accent1,
                 hintText: widget.hintText,
                 labelText: widget.headingText,
-                suffixIcon: icon
-            ),
+                suffixIcon: icon),
           ),
         ),
       ],
     );
   }
 }
-

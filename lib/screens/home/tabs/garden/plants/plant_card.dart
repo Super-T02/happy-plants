@@ -12,7 +12,8 @@ import '../../../../../shared/widgets/util/image_card.dart';
 import 'edit_plant.dart';
 
 class PlantSingle extends StatefulWidget {
-  const PlantSingle({Key? key, required this.plant, required this.garden}) : super(key: key);
+  const PlantSingle({Key? key, required this.plant, required this.garden})
+      : super(key: key);
 
   final Plant plant;
   final Garden garden;
@@ -25,11 +26,12 @@ class _PlantSingleState extends State<PlantSingle> {
   bool longPress = false;
 
   /// Opens the garden
-  void openPlant(Plant plant, CustomUser user){
+  void openPlant(Plant plant, CustomUser user) {
     Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => ViewPlant(user: user, garden: widget.garden, plant: plant))
-    );
+        MaterialPageRoute(
+            builder: (context) =>
+                ViewPlant(user: user, garden: widget.garden, plant: plant)));
   }
 
   /// Delete the garden
@@ -50,37 +52,39 @@ class _PlantSingleState extends State<PlantSingle> {
     AssetImage imageAsWidget = AssetImage(stringOfImageName);
 
     //check if string of filename is known, if yes paste it in path
-    if(Plant.checkItemName(widget.plant.icon)) {
-      stringOfImageName = 'assets/images/plant_backgrounds/${widget.plant.icon}.jpg'; // Selected picture
+    if (Plant.checkItemName(widget.plant.icon)) {
+      stringOfImageName =
+          'assets/images/plant_backgrounds/${widget.plant.icon}.jpg'; // Selected picture
 
-      try {//try to access picture in path created
+      try {
+        //try to access picture in path created
         imageAsWidget = AssetImage(stringOfImageName);
       } catch (e) {
-        imageAsWidget = const AssetImage('assets/images/plant_backgrounds/cactus.jpg'); // One
+        imageAsWidget = const AssetImage(
+            'assets/images/plant_backgrounds/cactus.jpg'); // One
       }
-    }
-    else{
-      imageAsWidget = const AssetImage('assets/images/plant_backgrounds/bonsai.jpg'); // One
+    } else {
+      imageAsWidget =
+          const AssetImage('assets/images/plant_backgrounds/bonsai.jpg'); // One
     }
 
     return CustomCupertinoContextMenu(
-
       // Handles gestures
       child: GestureDetector(
         onTap: () {
-          if(!longPress){
+          if (!longPress) {
             openPlant(widget.plant, user!);
           }
         },
 
         onLongPressStart: (details) {
           longPress = true;
-          Future.delayed(const Duration(seconds: 3), (){
+          Future.delayed(const Duration(seconds: 3), () {
             longPress = false;
           });
         },
 
-        onLongPressEnd: (details){
+        onLongPressEnd: (details) {
           longPress = false;
         },
 
@@ -89,19 +93,15 @@ class _PlantSingleState extends State<PlantSingle> {
             semanticContainer: true,
             margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0)
-            ),
+                borderRadius: BorderRadius.circular(8.0)),
             child: Container(
               height: 200,
               width: 200,
 
               // Image for the background of the card
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  image: DecorationImage(
-                      image: imageAsWidget,
-                      fit: BoxFit.cover
-                ),
+                borderRadius: BorderRadius.circular(8.0),
+                image: DecorationImage(image: imageAsWidget, fit: BoxFit.cover),
               ),
 
               // Text on displayed on the card
@@ -122,16 +122,13 @@ class _PlantSingleState extends State<PlantSingle> {
                         softWrap: true,
                         maxLines: 1,
                         style: Theme.of(context).textTheme.headline5!.copyWith(
-                          color: Colors.white,
-                        ),
+                              color: Colors.white,
+                            ),
                       ),
                     ),
-                  )
-              ),
-            )
-        ),
+                  )),
+            )),
       ),
-
 
       // Actions to perform on long press
       actionItems: <CustomCupertinoContextMenuAction>[
@@ -139,38 +136,39 @@ class _PlantSingleState extends State<PlantSingle> {
           text: "Open",
           color: Theme.of(context).textTheme.bodyText1!.color!,
           icon: Icons.open_in_new_outlined,
-          onPressed: (){
+          onPressed: () {
             Navigator.of(context).pop();
             openPlant(widget.plant, user!);
           },
         ),
         CustomCupertinoContextMenuAction(
           text: "Edit",
-
           color: Theme.of(context).textTheme.bodyText1!.color!,
           icon: Icons.edit_outlined,
-          onPressed: (){
-            if(utilServiceConfig.plantOpen){
+          onPressed: () {
+            if (utilServiceConfig.plantOpen) {
               Navigator.pop(context);
             }
             Navigator.of(context).pop();
             Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => EditPlant(user: user!, garden: widget.garden, plant: widget.plant))
-            );
+                MaterialPageRoute(
+                    builder: (context) => EditPlant(
+                        user: user!,
+                        garden: widget.garden,
+                        plant: widget.plant)));
           },
         ),
         CustomCupertinoContextMenuAction(
-          text: "Delete",
-          color: theme.errorColor,
-          icon: Icons.delete_outlined,
-          onPressed: (){
-            if(utilServiceConfig.plantOpen){
-              Navigator.pop(context);
-            }
-            deletePlant(widget.plant, widget.garden.id, user!);
-          }
-        ),
+            text: "Delete",
+            color: theme.errorColor,
+            icon: Icons.delete_outlined,
+            onPressed: () {
+              if (utilServiceConfig.plantOpen) {
+                Navigator.pop(context);
+              }
+              deletePlant(widget.plant, widget.garden.id, user!);
+            }),
       ],
     );
   }

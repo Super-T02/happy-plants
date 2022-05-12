@@ -7,8 +7,6 @@ class AppColors {
   static const Color blackShade = Color(0xFF555555);
   static const Color accent1 = Color.fromARGB(255, 7, 232, 89);
 
-
-
   //light mode colors
   static const Color lightWhiteHighlight = Color.fromARGB(255, 250, 250, 250);
   static const hintTextLight = Color(0xFF7A7A7F);
@@ -23,8 +21,7 @@ class AppColors {
       background: Color(0xFF68686C),
       onBackground: Colors.white,
       surface: blackShade,
-      onSurface: Colors.white
-  );
+      onSurface: Colors.white);
 
   //dark mode colors
   static const Color darkGreyHighlight = Color.fromARGB(255, 45, 45, 45);
@@ -40,6 +37,5 @@ class AppColors {
       background: Color(0xFF68686C),
       onBackground: Colors.white,
       surface: blackShade,
-      onSurface: Colors.white
-  );
+      onSurface: Colors.white);
 }

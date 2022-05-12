@@ -16,7 +16,8 @@ class PushNotificationSettings extends StatefulWidget {
   const PushNotificationSettings({Key? key}) : super(key: key);
 
   @override
-  State<PushNotificationSettings> createState() => _PushNotificationSettingsState();
+  State<PushNotificationSettings> createState() =>
+      _PushNotificationSettingsState();
 }
 
 class _PushNotificationSettingsState extends State<PushNotificationSettings> {
@@ -32,7 +33,6 @@ class _PushNotificationSettingsState extends State<PushNotificationSettings> {
 
   /// Enables or disables the notifications for this app
   Future<void> onSwitchChange(bool isEnabledNew, DbUser user) async {
-
     // Set the settings in the cloud
     user.settings ??= CustomSettings(
       designSettings: DesignSettingsModel(),
@@ -45,13 +45,11 @@ class _PushNotificationSettingsState extends State<PushNotificationSettings> {
 
     SharedPreferencesController.setNotificationTimeStatus(isEnabledNew);
 
-    if(!isEnabledNew) {
+    if (!isEnabledNew) {
       notificationService.cancelAllNotifications();
     } else {
       EventService.scheduleAllNotifications(user);
     }
-
-
 
     setState(() {
       isEnabled = SharedPreferencesController.getNotificationTimeStatus();
@@ -61,36 +59,41 @@ class _PushNotificationSettingsState extends State<PushNotificationSettings> {
 
   Future<void> onChangeNotificationTime(context, DbUser user) async {
     TextTheme textTheme = Theme.of(context).textTheme;
-    InputDecorationTheme inputDecorationTheme = Theme.of(context).inputDecorationTheme;
+    InputDecorationTheme inputDecorationTheme =
+        Theme.of(context).inputDecorationTheme;
     ThemeData theme = Theme.of(context);
 
     TimeOfDay? result = await showTimePicker(
       context: context,
       initialTime: time!,
       builder: (context, child) {
-      return Theme(
-        data: Theme.of(context).copyWith(
-          timePickerTheme: TimePickerThemeData(
-            backgroundColor: theme.scaffoldBackgroundColor,
-            helpTextStyle: textTheme.bodyText1,
-            dialTextColor: textTheme.bodyText1!.color,
-          ),
-          colorScheme: ColorScheme.light(
-            primary: AppColors.accent1, // header background color
-            onPrimary: AppColors.lightWhiteHighlight, // header text color
-            onSurface: Theme.of(context).textTheme.bodyText1!.color!, // body text color
-          ),
-          textButtonTheme: TextButtonThemeData(
-            style: TextButton.styleFrom(
-              primary: AppColors.accent1, // button text color
+        return Theme(
+          data: Theme.of(context).copyWith(
+            timePickerTheme: TimePickerThemeData(
+              backgroundColor: theme.scaffoldBackgroundColor,
+              helpTextStyle: textTheme.bodyText1,
+              dialTextColor: textTheme.bodyText1!.color,
+            ),
+            colorScheme: ColorScheme.light(
+              primary: AppColors.accent1, // header background color
+              onPrimary: AppColors.lightWhiteHighlight, // header text color
+              onSurface: Theme.of(context)
+                  .textTheme
+                  .bodyText1!
+                  .color!, // body text color
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                primary: AppColors.accent1, // button text color
+              ),
             ),
           ),
-        ),
-        child: child!,
-      );
-    },);
+          child: child!,
+        );
+      },
+    );
 
-    if(result != null) {
+    if (result != null) {
       // Set the settings in the cloud
       user.settings ??= CustomSettings(
         designSettings: DesignSettingsModel(),
@@ -143,15 +146,14 @@ class _PushNotificationSettingsState extends State<PushNotificationSettings> {
               SystemSettings.app();
             },
           ),
-        ]
-    );
+        ]);
   }
 
   /// Displays the current time in the wished format
-  String _displayCurrentTime(TimeOfDay time){
+  String _displayCurrentTime(TimeOfDay time) {
     String hour, minute, timeType;
 
-    if(time.hour <= 12){
+    if (time.hour <= 12) {
       timeType = 'am';
     } else {
       timeType = 'pm';
@@ -159,7 +161,7 @@ class _PushNotificationSettingsState extends State<PushNotificationSettings> {
 
     hour = time.hour.toString();
 
-    switch(time.hour) {
+    switch (time.hour) {
       case 13:
         hour = '1';
         break;
@@ -198,7 +200,7 @@ class _PushNotificationSettingsState extends State<PushNotificationSettings> {
         break;
     }
 
-    if(time.minute < 10){
+    if (time.minute < 10) {
       minute = '0' + time.minute.toString();
     } else {
       minute = time.minute.toString();
@@ -206,6 +208,4 @@ class _PushNotificationSettingsState extends State<PushNotificationSettings> {
 
     return 'Current: $hour:$minute $timeType';
   }
-
 }
-

@@ -16,26 +16,28 @@ class InformationDialog extends StatelessWidget {
   final Function onSubmit;
   final Function? onAbort;
 
-
-
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
-    InputDecorationTheme inputDecorationTheme = Theme.of(context).inputDecorationTheme;
+    InputDecorationTheme inputDecorationTheme =
+        Theme.of(context).inputDecorationTheme;
     ThemeData theme = Theme.of(context);
 
     return AlertDialog(
-      title: Text(title, textAlign: TextAlign.center, style: textTheme.headline3),
+      title:
+          Text(title, textAlign: TextAlign.center, style: textTheme.headline3),
       actions: [
         CustomButton(
-          onTap: (){
+          onTap: () {
             Navigator.pop(context);
             onSubmit();
           },
           text: submitText,
           isPrimary: true,
         ),
-        const SizedBox(height: 16.0,),
+        const SizedBox(
+          height: 16.0,
+        ),
       ],
       actionsAlignment: MainAxisAlignment.spaceAround,
       actionsPadding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),

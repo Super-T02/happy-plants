@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ImageCard extends StatefulWidget {
-  const ImageCard({Key? key, required this.url, required this.name}) : super(key: key);
+  const ImageCard({Key? key, required this.url, required this.name})
+      : super(key: key);
   final String url;
   final String name;
 
@@ -10,7 +11,6 @@ class ImageCard extends StatefulWidget {
 }
 
 class _ImageCardState extends State<ImageCard> {
-
   @override
   Widget build(BuildContext context) {
     return Container(

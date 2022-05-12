@@ -8,7 +8,6 @@ import '../config.dart';
 import '../shared/models/settings.dart';
 
 class SettingsService with ChangeNotifier {
-
   static const String themeModeKey = 'settings_design_theme_mode';
 
   /// Safe the theme mode locally at the device
@@ -17,10 +16,10 @@ class SettingsService with ChangeNotifier {
     sharedPreferences!.setString(themeModeKey, newMode.toString());
   }
 
-
   /// Get the theme mode locally at the device
   static ThemeMode getCurrentThemeMode() {
-    ThemeMode? mode = getThemeModeFromString(sharedPreferences!.getString(themeModeKey));
+    ThemeMode? mode =
+        getThemeModeFromString(sharedPreferences!.getString(themeModeKey));
 
     mode ??= ThemeMode.system;
 
@@ -33,8 +32,8 @@ class SettingsService with ChangeNotifier {
   ///
   /// Returns:
   /// - ThemeMode object or null (if it doesn't exist)
-  static ThemeMode? getThemeModeFromString(String? stringThemeMode){
-    switch(stringThemeMode){
+  static ThemeMode? getThemeModeFromString(String? stringThemeMode) {
+    switch (stringThemeMode) {
       case 'ThemeMode.system':
         return ThemeMode.system;
       case 'ThemeMode.light':
@@ -56,17 +55,17 @@ class SettingsService with ChangeNotifier {
 
     DbUser? user = await userService.userStream(userId).first;
 
-    if(user != null) {
+    if (user != null) {
       // Load settings
       user.settings ??= CustomSettings(
         designSettings: DesignSettingsModel(),
         pushNotificationSettings: PushNotificationSettingsModel(),
       );
 
-      SharedPreferencesController.setNotificationTimeStatus(user.settings!.pushNotificationSettings.enabled);
-      SharedPreferencesController.setCurrentNotificationTime(user.settings!.pushNotificationSettings.notificationTime);
-
+      SharedPreferencesController.setNotificationTimeStatus(
+          user.settings!.pushNotificationSettings.enabled);
+      SharedPreferencesController.setCurrentNotificationTime(
+          user.settings!.pushNotificationSettings.notificationTime);
     }
-
   }
 }

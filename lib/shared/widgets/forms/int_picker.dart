@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../util/custom_form_field.dart';
 
 class IntPicker extends StatefulWidget {
-  const IntPicker({Key? key,
+  const IntPicker({
+    Key? key,
     required this.plantSizeController,
     required this.heading,
     required this.hint,
@@ -22,7 +23,6 @@ class IntPicker extends StatefulWidget {
 }
 
 class _IntPickerState extends State<IntPicker> {
-
   // Form controllers
   TextEditingController plantNameController = TextEditingController();
 
@@ -40,16 +40,15 @@ class _IntPickerState extends State<IntPicker> {
       controller: widget.plantSizeController,
       maxLines: 1,
       validator: (String? value) {
-        if(widget.validator != null) {
+        if (widget.validator != null) {
           return widget.validator!(value);
         } else {
           return null;
         }
       },
-      onChange: (String? value){
-        if(widget.onChange != null) widget.onChange!(value);
+      onChange: (String? value) {
+        if (widget.onChange != null) widget.onChange!(value);
       },
     );
   }
 }
-

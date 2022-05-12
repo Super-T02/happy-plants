@@ -27,28 +27,26 @@ class _CustomListTileState extends State<CustomListTile> {
     ThemeData theme = Theme.of(context);
     Widget? subtitle;
 
-
-    if(widget.subtitle != null) {
-      subtitle = Text(widget.subtitle!, style: theme.textTheme.subtitle2?.copyWith(
-        decoration: widget.textDecoration,
-      ));
+    if (widget.subtitle != null) {
+      subtitle = Text(widget.subtitle!,
+          style: theme.textTheme.subtitle2?.copyWith(
+            decoration: widget.textDecoration,
+          ));
     }
 
-      return Container(
-          decoration: BoxDecoration(
-            border:  Border(
-                bottom: BorderSide(color: theme.inputDecorationTheme.fillColor!)
-            ),
-          ),
-          child: ListTile(
-            title: Text(widget.title, style: theme.textTheme.bodyText1?.copyWith(
+    return Container(
+        decoration: BoxDecoration(
+          border: Border(
+              bottom: BorderSide(color: theme.inputDecorationTheme.fillColor!)),
+        ),
+        child: ListTile(
+          title: Text(widget.title,
+              style: theme.textTheme.bodyText1?.copyWith(
                 decoration: widget.textDecoration,
-            )),
-            subtitle: subtitle,
-            leading: Icon(widget.leading),
-            onTap: widget.onTap,
-          )
-      );
+              )),
+          subtitle: subtitle,
+          leading: Icon(widget.leading),
+          onTap: widget.onTap,
+        ));
   }
 }
-
