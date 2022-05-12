@@ -17,26 +17,30 @@ class FormDialog extends StatelessWidget {
   final String? description;
   final Function? onAbort;
 
-
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
     Widget? text;
     TextTheme textTheme = Theme.of(context).textTheme;
-    InputDecorationTheme inputDecorationTheme = Theme.of(context).inputDecorationTheme;
+    InputDecorationTheme inputDecorationTheme =
+        Theme.of(context).inputDecorationTheme;
     ThemeData theme = Theme.of(context);
 
-    if(description != null) {
+    if (description != null) {
       text = Text(description!);
     } else {
       text = const SizedBox();
     }
 
     return AlertDialog(
-      title: Text(title, textAlign: TextAlign.center, style: textTheme.headline3,),
+      title: Text(
+        title,
+        textAlign: TextAlign.center,
+        style: textTheme.headline3,
+      ),
       actions: [
         CustomButton(
-          onTap: (){
+          onTap: () {
             if (_formKey.currentState!.validate()) {
               Navigator.pop(context);
               onSubmit();
@@ -45,11 +49,13 @@ class FormDialog extends StatelessWidget {
           text: 'Submit',
           isPrimary: true,
         ),
-        const SizedBox(height: 16.0,),
+        const SizedBox(
+          height: 16.0,
+        ),
         CustomButton(
-          onTap: (){
+          onTap: () {
             Navigator.pop(context);
-            if(onAbort != null) onAbort!();
+            if (onAbort != null) onAbort!();
           },
           text: 'Abort',
         )

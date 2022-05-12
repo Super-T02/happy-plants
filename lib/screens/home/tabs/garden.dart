@@ -9,8 +9,6 @@ class Garden extends StatefulWidget {
 }
 
 class _GardenState extends State<Garden> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,17 +22,14 @@ class _GardenState extends State<Garden> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Navigate to new garden form
-          Navigator.pushNamed(
-            context,
-            '/newGarden'
-          );
+          Navigator.pushNamed(context, '/newGarden');
         },
         backgroundColor: Theme.of(context).primaryColor,
-
         child: Icon(
           Icons.add,
           size: 35,
-          color: Theme.of(context).unselectedWidgetColor, //scaffoldBackgroundColor for turned around color
+          color: Theme.of(context)
+              .unselectedWidgetColor, //scaffoldBackgroundColor for turned around color
         ),
       ),
     );

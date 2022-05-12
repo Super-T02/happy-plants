@@ -29,15 +29,15 @@ class EventsModel<T extends JSON> {
   DateTime? lastDate;
 
   EventsModel({
-     this.id,
-     required this.userId,
-     required this.plantId,
-     required this.gardenId,
-     required this.type,
-     required this.period,
-     required this.data,
-     required this.startDate,
-     this.lastDate,
+    this.id,
+    required this.userId,
+    required this.plantId,
+    required this.gardenId,
+    required this.type,
+    required this.period,
+    required this.data,
+    required this.startDate,
+    this.lastDate,
   });
 
   Map<String, dynamic> toJSON() {
@@ -57,33 +57,45 @@ class EventsModel<T extends JSON> {
   ///  - name: Name of the plant
   ///  - number: is required for watering or fertilize
   String? getNotificationBodyPartFromType(String name, int? number) {
-    switch(type) {
-      case EventTypes.watering: return '$name need $number! ml to drink!';
-      case EventTypes.spray: return 'Spray $name to make the plant happy!';
-      case EventTypes.fertilize: return 'Give $name $number mg fertilizer to make the plant strong!';
-      case EventTypes.repot: return 'Please give the plant a new pot';
-      case EventTypes.dustOff: return 'Please dust the plant off';
-      default: return null;
+    switch (type) {
+      case EventTypes.watering:
+        return '$name need $number! ml to drink!';
+      case EventTypes.spray:
+        return 'Spray $name to make the plant happy!';
+      case EventTypes.fertilize:
+        return 'Give $name $number mg fertilizer to make the plant strong!';
+      case EventTypes.repot:
+        return 'Please give the plant a new pot';
+      case EventTypes.dustOff:
+        return 'Please dust the plant off';
+      default:
+        return null;
     }
   }
-
 
   /// Returns the title string for the event type
   /// Params:
   ///  - name: Name of the plant
   String? getNotificationTitlePartFromType(String name) {
-    switch(type) {
-      case EventTypes.watering: return '$name is thirsty!';
-      case EventTypes.spray: return '$name is dry!';
-      case EventTypes.fertilize: return '$name needs some power!';
-      case EventTypes.repot: return '$name has no space!';
-      case EventTypes.dustOff: return '$name cannot breath!';
-      default: return null;
+    switch (type) {
+      case EventTypes.watering:
+        return '$name is thirsty!';
+      case EventTypes.spray:
+        return '$name is dry!';
+      case EventTypes.fertilize:
+        return '$name needs some power!';
+      case EventTypes.repot:
+        return '$name has no space!';
+      case EventTypes.dustOff:
+        return '$name cannot breath!';
+      default:
+        return null;
     }
   }
 
   /// Maps a fire base doc reference of a event to a event model
-  static EventsModel mapFirebaseDocToEvent(String userId, DocumentSnapshot documentSnapshot){
+  static EventsModel mapFirebaseDocToEvent(
+      String userId, DocumentSnapshot documentSnapshot) {
     Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
 
     EventTypes type = EventTypes.values[data['type']];
@@ -91,7 +103,7 @@ class EventsModel<T extends JSON> {
 
     EventsModel newEvent;
 
-    switch(type){
+    switch (type) {
       case EventTypes.watering:
         newEvent = EventsModel(
           id: documentSnapshot.id,
@@ -101,9 +113,9 @@ class EventsModel<T extends JSON> {
           type: type,
           period: period,
           data: Watering(
-              interval: period,
-              startDate: data['data']['startDate'].toDate(),
-              waterAmount: data['data']['waterAmount'],
+            interval: period,
+            startDate: data['data']['startDate'].toDate(),
+            waterAmount: data['data']['waterAmount'],
           ),
           startDate: data['startDate'].toDate(),
           lastDate: data['lastDate']?.toDate(),
@@ -171,7 +183,7 @@ class EventsModel<T extends JSON> {
   DateTime _getDaily() {
     DateTime date = startDate;
 
-    while(date.isBefore(DateTime.now().subtract(aDay))) {
+    while (date.isBefore(DateTime.now().subtract(aDay))) {
       date = date.add(aDay);
     }
 
@@ -183,13 +195,13 @@ class EventsModel<T extends JSON> {
     DateTime date = startDate;
 
     // Add days of the month to date
-    while(date.isBefore(DateTime.now().subtract(aDay))) {
+    while (date.isBefore(DateTime.now().subtract(aDay))) {
       Duration duration = Duration(days: daysInMonth(date.year, date.month));
       date = date.add(duration);
     }
 
     // If month has less days
-    while(date.day > daysInMonth(date.year, date.month)){
+    while (date.day > daysInMonth(date.year, date.month)) {
       date = date.subtract(aDay);
     }
 
@@ -200,12 +212,12 @@ class EventsModel<T extends JSON> {
   DateTime _getYearly() {
     DateTime date = startDate;
 
-    while(date.isBefore(DateTime.now().subtract(aDay))) {
+    while (date.isBefore(DateTime.now().subtract(aDay))) {
       date = DateTime(date.year + 1, date.month, date.day);
     }
 
     // If month has less days (only february)
-    while(date.day > daysInMonth(date.year, date.month)){
+    while (date.day > daysInMonth(date.year, date.month)) {
       date = date.subtract(aDay);
     }
 
@@ -216,7 +228,7 @@ class EventsModel<T extends JSON> {
   DateTime _getWeekly() {
     DateTime date = startDate;
 
-    while(date.isBefore(DateTime.now().subtract(aDay))) {
+    while (date.isBefore(DateTime.now().subtract(aDay))) {
       date = date.add(aWeek);
     }
 
@@ -227,9 +239,9 @@ class EventsModel<T extends JSON> {
     DateTime nextDateEvent = event!.event.getNextDate();
     DateTime nextDateNextEvent = nextEvent!.event.getNextDate();
 
-    if(nextDateEvent.isBefore(nextDateNextEvent)){
+    if (nextDateEvent.isBefore(nextDateNextEvent)) {
       return -1;
-    } else if (nextDateEvent.isAtSameMomentAs(nextDateNextEvent)){
+    } else if (nextDateEvent.isAtSameMomentAs(nextDateNextEvent)) {
       return 0;
     } else {
       return 1;
@@ -238,63 +250,71 @@ class EventsModel<T extends JSON> {
 }
 
 /// Class for having a event with the related plant and garden
-class EventWithPlantAndGarden{
+class EventWithPlantAndGarden {
   EventsModel event;
   Plant plant;
   Garden garden;
 
-  EventWithPlantAndGarden({
-    required this.event,
-    required this.plant,
-    required this.garden
-  });
+  EventWithPlantAndGarden(
+      {required this.event, required this.plant, required this.garden});
 }
 
 /// Event Types
-enum EventTypes {
-  watering,
-  spray,
-  fertilize,
-  repot,
-  dustOff
-}
+enum EventTypes { watering, spray, fertilize, repot, dustOff }
 
 /// Mapping and helper class for event types
 class EventTypesHelper {
-  static EventTypes? getEventTypeFromString(String? text){
-    switch(text?.toLowerCase()) {
-      case 'watering': return EventTypes.watering;
-      case 'spray': return EventTypes.spray;
-      case 'fertilize': return EventTypes.fertilize;
-      case 'repot': return EventTypes.repot;
-      case 'dust off': return EventTypes.dustOff;
-      default: return null;
+  static EventTypes? getEventTypeFromString(String? text) {
+    switch (text?.toLowerCase()) {
+      case 'watering':
+        return EventTypes.watering;
+      case 'spray':
+        return EventTypes.spray;
+      case 'fertilize':
+        return EventTypes.fertilize;
+      case 'repot':
+        return EventTypes.repot;
+      case 'dust off':
+        return EventTypes.dustOff;
+      default:
+        return null;
     }
   }
 
-  static String? getStringFromEventType(EventTypes? eventType){
-    switch(eventType) {
-      case EventTypes.watering: return 'Watering';
-      case EventTypes.spray: return 'Spray';
-      case EventTypes.fertilize: return 'Fertilize';
-      case EventTypes.repot: return 'Repot';
-      case EventTypes.dustOff: return 'Dust off';
-      default: return null;
+  static String? getStringFromEventType(EventTypes? eventType) {
+    switch (eventType) {
+      case EventTypes.watering:
+        return 'Watering';
+      case EventTypes.spray:
+        return 'Spray';
+      case EventTypes.fertilize:
+        return 'Fertilize';
+      case EventTypes.repot:
+        return 'Repot';
+      case EventTypes.dustOff:
+        return 'Dust off';
+      default:
+        return null;
     }
   }
 
-  static IconData? getIconDataFromEventType(EventTypes? eventType){
-    switch(eventType) {
-      case EventTypes.watering: return Icons.water_drop;
-      case EventTypes.spray: return FontAwesome5.spray_can;
-      case EventTypes.fertilize: return FontAwesome5.poo;
-      case EventTypes.repot: return FontAwesome5.exchange_alt;
-      case EventTypes.dustOff: return FontAwesome5.paint_brush;
-      default: return null;
+  static IconData? getIconDataFromEventType(EventTypes? eventType) {
+    switch (eventType) {
+      case EventTypes.watering:
+        return Icons.water_drop;
+      case EventTypes.spray:
+        return FontAwesome5.spray_can;
+      case EventTypes.fertilize:
+        return FontAwesome5.poo;
+      case EventTypes.repot:
+        return FontAwesome5.exchange_alt;
+      case EventTypes.dustOff:
+        return FontAwesome5.paint_brush;
+      default:
+        return null;
     }
   }
 }
-
 
 /// Period Types
 enum Periods {
@@ -306,70 +326,94 @@ enum Periods {
 }
 
 class PeriodsHelper {
-  static List<String> periodsMenuItems = ['single', 'daily', 'weekly', 'monthly', 'yearly'];
+  static List<String> periodsMenuItems = [
+    'single',
+    'daily',
+    'weekly',
+    'monthly',
+    'yearly'
+  ];
 
-  static Periods? getPeriodsFromString(String? text){
-    switch(text) {
-      case 'single': return Periods.single;
-      case 'daily': return Periods.daily;
-      case 'monthly': return Periods.monthly;
-      case 'weekly': return Periods.weekly;
-      case 'yearly': return Periods.yearly;
-      default: return null;
+  static Periods? getPeriodsFromString(String? text) {
+    switch (text) {
+      case 'single':
+        return Periods.single;
+      case 'daily':
+        return Periods.daily;
+      case 'monthly':
+        return Periods.monthly;
+      case 'weekly':
+        return Periods.weekly;
+      case 'yearly':
+        return Periods.yearly;
+      default:
+        return null;
     }
   }
 
-  static String? getStringFromPeriod(Periods? period){
-    switch(period) {
-      case Periods.single: return 'single';
-      case Periods.daily: return 'daily';
-      case Periods.monthly: return 'monthly';
-      case Periods.weekly: return 'weekly';
-      case Periods.yearly: return 'yearly';
-      default: return null;
+  static String? getStringFromPeriod(Periods? period) {
+    switch (period) {
+      case Periods.single:
+        return 'single';
+      case Periods.daily:
+        return 'daily';
+      case Periods.monthly:
+        return 'monthly';
+      case Periods.weekly:
+        return 'weekly';
+      case Periods.yearly:
+        return 'yearly';
+      default:
+        return null;
     }
   }
 
-  static DateTimeComponents? getDateTimeComponentsFromPeriod(Periods? period){
-    switch(period) {
-      case Periods.daily: return DateTimeComponents.time;
-      case Periods.monthly: return DateTimeComponents.dayOfMonthAndTime;
-      case Periods.weekly: return DateTimeComponents.dayOfWeekAndTime;
-      case Periods.yearly: return DateTimeComponents.dateAndTime;
-      default: return null;
+  static DateTimeComponents? getDateTimeComponentsFromPeriod(Periods? period) {
+    switch (period) {
+      case Periods.daily:
+        return DateTimeComponents.time;
+      case Periods.monthly:
+        return DateTimeComponents.dayOfMonthAndTime;
+      case Periods.weekly:
+        return DateTimeComponents.dayOfWeekAndTime;
+      case Periods.yearly:
+        return DateTimeComponents.dateAndTime;
+      default:
+        return null;
     }
   }
 
   /// Generates the date string in the following format
   ///
   /// Tue, 22.05.2022
-  static String getNiceDateWording(DateTime time){
+  static String getNiceDateWording(DateTime time) {
     int dayNow = DateTime.now().day;
     int monthNow = DateTime.now().month;
     int yearNow = DateTime.now().year;
-    String weekDay = _getDayOfWeekAsString(time);;
+    String weekDay = _getDayOfWeekAsString(time);
+    ;
 
-    if(time.month == monthNow && time.year == yearNow){
+    if (time.month == monthNow && time.year == yearNow) {
       // Same Day
-      if(time.day == dayNow){
+      if (time.day == dayNow) {
         weekDay = 'Today';
       }
 
       // Tomorrow
-      if(time.day == DateTime.now().add(aDay).day){
+      if (time.day == DateTime.now().add(aDay).day) {
         weekDay = 'Tomorrow';
       }
     }
 
     String month;
-    if(time.month < 10){
+    if (time.month < 10) {
       month = '0${time.month}';
     } else {
       month = time.month.toString();
     }
 
     String day;
-    if(time.day < 10){
+    if (time.day < 10) {
       day = '0${time.day}';
     } else {
       day = time.day.toString();
@@ -379,8 +423,8 @@ class PeriodsHelper {
   }
 
   /// Returns the day of the week as string
-  static String _getDayOfWeekAsString(DateTime time){
-    switch(time.weekday){
+  static String _getDayOfWeekAsString(DateTime time) {
+    switch (time.weekday) {
       case 1:
         return 'Mon';
       case 2:

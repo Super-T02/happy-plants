@@ -27,8 +27,6 @@ class CustomDropDown extends StatefulWidget {
 }
 
 class _CustomDropDownState extends State<CustomDropDown> {
-
-
   //dropdown buttons choices
   Widget? suffixIcon;
 
@@ -53,14 +51,13 @@ class _CustomDropDownState extends State<CustomDropDown> {
   }
 
   /// Generates the color of the suffix icon
-  Color? _getIconColor(){
-    if(_focus.hasFocus){
+  Color? _getIconColor() {
+    if (_focus.hasFocus) {
       return AppColors.accent1;
     }
 
     return null;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -69,18 +66,20 @@ class _CustomDropDownState extends State<CustomDropDown> {
     //dropdown buttons choices
     String? _currentValue = widget.value;
 
-    if(widget.icon != null) {
+    if (widget.icon != null) {
       suffixIcon = Icon(widget.icon, color: _getIconColor());
     }
 
     // Map input menu items to local format
-    final List<DropdownMenuItem<String>> _mappedMenuItems = widget.menuItems.map(
-        (String value) => DropdownMenuItem(
-          value: value,
-          child: Text(value, style: textTheme.bodyText1,),
-        )
-    ).toList();
-
+    final List<DropdownMenuItem<String>> _mappedMenuItems = widget.menuItems
+        .map((String value) => DropdownMenuItem(
+              value: value,
+              child: Text(
+                value,
+                style: textTheme.bodyText1,
+              ),
+            ))
+        .toList();
 
     return Container(
       //same padding as in custom_form_field, so in every form dropdown and form_field
@@ -105,5 +104,4 @@ class _CustomDropDownState extends State<CustomDropDown> {
       ),
     );
   }
-
 }

@@ -9,7 +9,8 @@ import '../../../../shared/models/garden.dart';
 import '../../../../shared/widgets/util/image_card.dart';
 
 class EditGarden extends StatefulWidget {
-  const EditGarden({Key? key, required this.garden, required this.user}) : super(key: key);
+  const EditGarden({Key? key, required this.garden, required this.user})
+      : super(key: key);
 
   final Garden garden;
   final CustomUser user;
@@ -20,13 +21,12 @@ class EditGarden extends StatefulWidget {
 
 class _EditGardenState extends State<EditGarden> {
   final _formKey = GlobalKey<FormState>();
-  final List<ImageCard> images = Garden.allFiles.map(
-          (image) => ImageCard(
-        url: "assets/images/garden_backgrounds/$image.jpg",
-        name: image,
-      )
-  ).toList();
-
+  final List<ImageCard> images = Garden.allFiles
+      .map((image) => ImageCard(
+            url: "assets/images/garden_backgrounds/$image.jpg",
+            name: image,
+          ))
+      .toList();
 
   // Form controllers
   TextEditingController gardenNameController = TextEditingController();
@@ -38,13 +38,12 @@ class _EditGardenState extends State<EditGarden> {
 
   /// Validator for the garden name
   String? nameValidator(String? value) {
-    if(value == null || value.isEmpty){
+    if (value == null || value.isEmpty) {
       return 'Please enter a name';
     } else {
       return null;
     }
   }
-
 
   /// Validator for the garden icon
   void pictureChanged(pageNumber, reason) {
@@ -54,35 +53,28 @@ class _EditGardenState extends State<EditGarden> {
   /// Handles the submit of the form
   void _onSubmitted(Garden garden, CustomUser user) async {
     if (_formKey.currentState!.validate()) {
+      try {
+        Util.startLoading();
 
-     try {
-       Util.startLoading();
-
-        if(gardenInitName != gardenNameController.text){
+        if (gardenInitName != gardenNameController.text) {
           // update garden name
           await GardenService.patchGarden(
-              garden.id,
-              "name",
-              gardenNameController.text,
-              user
-          );
+              garden.id, "name", gardenNameController.text, user);
         }
 
-        if(pictureInitName != currentPictureName){
+        if (pictureInitName != currentPictureName) {
           // update picture name
           await GardenService.patchGarden(
-              garden.id,
-              "icon",
-              currentPictureName,
-              user
-          );
+              garden.id, "icon", currentPictureName, user);
         }
         Util.endLoading();
         Navigator.pop(context);
-        UtilService.showSuccess('Created!', '${gardenNameController.text} was created successfully!');
-     } catch (e) {
-       UtilService.showError('Unable to create Garden', 'Please add the garden later');
-     }
+        UtilService.showSuccess('Created!',
+            '${gardenNameController.text} was created successfully!');
+      } catch (e) {
+        UtilService.showError(
+            'Unable to create Garden', 'Please add the garden later');
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fill the form correctly')),
@@ -105,9 +97,6 @@ class _EditGardenState extends State<EditGarden> {
     CarouselController imageCarouselController = CarouselController();
     ThemeData theme = Theme.of(context);
 
-
-
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -124,20 +113,18 @@ class _EditGardenState extends State<EditGarden> {
           Form(
               key: _formKey,
               child: Padding(
-                  padding: const EdgeInsets.all(15), //padding from screen to widget
+                  padding:
+                      const EdgeInsets.all(15), //padding from screen to widget
                   child: Column(
-
                     // Form
                     children: <Widget>[
-
                       // Image Carousel
                       CarouselSlider(
                           carouselController: imageCarouselController,
                           items: images,
                           options: CarouselOptions(
                             initialPage: images.indexWhere(
-                                    (pic) => pic.name == pictureInitName
-                            ),
+                                (pic) => pic.name == pictureInitName),
                             height: 180.0,
                             enlargeCenterPage: true,
                             aspectRatio: 16 / 9,
@@ -145,8 +132,7 @@ class _EditGardenState extends State<EditGarden> {
                             enableInfiniteScroll: true,
                             viewportFraction: 0.8,
                             onPageChanged: pictureChanged,
-                          )
-                      ),
+                          )),
                       const SizedBox(height: 20),
 
                       // Name
@@ -159,10 +145,8 @@ class _EditGardenState extends State<EditGarden> {
                           textInputAction: TextInputAction.done,
                           controller: gardenNameController,
                           maxLines: 1,
-                          validator: nameValidator
-                      ),
+                          validator: nameValidator),
                       const SizedBox(height: 20),
-
 
                       // Buttons
                       Row(
@@ -171,9 +155,9 @@ class _EditGardenState extends State<EditGarden> {
                           // Submit Button
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                primary: theme.primaryColor
-                            ),
-                            onPressed: () => _onSubmitted(widget.garden, widget.user),
+                                primary: theme.primaryColor),
+                            onPressed: () =>
+                                _onSubmitted(widget.garden, widget.user),
                             child: const Text(
                               'Submit',
                               style: TextStyle(color: Colors.white),
@@ -194,9 +178,7 @@ class _EditGardenState extends State<EditGarden> {
                         ],
                       )
                     ],
-                  )
-              )
-          )
+                  )))
         ],
       ),
     );

@@ -5,27 +5,35 @@ import '../utilities/sizes.dart';
 import 'events.dart';
 
 /// Data structure for a plant
-class Plant extends JSON{
-
-  static final List<String> allFiles = ['bogenhanf','bonsai','cactus','dragon_tree','houseleek','ivy','palm','peace_lily','scandens'];
+class Plant extends JSON {
+  static final List<String> allFiles = [
+    'bogenhanf',
+    'bonsai',
+    'cactus',
+    'dragon_tree',
+    'houseleek',
+    'ivy',
+    'palm',
+    'peace_lily',
+    'scandens'
+  ];
   // Constructor
-  Plant({
-    required this.gardenID,
-    required this.id,
-    required this.name,
-    required this.type,
-    this.watering,
-    this.plantSize,
-    this.fertilize,
-    this.dustOff,
-    this.icon,
-    this.potSize,
-    this.repot,
-    this.spray,
-    this.sunDemand,
-    this.temperature,
-    this.eventIds
-  });
+  Plant(
+      {required this.gardenID,
+      required this.id,
+      required this.name,
+      required this.type,
+      this.watering,
+      this.plantSize,
+      this.fertilize,
+      this.dustOff,
+      this.icon,
+      this.potSize,
+      this.repot,
+      this.spray,
+      this.sunDemand,
+      this.temperature,
+      this.eventIds});
 
   // Required
   String id;
@@ -46,16 +54,16 @@ class Plant extends JSON{
   Watering? watering;
   List<dynamic>? eventIds;
 
-  static checkItemName(iconName){
-    if(allFiles.contains(iconName)){
+  static checkItemName(iconName) {
+    if (allFiles.contains(iconName)) {
       return true;
-    }
-    else{
+    } else {
       return false;
     }
   }
 
-  static Plant mapFirebaseDocToPlant(DocumentSnapshot snapshot, String gardenID){
+  static Plant mapFirebaseDocToPlant(
+      DocumentSnapshot snapshot, String gardenID) {
     Map<String, dynamic> data = snapshot.data()! as Map<String, dynamic>;
 
     PlantSize plantSize = PlantSize();
@@ -66,45 +74,44 @@ class Plant extends JSON{
     IntervalDateTime dustOff = IntervalDateTime();
     List events = [];
 
-
-    if(data['plantSize'] != null ){
+    if (data['plantSize'] != null) {
       plantSize.now = data['plantSize']['now'];
       plantSize.begin = data['plantSize']['begin'];
     }
 
-    if(data['watering'] != null && data['fertilize']['interval'] != null){
+    if (data['watering'] != null && data['fertilize']['interval'] != null) {
       watering.waterAmount = data['watering']['waterAmount'];
       watering.interval = Periods.values[data['watering']['interval']];
       watering.startDate = data['watering']['startDate']?.toDate();
     }
 
-    if(data['spray'] != null && data['fertilize']['interval'] != null){
+    if (data['spray'] != null && data['fertilize']['interval'] != null) {
       spray.interval = Periods.values[data['spray']['interval']];
       spray.startDate = data['spray']['startDate']?.toDate();
     }
 
-    if(data['fertilize'] != null && data['fertilize']['interval'] != null){
+    if (data['fertilize'] != null && data['fertilize']['interval'] != null) {
       fertilize.amount = data['fertilize']['amount'];
       fertilize.interval = Periods.values[data['fertilize']['interval']];
       fertilize.startDate = data['fertilize']['startDate']?.toDate();
     }
 
-    if(data['repot'] != null && data['repot']['interval'] != null){
+    if (data['repot'] != null && data['repot']['interval'] != null) {
       repot.interval = Periods.values[data['repot']['interval']];
       repot.startDate = data['repot']['startDate']?.toDate();
     }
 
-    if(data['dustOff'] != null && data['dustOff']['interval'] != null){
+    if (data['dustOff'] != null && data['dustOff']['interval'] != null) {
       dustOff.interval = Periods.values[data['dustOff']['interval']];
       dustOff.startDate = data['dustOff']['startDate']?.toDate();
     }
 
-    if(data['events'] != null){
+    if (data['events'] != null) {
       events = data['events'] as List<dynamic>;
     }
 
-
-    Plant plant = Plant(name: data['name'],
+    Plant plant = Plant(
+        name: data['name'],
         icon: data['icon'],
         id: snapshot.id,
         type: data['type'],
@@ -146,14 +153,14 @@ class Plant extends JSON{
 }
 
 /// IntervalDateTime for a given interval and Date
-class IntervalDateTime extends JSON{
+class IntervalDateTime extends JSON {
   IntervalDateTime({this.interval, this.startDate});
 
   Periods? interval; // in days
   DateTime? startDate;
 
   @override
-  Map<String, dynamic> toJSON(){
+  Map<String, dynamic> toJSON() {
     return {
       "interval": interval?.index,
       "startDate": startDate,
@@ -161,14 +168,14 @@ class IntervalDateTime extends JSON{
   }
 }
 
-class Fertilize extends IntervalDateTime{
-  Fertilize({Periods? interval,DateTime? startDate, this.amount})
+class Fertilize extends IntervalDateTime {
+  Fertilize({Periods? interval, DateTime? startDate, this.amount})
       : super(interval: interval, startDate: startDate);
 
   int? amount; // in
 
   @override
-  Map<String, dynamic> toJSON(){
+  Map<String, dynamic> toJSON() {
     return {
       "amount": amount,
       "interval": interval?.index,
@@ -177,30 +184,30 @@ class Fertilize extends IntervalDateTime{
   }
 }
 
-class Watering extends IntervalDateTime{
-  Watering({Periods? interval,DateTime? startDate, this.waterAmount})
+class Watering extends IntervalDateTime {
+  Watering({Periods? interval, DateTime? startDate, this.waterAmount})
       : super(interval: interval, startDate: startDate);
 
   int? waterAmount; // in ml
 
   @override
-  Map<String, dynamic> toJSON(){
+  Map<String, dynamic> toJSON() {
     return {
-      "waterAmount":waterAmount,
+      "waterAmount": waterAmount,
       "interval": interval?.index,
       "startDate": startDate,
     };
   }
 }
 
-class PlantSize extends JSON{
+class PlantSize extends JSON {
   PlantSize({this.begin, this.now});
 
   int? begin;
   int? now;
 
   @override
-  Map<String, dynamic> toJSON(){
+  Map<String, dynamic> toJSON() {
     return {
       "begin": begin,
       "now": now,
@@ -208,7 +215,7 @@ class PlantSize extends JSON{
   }
 }
 
-class AddPlant extends JSON{
+class AddPlant extends JSON {
   // Constructor
   AddPlant({
     required this.gardenID,
@@ -262,7 +269,6 @@ class AddPlant extends JSON{
     };
   }
 }
-
 
 abstract class JSON {
   Map<String, dynamic> toJSON();

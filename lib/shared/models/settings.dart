@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 
 /// Main model for the settings. It is the top level Object for all Settings
 /// defined bellow
-class CustomSettings{
+class CustomSettings {
   DesignSettingsModel designSettings;
   PushNotificationSettingsModel pushNotificationSettings;
-
 
   CustomSettings({
     required this.designSettings,
     required this.pushNotificationSettings,
   });
 
-  Map toJSON(){
+  Map toJSON() {
     return {
       "designSettings": designSettings.toJSON(),
       "pushNotificationSettings": pushNotificationSettings.toJSON(),
@@ -28,11 +27,9 @@ class CustomSettings{
   }
 }
 
-
-
 /// Settings related to the design:
 /// - Colorscheme: Dark, Light or System mode
-class DesignSettingsModel extends SettingsInterface{
+class DesignSettingsModel extends SettingsInterface {
   ThemeMode? colorScheme;
 
   DesignSettingsModel({
@@ -40,9 +37,7 @@ class DesignSettingsModel extends SettingsInterface{
   });
 
   Map toJSON() {
-    return {
-      "colorScheme":  colorScheme.toString()
-    };
+    return {"colorScheme": colorScheme.toString()};
   }
 
   @override
@@ -55,7 +50,7 @@ class DesignSettingsModel extends SettingsInterface{
 /// time and disable or enable notification:
 /// - enabled (default: true)
 /// - notificationTime (default: 9:00 am) -> Time when the user will be notified
-class PushNotificationSettingsModel extends SettingsInterface{
+class PushNotificationSettingsModel extends SettingsInterface {
   bool? enabled;
   TimeOfDay? notificationTime;
 
@@ -64,7 +59,7 @@ class PushNotificationSettingsModel extends SettingsInterface{
     this.notificationTime = const TimeOfDay(hour: 9, minute: 0),
   });
 
-  Map toJSON(){
+  Map toJSON() {
     return {
       "enabled": enabled,
       "notificationTime": {
@@ -81,12 +76,8 @@ class PushNotificationSettingsModel extends SettingsInterface{
   }
 }
 
-
 /// Abstract class defining the main structure for the setting objects
-abstract class SettingsInterface{
-
+abstract class SettingsInterface {
   /// Generates a default Object
   void setDefault();
 }
-
-

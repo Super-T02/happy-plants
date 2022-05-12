@@ -18,13 +18,12 @@ class NewGarden extends StatefulWidget {
 
 class _NewGardenState extends State<NewGarden> {
   final _formKey = GlobalKey<FormState>();
-  final List<ImageCard> images = Garden.allFiles.map(
-          (image) => ImageCard(
+  final List<ImageCard> images = Garden.allFiles
+      .map((image) => ImageCard(
             url: "assets/images/garden_backgrounds/$image.jpg",
             name: image,
-          )
-  ).toList();
-
+          ))
+      .toList();
 
   // Form controllers
   TextEditingController gardenNameController = TextEditingController();
@@ -34,13 +33,12 @@ class _NewGardenState extends State<NewGarden> {
 
   /// Validator for the garden name
   String? nameValidator(String? value) {
-    if(value == null || value.isEmpty){
+    if (value == null || value.isEmpty) {
       return 'Please enter a name';
     } else {
       return null;
     }
   }
-
 
   /// Validator for the garden icon
   void pictureChanged(pageNumber, reason) {
@@ -50,7 +48,6 @@ class _NewGardenState extends State<NewGarden> {
   /// Handles the submit of the form
   void _onSubmitted(user) async {
     if (_formKey.currentState!.validate()) {
-
       try {
         Util.startLoading();
 
@@ -59,13 +56,16 @@ class _NewGardenState extends State<NewGarden> {
             AddGarden(
               name: gardenNameController.text,
               icon: pictureName.toLowerCase(),
-            ), user);
+            ),
+            user);
 
         Util.endLoading();
         Navigator.pop(context);
-        UtilService.showSuccess('Created!', '${gardenNameController.text} was created successfully!');
+        UtilService.showSuccess('Created!',
+            '${gardenNameController.text} was created successfully!');
       } catch (e) {
-        UtilService.showError('Unable to create Garden', 'Please add the garden later');
+        UtilService.showError(
+            'Unable to create Garden', 'Please add the garden later');
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -74,17 +74,14 @@ class _NewGardenState extends State<NewGarden> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<CustomUser?>(context);
     CarouselController imageCarouselController = CarouselController();
     TextTheme textTheme = Theme.of(context).textTheme;
-    InputDecorationTheme inputDecorationTheme = Theme.of(context).inputDecorationTheme;
+    InputDecorationTheme inputDecorationTheme =
+        Theme.of(context).inputDecorationTheme;
     ThemeData theme = Theme.of(context);
-
-
-
 
     return Scaffold(
       appBar: AppBar(
@@ -100,78 +97,71 @@ class _NewGardenState extends State<NewGarden> {
         addAutomaticKeepAlives: true,
         children: <Widget>[
           Form(
-            key: _formKey,
-            child: Padding(
-              padding: const EdgeInsets.all(15), //padding from screen to widget
-              child: Column(
-
-                // Form
-                children: <Widget>[
-
-                  // Image Carousel
-                  CarouselSlider(
-                    carouselController: imageCarouselController,
-                    items: images,
-                    options: CarouselOptions(
-                      height: 180.0,
-                      enlargeCenterPage: true,
-                      aspectRatio: 16 / 9,
-                      autoPlayCurve: Curves.fastOutSlowIn,
-                      enableInfiniteScroll: true,
-                      viewportFraction: 0.8,
-                      onPageChanged: pictureChanged,
-                    )
-                  ),
-                  const SizedBox(height: 20),
-
-                  // Name
-                  CustomFormField(
-                      headingText: "Garden Name *",
-                      hintText: "Please enter a garden name",
-                      obscureText: false,
-                      suffixIcon: null,
-                      textInputType: TextInputType.name,
-                      textInputAction: TextInputAction.done,
-                      controller: gardenNameController,
-                      maxLines: 1,
-                      validator: nameValidator
-                  ),
-                  const SizedBox(height: 20),
-
-
-                  // Buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+              key: _formKey,
+              child: Padding(
+                  padding:
+                      const EdgeInsets.all(15), //padding from screen to widget
+                  child: Column(
+                    // Form
                     children: <Widget>[
-                      // Submit Button
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            primary: theme.primaryColor
-                        ),
-                        onPressed: () => _onSubmitted(user),
-                        child: const Text(
-                          'Submit',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                      const SizedBox(width: 64),
-                      // Abort Button
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.grey,
-                        ),
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text(
-                          'Abort',
-                          style: TextStyle(color: Colors.white),
-                        ),
+                      // Image Carousel
+                      CarouselSlider(
+                          carouselController: imageCarouselController,
+                          items: images,
+                          options: CarouselOptions(
+                            height: 180.0,
+                            enlargeCenterPage: true,
+                            aspectRatio: 16 / 9,
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            enableInfiniteScroll: true,
+                            viewportFraction: 0.8,
+                            onPageChanged: pictureChanged,
+                          )),
+                      const SizedBox(height: 20),
+
+                      // Name
+                      CustomFormField(
+                          headingText: "Garden Name *",
+                          hintText: "Please enter a garden name",
+                          obscureText: false,
+                          suffixIcon: null,
+                          textInputType: TextInputType.name,
+                          textInputAction: TextInputAction.done,
+                          controller: gardenNameController,
+                          maxLines: 1,
+                          validator: nameValidator),
+                      const SizedBox(height: 20),
+
+                      // Buttons
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          // Submit Button
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: theme.primaryColor),
+                            onPressed: () => _onSubmitted(user),
+                            child: const Text(
+                              'Submit',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          const SizedBox(width: 64),
+                          // Abort Button
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.grey,
+                            ),
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text(
+                              'Abort',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          )
+                        ],
                       )
                     ],
-                  )
-                ],
-              )
-            )
-          )
+                  )))
         ],
       ),
     );

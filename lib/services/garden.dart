@@ -10,20 +10,15 @@ import '../shared/models/events.dart';
 import '../shared/models/notification.dart';
 
 class GardenService {
-
   /// Adds a new garden
   static Future<void> addGarden(AddGarden newGarden, CustomUser user) {
     dynamic result;
 
-    try{
+    try {
       Util.startLoading();
 
       CollectionReference gardens = getGardenCollectionRef(user);
-      result = gardens.add({
-        'icon': newGarden.icon,
-        'name': newGarden.name
-      });
-
+      result = gardens.add({'icon': newGarden.icon, 'name': newGarden.name});
     } finally {
       Util.endLoading();
     }
@@ -32,17 +27,15 @@ class GardenService {
   }
 
   /// Updates a garden based on its gardenID
-  static Future<void> patchGarden(String gardenID, String fieldName, dynamic updatedValue, CustomUser user) {
+  static Future<void> patchGarden(String gardenID, String fieldName,
+      dynamic updatedValue, CustomUser user) {
     dynamic result;
 
-    try{
+    try {
       Util.startLoading();
 
       DocumentReference garden = getGardenDocRef(gardenID, user);
-      result = garden.update({
-        fieldName: updatedValue
-      });
-
+      result = garden.update({fieldName: updatedValue});
     } finally {
       Util.endLoading();
     }
@@ -54,10 +47,11 @@ class GardenService {
   static Future<void> deleteGarden(String gardenID, CustomUser user) {
     dynamic result;
 
-    try{
+    try {
       Util.startLoading();
 
-      CollectionReference plants = PlantService.getPlantsCollectionRef(user, gardenID);
+      CollectionReference plants =
+          PlantService.getPlantsCollectionRef(user, gardenID);
 
       // Delete all events
       plants.get().then((QuerySnapshot querySnapshot) async {
@@ -68,7 +62,6 @@ class GardenService {
 
       DocumentReference garden = getGardenDocRef(gardenID, user);
       result = garden.delete();
-
     } finally {
       Util.endLoading();
     }
@@ -87,21 +80,25 @@ class GardenService {
   /// Get the ref on a garden instance based on the user and garden id
   static DocumentReference getGardenDocRef(String gardenID, CustomUser user) {
     return FirebaseFirestore.instance
-        .collection('users').doc(user.uid)
-        .collection('gardens').doc(gardenID);
+        .collection('users')
+        .doc(user.uid)
+        .collection('gardens')
+        .doc(gardenID);
   }
 
   /// Get the ref on the garden collection based on the user id
   static CollectionReference getGardenCollectionRef(CustomUser user) {
     return FirebaseFirestore.instance
-        .collection('users').doc(user.uid)
+        .collection('users')
+        .doc(user.uid)
         .collection('gardens');
   }
 
   /// Generates a snapshot stream of the garden instances
   static Stream<QuerySnapshot> gardenStream(CustomUser user) {
     return FirebaseFirestore.instance
-        .collection('users').doc(user.uid)
+        .collection('users')
+        .doc(user.uid)
         .collection('gardens')
         .snapshots();
   }

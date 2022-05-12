@@ -4,7 +4,6 @@ import 'package:happy_plants/shared/utilities/app_colors.dart';
 import 'package:happy_plants/shared/utilities/custom_text_styles.dart';
 
 class MyAppTheme {
-
   // Light Theme
   static final lightTheme = ThemeData(
     brightness: Brightness.light,
@@ -42,11 +41,11 @@ class MyAppTheme {
       enableFeedback: true,
     ),
 
-
     // Radio Button Theme
     radioTheme: RadioThemeData(
       fillColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.selected) || states.contains(MaterialState.focused)) {
+        if (states.contains(MaterialState.selected) ||
+            states.contains(MaterialState.focused)) {
           return AppColors.accent1;
         } else {
           return AppColors.darkGrey;
@@ -62,26 +61,18 @@ class MyAppTheme {
         borderSide: const BorderSide(),
         borderRadius: BorderRadius.circular(16.0),
       ),
-      enabledBorder:  OutlineInputBorder(
-        borderSide: const BorderSide(
-            color: AppColors.grayShade,
-            width: 0.0
-        ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: AppColors.grayShade, width: 0.0),
         borderRadius: BorderRadius.circular(16.0),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: const BorderSide(
-            color: AppColors.accent1,
-            width: 2.0
-        ),
+        borderSide: const BorderSide(color: AppColors.accent1, width: 2.0),
         borderRadius: BorderRadius.circular(16.0),
       ),
       fillColor: AppColors.grayShade,
       filled: true,
     ),
   );
-
-
 
   // Dark Theme
   static final darkTheme = ThemeData(
@@ -123,7 +114,8 @@ class MyAppTheme {
     // Radio Button Theme
     radioTheme: RadioThemeData(
       fillColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.selected) || states.contains(MaterialState.focused)) {
+        if (states.contains(MaterialState.selected) ||
+            states.contains(MaterialState.focused)) {
           return AppColors.accent1;
         } else {
           return AppColors.grayShade;
@@ -140,23 +132,16 @@ class MyAppTheme {
         borderSide: const BorderSide(),
         borderRadius: BorderRadius.circular(16.0),
       ),
-      enabledBorder:  OutlineInputBorder(
-        borderSide: const BorderSide(
-            color: AppColors.blackShade,
-            width: 0.0
-        ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: AppColors.blackShade, width: 0.0),
         borderRadius: BorderRadius.circular(16.0),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: const BorderSide(
-            color: AppColors.accent1,
-            width: 2.0
-        ),
+        borderSide: const BorderSide(color: AppColors.accent1, width: 2.0),
         borderRadius: BorderRadius.circular(16.0),
       ),
       fillColor: AppColors.blackShade,
       filled: true,
     ),
-
   );
 }

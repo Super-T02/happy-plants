@@ -12,24 +12,26 @@ class DesignSettings extends StatelessWidget {
 
   /// Opens the dialog for changing the theme
   void openThemeDialog() {
-    showDialog(context: _key.currentContext!, builder: (BuildContext context){
-      ThemeMode mode;
+    showDialog(
+        context: _key.currentContext!,
+        builder: (BuildContext context) {
+          ThemeMode mode;
 
-      user.settings ??= CustomSettings.getDefault();
+          user.settings ??= CustomSettings.getDefault();
 
-      if(user.settings!.designSettings.colorScheme == null) {
-        user.settings!.designSettings = DesignSettingsModel();
-        mode = user.settings!.designSettings.colorScheme!;
-      } else {
-        mode = user.settings!.designSettings.colorScheme!;
-      }
+          if (user.settings!.designSettings.colorScheme == null) {
+            user.settings!.designSettings = DesignSettingsModel();
+            mode = user.settings!.designSettings.colorScheme!;
+          } else {
+            mode = user.settings!.designSettings.colorScheme!;
+          }
 
-      return ChangeDesignRadioGroup(user: user);
-    });
+          return ChangeDesignRadioGroup(user: user);
+        });
   }
 
   String getCurrentColorScheme() {
-    switch(user.settings?.designSettings.colorScheme){
+    switch (user.settings?.designSettings.colorScheme) {
       case ThemeMode.system:
         return "Current: System";
       case ThemeMode.light:
@@ -43,18 +45,13 @@ class DesignSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    return CustomListGroup(
-      key: _key,
-      title: 'Design',
-      children: <Widget>[
-        CustomListTile(
-          title: 'Change Colorscheme',
-          subtitle: getCurrentColorScheme(),
-          leading: Icons.color_lens_outlined,
-          onTap: openThemeDialog,
-        ),
-      ]
-    );
+    return CustomListGroup(key: _key, title: 'Design', children: <Widget>[
+      CustomListTile(
+        title: 'Change Colorscheme',
+        subtitle: getCurrentColorScheme(),
+        leading: Icons.color_lens_outlined,
+        onTap: openThemeDialog,
+      ),
+    ]);
   }
 }

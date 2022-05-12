@@ -4,7 +4,9 @@ import 'package:happy_plants/shared/utilities/custom_button.dart';
 import 'package:happy_plants/shared/utilities/util.dart';
 
 class CustomDatePicker extends StatefulWidget {
-  const CustomDatePicker({Key? key, required this.description, required this.onSubmit, this.value}) : super(key: key);
+  const CustomDatePicker(
+      {Key? key, required this.description, required this.onSubmit, this.value})
+      : super(key: key);
 
   final String description;
   final Function(DateTime newDate) onSubmit;
@@ -29,7 +31,10 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
             colorScheme: ColorScheme.light(
               primary: AppColors.accent1, // header background color
               onPrimary: AppColors.lightWhiteHighlight, // header text color
-              onSurface: Theme.of(context).textTheme.bodyText1!.color!, // body text color
+              onSurface: Theme.of(context)
+                  .textTheme
+                  .bodyText1!
+                  .color!, // body text color
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
@@ -48,7 +53,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
       });
     }
     //TODO: provide case to select nothing
-    else if (picked == null){
+    else if (picked == null) {
       setState(() {
         selectedDate = DateTime.now();
         buttonText = 'Choose Date';
@@ -60,10 +65,11 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
-    InputDecorationTheme inputDecorationTheme = Theme.of(context).inputDecorationTheme;
+    InputDecorationTheme inputDecorationTheme =
+        Theme.of(context).inputDecorationTheme;
     ThemeData theme = Theme.of(context);
 
-    if(widget.value != null){
+    if (widget.value != null) {
       selectedDate = widget.value!;
       buttonText = Util.getStringFromDateTime(selectedDate)!;
     }

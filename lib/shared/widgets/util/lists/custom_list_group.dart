@@ -16,22 +16,21 @@ class CustomListGroup extends StatefulWidget {
 }
 
 class _CustomListGroupState extends State<CustomListGroup> {
-
-
-
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: List<Widget>.from([
-          Text(widget.title, style: theme.textTheme.headline3,),
-
-        ])..addAll(widget.children),
+          Text(
+            widget.title,
+            style: theme.textTheme.headline3,
+          ),
+        ])
+          ..addAll(widget.children),
       ),
     );
   }
