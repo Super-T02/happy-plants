@@ -6,7 +6,7 @@ import 'tabs/garden.dart';
 import 'tabs/timeline.dart';
 import 'tabs/options/options.dart';
 
-class Home extends StatefulWidget{
+class Home extends StatefulWidget {
   const Home({Key? key, required this.title}) : super(key: key);
   final String title;
 
@@ -29,10 +29,11 @@ class _HomeState extends State<Home> {
     final dbUser = Provider.of<DbUser?>(context);
 
     // Reloads until the db user is loaded
-    if(!modeInit) {
-      Future.delayed(Duration.zero,() {
-        if(dbUser != null && dbUser.settings != null){
-          currentTheme.changeThemeMode(dbUser.settings!.designSettings.colorScheme!);
+    if (!modeInit) {
+      Future.delayed(Duration.zero, () {
+        if (dbUser != null && dbUser.settings != null) {
+          currentTheme
+              .changeThemeMode(dbUser.settings!.designSettings.colorScheme!);
           modeInit = true;
         }
       });

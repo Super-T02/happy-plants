@@ -28,21 +28,19 @@ class _TimelineState extends State<Timeline> {
   String? timeoutString;
 
   @override
-  initState(){
+  initState() {
     children = [];
     timeout = false;
     timeoutString = 'Server timed out, please try it later again';
     super.initState();
   }
 
-
   /// Generates a stream of all list components
   Future<List<CustomListGroup?>> _getListGroup(CustomUser? user) async {
-    List<EventWithPlantAndGarden?> eventList
-      = await EventService.getUserEventsList(user);
+    List<EventWithPlantAndGarden?> eventList =
+        await EventService.getUserEventsList(user);
 
-
-    if(eventList.isNotEmpty){
+    if (eventList.isNotEmpty) {
       DateTime now = DateTime.now();
       List<CustomListGroup?> listGroup = [];
       Map<String, List<CustomListTile>> childrenLocal = {};
@@ -50,28 +48,34 @@ class _TimelineState extends State<Timeline> {
       // Sorts the event list
       eventList.sort((a, b) => EventsModel.sort(a, b));
 
-      for(EventWithPlantAndGarden? event in eventList){
+      for (EventWithPlantAndGarden? event in eventList) {
         DateTime nextDate = event!.event.getNextDate();
         String wording = PeriodsHelper.getNiceDateWording(nextDate);
         // Add list tiles
-        if(!childrenLocal.containsKey(wording)) { // Date doesn't exist
+        if (!childrenLocal.containsKey(wording)) {
+          // Date doesn't exist
 
           // If the event is already done today
-          if(event.event.lastDate?.year == now.year
-              && event.event.lastDate?.month == now.month
-              && event.event.lastDate?.day == now.day ){
+          if (event.event.lastDate?.year == now.year &&
+              event.event.lastDate?.month == now.month &&
+              event.event.lastDate?.day == now.day) {
             childrenLocal[wording] = [
               CustomListTile(
                 textDecoration: TextDecoration.lineThrough,
                 title: event.plant.name,
-                subtitle: EventTypesHelper.getStringFromEventType(event.event.type),
+                subtitle:
+                    EventTypesHelper.getStringFromEventType(event.event.type),
                 leading: Icons.check,
                 onTap: () async {
                   await Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => NotificationScreen(eventId: event.event.id, nextDate: nextDate,)
-                  ));
+                      builder: (context) => NotificationScreen(
+                            eventId: event.event.id,
+                            nextDate: nextDate,
+                          )));
 
-                  setState(() {children = [];});
+                  setState(() {
+                    children = [];
+                  });
                 },
               ),
             ];
@@ -79,56 +83,69 @@ class _TimelineState extends State<Timeline> {
             childrenLocal[wording] = [
               CustomListTile(
                 title: event.plant.name,
-                subtitle: EventTypesHelper.getStringFromEventType(event.event.type),
-                leading: EventTypesHelper.getIconDataFromEventType(event.event.type),
+                subtitle:
+                    EventTypesHelper.getStringFromEventType(event.event.type),
+                leading:
+                    EventTypesHelper.getIconDataFromEventType(event.event.type),
                 onTap: () async {
                   await Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => NotificationScreen(eventId: event.event.id, nextDate: nextDate,)
-                  ));
+                      builder: (context) => NotificationScreen(
+                            eventId: event.event.id,
+                            nextDate: nextDate,
+                          )));
 
-                  setState(() {children = [];});
+                  setState(() {
+                    children = [];
+                  });
                 },
               )
             ];
           }
-        } else { // Date already exist
+        } else {
+          // Date already exist
 
           // If the event is already done today
-          if(event.event.lastDate?.year == now.year
-              && event.event.lastDate?.month == now.month
-              && event.event.lastDate?.day == now.day ){
-            childrenLocal[wording]!.add(
-                CustomListTile(
-                  textDecoration: TextDecoration.lineThrough,
-                  title: event.plant.name,
-                  subtitle: EventTypesHelper.getStringFromEventType(event.event.type),
-                  leading:  Icons.check,
-                  onTap:() async {
-                    await Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => NotificationScreen(eventId: event.event.id, nextDate: nextDate,)
-                    ));
+          if (event.event.lastDate?.year == now.year &&
+              event.event.lastDate?.month == now.month &&
+              event.event.lastDate?.day == now.day) {
+            childrenLocal[wording]!.add(CustomListTile(
+              textDecoration: TextDecoration.lineThrough,
+              title: event.plant.name,
+              subtitle:
+                  EventTypesHelper.getStringFromEventType(event.event.type),
+              leading: Icons.check,
+              onTap: () async {
+                await Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => NotificationScreen(
+                          eventId: event.event.id,
+                          nextDate: nextDate,
+                        )));
 
-                    setState(() {children = [];});
-                  },
-                )
-            );
+                setState(() {
+                  children = [];
+                });
+              },
+            ));
           } else {
-            childrenLocal[wording]!.add(
-                CustomListTile(
-                  title: event.plant.name,
-                  subtitle: EventTypesHelper.getStringFromEventType(event.event.type),
-                  leading: EventTypesHelper.getIconDataFromEventType(event.event.type),
-                  onTap: () async {
-                    await Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => NotificationScreen(eventId: event.event.id, nextDate: nextDate,)
-                    ));
+            childrenLocal[wording]!.add(CustomListTile(
+              title: event.plant.name,
+              subtitle:
+                  EventTypesHelper.getStringFromEventType(event.event.type),
+              leading:
+                  EventTypesHelper.getIconDataFromEventType(event.event.type),
+              onTap: () async {
+                await Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => NotificationScreen(
+                          eventId: event.event.id,
+                          nextDate: nextDate,
+                        )));
 
-                    setState(() {children = [];});
-                  },
-                )
-            );
+                setState(() {
+                  children = [];
+                });
+              },
+            ));
           }
-
         }
       }
 
@@ -150,11 +167,11 @@ class _TimelineState extends State<Timeline> {
 
     // Listen to the group stream
     _getListGroup(user).then((list) {
-      if(list.isNotEmpty && children!.isEmpty) {
+      if (list.isNotEmpty && children!.isEmpty) {
         List<CustomListGroup> listGroup = [];
 
-        for(CustomListGroup? group in list) {
-          if(group != null) {
+        for (CustomListGroup? group in list) {
+          if (group != null) {
             listGroup.add(group);
           }
         }
@@ -170,12 +187,11 @@ class _TimelineState extends State<Timeline> {
       }
     });
 
-
-    if(user != null && children != null && children!.isNotEmpty) {
+    if (user != null && children != null && children!.isNotEmpty) {
       return ListView(
         children: children!,
       );
-    } else if(timeout!) {
+    } else if (timeout!) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -183,17 +199,20 @@ class _TimelineState extends State<Timeline> {
             timeoutString!,
             style: theme.textTheme.headline3!,
           ),
-          const SizedBox(height: 32.0,),
+          const SizedBox(
+            height: 32.0,
+          ),
           SizedBox(
             height: 200,
             width: MediaQuery.of(context).size.width * 0.8,
-            child: SvgPicture.asset(darkMode == Brightness.dark? darkImage : lightImage),
+            child: SvgPicture.asset(
+                darkMode == Brightness.dark ? darkImage : lightImage),
           ),
         ],
       );
     } else {
       Future.delayed(const Duration(seconds: 15), () {
-        if(children != null && children!.isEmpty){
+        if (children != null && children!.isEmpty) {
           setState(() {
             timeout = true;
             timeoutString = 'Server timed out, please try it later again';
