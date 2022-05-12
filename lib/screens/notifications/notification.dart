@@ -16,7 +16,8 @@ import 'package:provider/provider.dart';
 import '../../shared/models/garden.dart';
 
 class NotificationScreen extends StatefulWidget {
-  const NotificationScreen({Key? key, this.eventId, this.nextDate}) : super(key: key);
+  const NotificationScreen({Key? key, this.eventId, this.nextDate})
+      : super(key: key);
 
   static const String routeName = '/notification';
   final String? eventId;
@@ -33,7 +34,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   bool? loading;
 
   @override
-  initState(){
+  initState() {
     loading = true;
     super.initState();
   }
@@ -41,19 +42,20 @@ class _NotificationScreenState extends State<NotificationScreen> {
   /// Load the current event from the database
   Future<void> loadEvent(CustomUser user) async {
     Util.startLoading();
-    DocumentReference eventRef = EventService.getEventDocRef(widget.eventId!, user);
-    EventsModel localEvent = EventsModel.mapFirebaseDocToEvent(user.uid, await eventRef.snapshots().first);
+    DocumentReference eventRef =
+        EventService.getEventDocRef(widget.eventId!, user);
+    EventsModel localEvent = EventsModel.mapFirebaseDocToEvent(
+        user.uid, await eventRef.snapshots().first);
 
     // Get doc snapshot of the plant
     DocumentSnapshot plantDoc = await PlantService.getPlantSnapshot(
-        localEvent.plantId,
-        localEvent.gardenId,
-        user.uid
-    );
+        localEvent.plantId, localEvent.gardenId, user.uid);
 
     // Generate garden and plant
-    Garden localGarden = await GardenService.getGarden(localEvent.gardenId, user);
-    Plant localPlant = Plant.mapFirebaseDocToPlant(plantDoc, localEvent.gardenId);
+    Garden localGarden =
+        await GardenService.getGarden(localEvent.gardenId, user);
+    Plant localPlant =
+        Plant.mapFirebaseDocToPlant(plantDoc, localEvent.gardenId);
 
     setState(() {
       event = localEvent;
@@ -69,7 +71,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Future<void> onSubmit(CustomUser user) async {
     try {
       Util.startLoading();
-      await EventService.patchEvent(event!.id!, 'lastDate', DateTime.now(), user);
+      await EventService.patchEvent(
+          event!.id!, 'lastDate', DateTime.now(), user);
       Util.endLoading();
       Navigator.of(context).pop();
       UtilService.showSuccess('Done', 'Event marked as done!');
@@ -83,7 +86,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     final user = Provider.of<CustomUser?>(context);
     final theme = Theme.of(context);
 
-    if(!loading!) {
+    if (!loading!) {
       Icon eventIcon = Icon(
         EventTypesHelper.getIconDataFromEventType(event!.type),
         color: theme.textTheme.bodyText1!.color,
@@ -99,12 +102,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
       // Generate button if not done now
       Widget button = Container();
-      Widget?text = Container();
+      Widget? text = Container();
 
-      if(lastDate?.year == now.year
-        && lastDate?.month == now.month
-        && lastDate?.day == now.day
-      ){
+      if (lastDate?.year == now.year &&
+          lastDate?.month == now.month &&
+          lastDate?.day == now.day) {
         text = Text(
           'Already done today!',
           textAlign: TextAlign.center,
@@ -120,7 +122,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       }
 
       // Choose the right extra information
-      switch(event!.type) {
+      switch (event!.type) {
         case EventTypes.watering:
           Watering data = event?.data as Watering;
           relatedInformation = [
@@ -216,7 +218,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
           break;
       }
 
-
       return Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(
@@ -227,7 +228,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Text(plant!.name),
-                const SizedBox(width: 16.0,),
+                const SizedBox(
+                  width: 16.0,
+                ),
                 eventIcon
               ],
             ),
@@ -244,8 +247,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 semanticContainer: true,
                 margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0)
-                ),
+                    borderRadius: BorderRadius.circular(8.0)),
                 child: Container(
                   height: 200,
                   width: 200,
@@ -255,47 +257,37 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       borderRadius: BorderRadius.circular(8.0),
                       image: DecorationImage(
                           image: AssetImage(
-                              'assets/images/plant_backgrounds/${plant!.icon}.jpg'
-                          ),
-                          fit: BoxFit.cover
-                      )
-                  ),
-                )
-            ),
+                              'assets/images/plant_backgrounds/${plant!.icon}.jpg'),
+                          fit: BoxFit.cover)),
+                )),
 
             text,
 
-            CustomListGroup(
-                title: 'Informations',
-                children: <Widget>[
-                  CustomListRow(
-                    title: 'Garden',
-                    data:  garden!.name,
-                  ),
-                  CustomListRow(
-                    title: 'Plant',
-                    data: plant!.name,
-                  ),
-                  CustomListRow(
-                    title: 'Upcoming Event',
-                    data: EventTypesHelper.getStringFromEventType(event!.type),
-                  ),
+            CustomListGroup(title: 'Informations', children: <Widget>[
+              CustomListRow(
+                title: 'Garden',
+                data: garden!.name,
+              ),
+              CustomListRow(
+                title: 'Plant',
+                data: plant!.name,
+              ),
+              CustomListRow(
+                title: 'Upcoming Event',
+                data: EventTypesHelper.getStringFromEventType(event!.type),
+              ),
             ]),
 
             CustomListGroup(
-                title: 'Event Information',
-                children: relatedInformation
-            ),
+                title: 'Event Information', children: relatedInformation),
 
             button
           ],
         ),
       );
-
     } else {
-
-      Future.delayed(Duration.zero,() {
-        if(user != null){
+      Future.delayed(Duration.zero, () {
+        if (user != null) {
           loadEvent(user);
         }
       });

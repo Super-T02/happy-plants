@@ -73,9 +73,14 @@ class _TimelineState extends State<Timeline> {
                             nextDate: nextDate,
                           )));
 
-                  setState(() {
-                    children = [];
-                  });
+                  if (mounted) {
+                    setState(() {
+                      children = [];
+                      timeout = false;
+                      timeoutString =
+                          'Server timed out, please try it later again';
+                    });
+                  }
                 },
               ),
             ];
@@ -94,9 +99,14 @@ class _TimelineState extends State<Timeline> {
                             nextDate: nextDate,
                           )));
 
-                  setState(() {
-                    children = [];
-                  });
+                  if (mounted) {
+                    setState(() {
+                      children = [];
+                      timeout = false;
+                      timeoutString =
+                          'Server timed out, please try it later again';
+                    });
+                  }
                 },
               )
             ];
@@ -121,9 +131,14 @@ class _TimelineState extends State<Timeline> {
                           nextDate: nextDate,
                         )));
 
-                setState(() {
-                  children = [];
-                });
+                if (mounted) {
+                  setState(() {
+                    children = [];
+                    timeout = false;
+                    timeoutString =
+                        'Server timed out, please try it later again';
+                  });
+                }
               },
             ));
           } else {
@@ -140,8 +155,15 @@ class _TimelineState extends State<Timeline> {
                           nextDate: nextDate,
                         )));
 
-                setState(() {
-                  children = [];
+                Future.delayed(Duration.zero, () {
+                  if (mounted) {
+                    setState(() {
+                      children = [];
+                      timeout = false;
+                      timeoutString =
+                          'Server timed out, please try it later again';
+                    });
+                  }
                 });
               },
             ));
@@ -160,32 +182,45 @@ class _TimelineState extends State<Timeline> {
   }
 
   @override
+  void dispose() {
+    children = [];
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final user = Provider.of<DbUser?>(context);
     final darkMode = Theme.of(context).brightness;
     final ThemeData theme = Theme.of(context);
 
-    // Listen to the group stream
-    _getListGroup(user).then((list) {
-      if (list.isNotEmpty && children!.isEmpty) {
-        List<CustomListGroup> listGroup = [];
+    if (children!.isEmpty) {
+      // Listen to the group stream
+      _getListGroup(user).then((list) {
+        if (list.isNotEmpty && children!.isEmpty) {
+          List<CustomListGroup> listGroup = [];
 
-        for (CustomListGroup? group in list) {
-          if (group != null) {
-            listGroup.add(group);
+          for (CustomListGroup? group in list) {
+            if (group != null) {
+              listGroup.add(group);
+            }
+          }
+          if (mounted) {
+            setState(() {
+              children = listGroup;
+              timeout = false;
+              timeoutString = 'Server timed out, please try it later again';
+            });
+          }
+        } else if (list.isEmpty) {
+          if (mounted) {
+            setState(() {
+              timeoutString = 'You have no event yet :(';
+              timeout = true;
+            });
           }
         }
-
-        setState(() {
-          children = listGroup;
-        });
-      } else {
-        setState(() {
-          timeoutString = 'You have no event yet :(';
-          timeout = true;
-        });
-      }
-    });
+      });
+    }
 
     if (user != null && children != null && children!.isNotEmpty) {
       return ListView(
@@ -213,10 +248,12 @@ class _TimelineState extends State<Timeline> {
     } else {
       Future.delayed(const Duration(seconds: 15), () {
         if (children != null && children!.isEmpty) {
-          setState(() {
-            timeout = true;
-            timeoutString = 'Server timed out, please try it later again';
-          });
+          if (mounted) {
+            setState(() {
+              timeout = true;
+              timeoutString = 'Server timed out, please try it later again';
+            });
+          }
         }
       });
       return const SpinKitFadingCircle(color: AppColors.accent1);
