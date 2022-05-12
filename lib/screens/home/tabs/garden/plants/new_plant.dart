@@ -94,7 +94,7 @@ class _NewPlantState extends State<NewPlant> {
       }
       plantTypeController.text = widget.plant!.type;
       //if data exists, set controller now:
-      //plantsize
+      //plant size
       if (widget.plant?.plantSize?.now != null &&
           widget.plant?.plantSize?.begin != null) {
         plantSizeBeginningController.text =
@@ -473,8 +473,6 @@ class _NewPlantState extends State<NewPlant> {
     //final user = Provider.of<CustomUser?>(context);
     CarouselController imageCarouselController = CarouselController();
     TextTheme textTheme = Theme.of(context).textTheme;
-    InputDecorationTheme inputDecorationTheme =
-        Theme.of(context).inputDecorationTheme;
     ThemeData theme = Theme.of(context);
 
     //default error string for incomplete accordion:

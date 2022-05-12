@@ -19,8 +19,6 @@ class NewPlantTemplate extends StatefulWidget {
 class _NewPlantTemplateState extends State<NewPlantTemplate> {
   @override
   Widget build(BuildContext context) {
-    final darkMode = Theme.of(context).brightness;
-    final ThemeData theme = Theme.of(context);
     List<Widget> allTemplateWidgets = [];
     List<Plant> allTemplatePlants = Templates.getAllTemplates(widget.garden.id);
 

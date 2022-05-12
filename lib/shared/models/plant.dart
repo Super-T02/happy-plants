@@ -79,13 +79,13 @@ class Plant extends JSON {
       plantSize.begin = data['plantSize']['begin'];
     }
 
-    if (data['watering'] != null && data['fertilize']['interval'] != null) {
+    if (data['watering'] != null && data['watering']['interval'] != null) {
       watering.waterAmount = data['watering']['waterAmount'];
       watering.interval = Periods.values[data['watering']['interval']];
       watering.startDate = data['watering']['startDate']?.toDate();
     }
 
-    if (data['spray'] != null && data['fertilize']['interval'] != null) {
+    if (data['spray'] != null && data['spray']['interval'] != null) {
       spray.interval = Periods.values[data['spray']['interval']];
       spray.startDate = data['spray']['startDate']?.toDate();
     }
